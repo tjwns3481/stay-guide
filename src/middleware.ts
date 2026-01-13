@@ -1,15 +1,20 @@
-import { type NextRequest } from 'next/server';
-import { createClient } from '@/lib/supabase/middleware';
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 
-export async function middleware(request: NextRequest) {
-  const { supabase, supabaseResponse } = createClient(request);
+// 공개 라우트 정의 (인증 없이 접근 가능)
+const isPublicRoute = createRouteMatcher([
+  '/',
+  '/sign-in(.*)',
+  '/sign-up(.*)',
+  '/api/public/(.*)',
+  '/g/(.*)', // 공개 가이드북 뷰어
+]);
 
-  // Refresh session if expired - required for Server Components
-  // https://supabase.com/docs/guides/auth/server-side/nextjs
-  await supabase.auth.getUser();
-
-  return supabaseResponse;
-}
+export default clerkMiddleware(async (auth, request) => {
+  // 보호된 라우트는 로그인 필요
+  if (!isPublicRoute(request)) {
+    await auth.protect();
+  }
+});
 
 export const config = {
   matcher: [
@@ -18,8 +23,7 @@ export const config = {
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
-     * - public folder
-     * - api routes that don't need auth
+     * - public folder assets
      */
     '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],

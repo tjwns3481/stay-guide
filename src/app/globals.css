@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 254 252 251; /* secondary-50 */
+    --foreground: 45 38 32; /* primary-800 */
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-secondary-50 text-primary-800;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary-500 text-white px-6 py-3 rounded-button font-medium
+           hover:bg-primary-600 active:bg-primary-700
+           shadow-button transition-all duration-200;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary-200 text-primary-700 px-6 py-3 rounded-button font-medium
+           hover:bg-secondary-300 active:bg-secondary-400
+           transition-all duration-200;
+  }
+
+  .card {
+    @apply bg-white rounded-card shadow-card p-6
+           hover:shadow-card-hover transition-shadow duration-200;
+  }
+
+  .input {
+    @apply w-full px-4 py-3 rounded-input border border-secondary-300
+           focus:outline-none focus:ring-2 focus:ring-primary-300 focus:border-primary-400
+           placeholder:text-neutral-400 transition-all duration-200;
+  }
+}

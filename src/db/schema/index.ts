@@ -1,4 +1,4 @@
-import { pgTable, uuid, varchar, text, timestamp, boolean, jsonb, integer } from 'drizzle-orm/pg-core';
+import { pgTable, uuid, varchar, text, timestamp, boolean, jsonb, integer, index } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
 // ===== Hosts (호스트) =====
@@ -27,7 +27,11 @@ export const guidebooks = pgTable('guidebooks', {
   viewCount: integer('view_count').default(0).notNull(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
-});
+}, (table) => ({
+  hostIdIdx: index('idx_guidebooks_host_id').on(table.hostId),
+  slugIdx: index('idx_guidebooks_slug').on(table.slug),
+  isPublishedIdx: index('idx_guidebooks_is_published').on(table.isPublished),
+}));
 
 export const guidebooksRelations = relations(guidebooks, ({ one, many }) => ({
   host: one(hosts, {
@@ -50,7 +54,10 @@ export const blocks = pgTable('blocks', {
   isVisible: boolean('is_visible').default(true).notNull(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
-});
+}, (table) => ({
+  guidebookIdIdx: index('idx_blocks_guidebook_id').on(table.guidebookId),
+  guidebookOrderIdx: index('idx_blocks_guidebook_order').on(table.guidebookId, table.order),
+}));
 
 export const blocksRelations = relations(blocks, ({ one }) => ({
   guidebook: one(guidebooks, {

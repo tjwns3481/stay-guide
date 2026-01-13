@@ -208,7 +208,7 @@ pnpm add @supabase/supabase-js @supabase/ssr
 
 ---
 
-### [ ] Phase 0, T0.3: Drizzle ORM 설정
+### [x] Phase 0, T0.3: Drizzle ORM 설정
 
 **담당**: database-specialist
 
@@ -229,8 +229,8 @@ pnpm add -D drizzle-kit
 - `src/db/index.ts`
 
 **완료 조건**:
-- [ ] `pnpm db:generate` 실행 성공
-- [ ] 스키마가 Supabase PostgreSQL과 연동
+- [x] `pnpm db:generate` 실행 성공
+- [x] 스키마가 Supabase PostgreSQL과 연동
 
 ---
 

@@ -856,7 +856,7 @@ cd ../roomy-phase3-guidebook
 
 ## M4: FEAT-3 대시보드 (Phase 4)
 
-### [ ] Phase 4, T4.1: 대시보드 레이아웃 RED→GREEN
+### [x] Phase 4, T4.1: 대시보드 레이아웃 RED→GREEN
 
 **담당**: frontend-specialist
 
@@ -897,7 +897,7 @@ cd ../roomy-phase4-dashboard
 
 ---
 
-### [ ] Phase 4, T4.2: 가이드북 편집 페이지 RED→GREEN
+### [x] Phase 4, T4.2: 가이드북 편집 페이지 RED→GREEN
 
 **담당**: frontend-specialist
 
@@ -936,7 +936,7 @@ cd ../roomy-phase4-dashboard
 
 ---
 
-### [ ] Phase 4, T4.3: 이미지 업로드 RED→GREEN
+### [x] Phase 4, T4.3: 이미지 업로드 RED→GREEN
 
 **담당**: backend-specialist
 
@@ -971,7 +971,7 @@ cd ../roomy-phase4-dashboard
 
 ---
 
-### [ ] Phase 4, T4.4: 설정 페이지 RED→GREEN
+### [x] Phase 4, T4.4: 설정 페이지 RED→GREEN
 
 **담당**: frontend-specialist
 

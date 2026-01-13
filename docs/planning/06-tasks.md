@@ -178,7 +178,7 @@ cd roomy
 
 ---
 
-### [ ] Phase 0, T0.2: Supabase 연동
+### [x] Phase 0, T0.2: Supabase 연동
 
 **담당**: backend-specialist
 
@@ -202,9 +202,9 @@ pnpm add @supabase/supabase-js @supabase/ssr
 - `src/middleware.ts`
 
 **완료 조건**:
-- [ ] Supabase 대시보드 연결 확인
-- [ ] 환경 변수 설정 완료
-- [ ] `.env.local`이 .gitignore에 포함
+- [x] Supabase 대시보드 연결 확인
+- [x] 환경 변수 설정 완료
+- [x] `.env.local`이 .gitignore에 포함
 
 ---
 

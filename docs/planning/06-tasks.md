@@ -234,7 +234,7 @@ pnpm add -D drizzle-kit
 
 ---
 
-### [ ] Phase 0, T0.4: shadcn/ui 및 디자인 시스템 설정
+### [x] Phase 0, T0.4: shadcn/ui 및 디자인 시스템 설정
 
 **담당**: frontend-specialist
 
@@ -258,8 +258,8 @@ pnpm add lucide-react
 - `src/app/globals.css` (테마 변수)
 
 **완료 조건**:
-- [ ] shadcn/ui 컴포넌트 렌더링 확인
-- [ ] Design System의 컬러 팔레트 적용
+- [x] shadcn/ui 컴포넌트 렌더링 확인
+- [x] Design System의 컬러 팔레트 적용
 
 ---
 

@@ -697,7 +697,7 @@ cd ../roomy-phase2-blocks
 
 ## M3: FEAT-2 가이드북 뷰 (Phase 3)
 
-### [ ] Phase 3, T3.1: 가이드북 CRUD API RED→GREEN
+### [x] Phase 3, T3.1: 가이드북 CRUD API RED→GREEN
 
 **담당**: backend-specialist
 

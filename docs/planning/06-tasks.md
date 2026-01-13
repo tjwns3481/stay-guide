@@ -265,7 +265,7 @@ pnpm add lucide-react
 
 ## M0.5: 계약 & 테스트 설계 (Phase 0)
 
-### [ ] Phase 0, T0.5.1: Zod 스키마 정의
+### [x] Phase 0, T0.5.1: Zod 스키마 정의
 
 **담당**: backend-specialist
 
@@ -284,12 +284,12 @@ pnpm add zod
 - `src/lib/validations/info-block.ts`
 
 **완료 조건**:
-- [ ] 모든 API 엔드포인트의 스키마 정의
-- [ ] 타입 추출 (z.infer) 설정
+- [x] 모든 API 엔드포인트의 스키마 정의
+- [x] 타입 추출 (z.infer) 설정
 
 ---
 
-### [ ] Phase 0, T0.5.2: MSW Mock 설정
+### [x] Phase 0, T0.5.2: MSW Mock 설정
 
 **담당**: test-specialist
 
@@ -310,12 +310,12 @@ pnpm add -D msw
 - `src/mocks/server.ts`
 
 **완료 조건**:
-- [ ] Mock API 응답 확인
-- [ ] 테스트 환경에서 MSW 작동
+- [x] Mock API 응답 확인
+- [x] 테스트 환경에서 MSW 작동
 
 ---
 
-### [ ] Phase 0, T0.5.3: 테스트 환경 설정
+### [x] Phase 0, T0.5.3: 테스트 환경 설정
 
 **담당**: test-specialist
 
@@ -340,8 +340,8 @@ npx playwright install
 - `src/__tests__/helpers/`
 
 **완료 조건**:
-- [ ] `pnpm test` 실행 가능
-- [ ] `pnpm test:e2e` 실행 가능
+- [x] `pnpm test` 실행 가능
+- [x] `pnpm test:e2e` 실행 가능
 
 ---
 

@@ -11,6 +11,7 @@ import {
   getGuidebookBlocks,
   getAllPublishedSlugs,
 } from '@/lib/data/guidebook';
+import { generateGuidebookMetadata } from '@/lib/utils/metadata';
 
 interface PageProps {
   params: {
@@ -30,26 +31,18 @@ export async function generateStaticParams() {
   }));
 }
 
-// 동적 메타데이터
+// 동적 메타데이터 (OG 이미지, Twitter 카드, robots 포함)
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const guidebook = await getGuidebookBySlug(params.slug);
 
   if (!guidebook) {
     return {
       title: '가이드북을 찾을 수 없습니다',
+      robots: { index: false },
     };
   }
 
-  return {
-    title: `${guidebook.title} | Roomy`,
-    description: guidebook.description || `${guidebook.title} - 객실 안내서`,
-    openGraph: {
-      title: guidebook.title,
-      description: guidebook.description || `${guidebook.title} - 객실 안내서`,
-      images: guidebook.coverImage ? [guidebook.coverImage] : [],
-      type: 'website',
-    },
-  };
+  return generateGuidebookMetadata(guidebook);
 }
 
 export default async function GuidebookPage({ params }: PageProps) {

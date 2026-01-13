@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Roomy - Host Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#8b7355",
+                        "background-light": "#f7f7f6",
+                        "background-dark": "#1b1917",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#292524",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "2xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display min-h-screen flex overflow-hidden selection:bg-primary/20">
+<!-- Sidebar Navigation -->
+<aside class="w-64 bg-surface-light dark:bg-surface-dark border-r border-slate-200 dark:border-slate-800 flex-col hidden md:flex h-screen sticky top-0 shrink-0 z-20">
+<div class="p-6 pb-2">
+<div class="flex items-center gap-3 mb-8">
+<div class="bg-primary/10 rounded-xl p-2">
+<span class="material-symbols-outlined text-primary text-3xl">cottage</span>
+</div>
+<div>
+<h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">Roomy</h1>
+<p class="text-xs text-slate-500 font-medium">Host Dashboard</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-2 overflow-y-auto">
+<!-- Active Link -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 text-primary group transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">menu_book</span>
+<span class="font-bold text-sm">My Guides</span>
+</a>
+<!-- Inactive Links -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">bar_chart</span>
+<span class="font-medium text-sm">Statistics</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-medium text-sm">Settings</span>
+</a>
+</nav>
+<div class="p-4 mt-auto border-t border-slate-100 dark:border-slate-800">
+<button class="flex items-center gap-3 w-full p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-left">
+<div class="w-10 h-10 rounded-full bg-cover bg-center border border-slate-200 dark:border-slate-700" data-alt="Profile picture of a smiling woman" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC6OHEzj3p_RA25r3gS7Q5oV3Coa6mvNX1tcOvB4BEMH8jYUEIFjXvEnf8lgAClrgch7cU_wfuDm6v06RgcqGK_e6NUKxYpTpPC_e5FbmEvZ6TOZ5SWW3tV2BeLvcy5BsprI_hoPoK3dGJHCIP6tWk1UF4eUMLb_Bp7EtvjwOKpHnFF115sfhwrQ-sMATIakLO8Ufkgq60fD_3q24rei7VIsdXJQqcmu3BE8XNVQab76bx_JT7kL1jmF1CLWBwmWo-ZaHqNTB015uk');">
+</div>
+<div class="flex flex-col overflow-hidden">
+<p class="text-sm font-bold text-slate-900 dark:text-white truncate">Minji Kim</p>
+<p class="text-xs text-slate-500 truncate">Superhost</p>
+</div>
+<span class="material-symbols-outlined text-slate-400 ml-auto text-sm">unfold_more</span>
+</button>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col h-screen overflow-y-auto relative w-full">
+<!-- Header Section -->
+<header class="sticky top-0 z-10 bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-md px-8 py-6 border-b border-transparent">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 max-w-7xl mx-auto w-full">
+<div class="flex flex-col gap-1">
+<h2 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Your Guidebooks</h2>
+<p class="text-slate-500 dark:text-slate-400 text-base">Welcome back, Minji. Here's what's happening with your properties.</p>
+</div>
+<button class="hidden md:flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-lg shadow-primary/20 active:scale-95">
+<span class="material-symbols-outlined text-[20px]">add</span>
+<span>Create New</span>
+</button>
+</div>
+</header>
+<!-- Content Body -->
+<div class="flex-1 p-8 pt-4 max-w-7xl mx-auto w-full">
+<!-- Filters & Search -->
+<div class="flex flex-col lg:flex-row gap-4 justify-between items-start lg:items-center mb-8">
+<!-- Search -->
+<div class="relative w-full lg:w-96">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 material-symbols-outlined">search</span>
+<input class="w-full pl-10 pr-4 py-3 bg-white dark:bg-surface-dark border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-slate-400 text-slate-700 dark:text-slate-200 shadow-sm" placeholder="Search your guidebooks..." type="text"/>
+</div>
+<!-- Chips -->
+<div class="flex gap-2 overflow-x-auto pb-2 lg:pb-0 w-full lg:w-auto no-scrollbar">
+<button class="px-4 py-2 bg-primary text-white rounded-xl text-sm font-semibold shadow-md shadow-primary/10 whitespace-nowrap">
+                        All Guides
+                    </button>
+<button class="px-4 py-2 bg-white dark:bg-surface-dark border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl text-sm font-medium transition-colors whitespace-nowrap">
+                        Published <span class="ml-1 text-slate-400 text-xs">1</span>
+</button>
+<button class="px-4 py-2 bg-white dark:bg-surface-dark border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl text-sm font-medium transition-colors whitespace-nowrap">
+                        Drafts <span class="ml-1 text-slate-400 text-xs">0</span>
+</button>
+</div>
+</div>
+<!-- Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+<!-- Card 1: Existing Guide -->
+<div class="group bg-surface-light dark:bg-surface-dark rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col h-full">
+<div class="relative h-48 w-full overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="Cozy interior living room with beige sofa and plants" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDIBGalKa9TObk4tFPIe4ip_gDZSOIz3uR5SWZ-PWEK9RoSGiel7DX6zGLNKQmzPGU-_Oaow_X8Fmn3f__Mydjws95qT4ljqmzwsngH09r-7kn1Rka3Vz-YoaIPLbsn8UqhwvsO27V0JKtlF0fLrf4OE0BOmIBjLjrt4vAkdaZzvpiaFHJxSg7PIE7Xl6394GI8K5adZF9fjUAYhPJXMwxykaGYS1oxLLvJZ03syGkfBtvY7gPw7KyelhCj2yVctUbVMDZY8BZ0QeU');">
+</div>
+<div class="absolute top-3 left-3">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-xs font-bold backdrop-blur-sm shadow-sm border border-emerald-200 dark:border-emerald-800">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                Published
+                            </span>
+</div>
+</div>
+<div class="p-5 flex flex-col flex-1">
+<div class="flex justify-between items-start gap-4 mb-2">
+<h3 class="text-lg font-bold text-slate-900 dark:text-white leading-tight group-hover:text-primary transition-colors">Minji's Emotional Stay</h3>
+</div>
+<p class="text-sm text-slate-500 mb-6">Last edited 2 days ago</p>
+<div class="mt-auto grid grid-cols-3 gap-2 border-t border-slate-100 dark:border-slate-800 pt-4">
+<button class="flex flex-col items-center justify-center gap-1 p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors text-xs font-medium group/btn">
+<span class="material-symbols-outlined text-xl mb-0.5 group-hover/btn:scale-110 transition-transform">edit_square</span>
+                                Edit
+                            </button>
+<button class="flex flex-col items-center justify-center gap-1 p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors text-xs font-medium group/btn">
+<span class="material-symbols-outlined text-xl mb-0.5 group-hover/btn:scale-110 transition-transform">link</span>
+                                Copy Link
+                            </button>
+<button class="flex flex-col items-center justify-center gap-1 p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors text-xs font-medium group/btn">
+<span class="material-symbols-outlined text-xl mb-0.5 group-hover/btn:scale-110 transition-transform">visibility</span>
+                                Preview
+                            </button>
+</div>
+</div>
+</div>
+<!-- Card 2: Create New -->
+<button class="group relative flex flex-col items-center justify-center h-full min-h-[320px] rounded-2xl border-2 border-dashed border-primary/30 hover:border-primary hover:bg-primary/5 dark:hover:bg-primary/10 transition-all duration-300">
+<div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary group-hover:shadow-lg group-hover:shadow-primary/30 transition-all duration-300">
+<span class="material-symbols-outlined text-3xl text-primary group-hover:text-white transition-colors">add</span>
+</div>
+<h3 class="text-lg font-bold text-slate-800 dark:text-slate-200 group-hover:text-primary transition-colors">Create New Guidebook</h3>
+<p class="text-sm text-slate-500 mt-2 max-w-[200px] text-center">Start from scratch or use a template to welcome your guests.</p>
+</button>
+<!-- Card 3: Placeholder (Optional to show grid structure, mimicking an empty slot or skeleton) -->
+<div class="hidden xl:flex flex-col items-center justify-center h-full min-h-[320px] rounded-2xl bg-slate-50/50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-800/50 p-8 text-center opacity-60">
+<div class="w-12 h-12 rounded-full bg-slate-200 dark:bg-slate-700/50 mb-3 mx-auto"></div>
+<div class="h-4 w-32 bg-slate-200 dark:bg-slate-700/50 rounded mx-auto mb-2"></div>
+<div class="h-3 w-48 bg-slate-200 dark:bg-slate-700/50 rounded mx-auto"></div>
+</div>
+</div>
+</div>
+</main>
+<!-- Mobile Floating Action Button (for Create New on small screens) -->
+<button class="md:hidden fixed bottom-6 right-6 w-14 h-14 bg-primary text-white rounded-full shadow-xl shadow-primary/30 flex items-center justify-center z-50 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-2xl">add</span>
+</button>
+</body></html>

@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Roomy - Emotional Mobile Guidebook</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#8b7355",
+                        "primary-dark": "#6b5840",
+                        "background-light": "#FAF7F2",
+                        "background-dark": "#1b1917",
+                        "cream": "#FAF7F2",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Soft shadow for cards on cream background */
+        .card-shadow {
+            box-shadow: 0 4px 20px -2px rgba(139, 115, 85, 0.08);
+        }
+    </style>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-[#151513] dark:text-white antialiased overflow-x-hidden selection:bg-primary selection:text-white">
+<!-- Navbar -->
+<div class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-md border-b border-[#EAE6DF] dark:border-white/10">
+<div class="max-w-[1280px] mx-auto px-6 h-20 flex items-center justify-between">
+<div class="flex items-center gap-3 text-primary dark:text-white cursor-pointer">
+<div class="flex items-center justify-center size-8 rounded-lg bg-primary text-white">
+<span class="material-symbols-outlined text-[20px]">door_open</span>
+</div>
+<h2 class="text-[#151513] dark:text-white text-xl font-bold tracking-tight">Roomy</h2>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-[#5C554B] dark:text-gray-300 text-sm font-semibold hover:text-primary transition-colors" href="#">Features</a>
+<a class="text-[#5C554B] dark:text-gray-300 text-sm font-semibold hover:text-primary transition-colors" href="#">Pricing</a>
+<a class="text-[#5C554B] dark:text-gray-300 text-sm font-semibold hover:text-primary transition-colors" href="#">About</a>
+</div>
+<div class="flex items-center gap-4">
+<a class="hidden sm:block text-[#151513] dark:text-white text-sm font-bold hover:text-primary transition-colors" href="#">Log in</a>
+<button class="flex items-center justify-center rounded-xl h-10 px-5 bg-primary hover:bg-primary-dark transition-colors text-white text-sm font-bold shadow-lg shadow-primary/20">
+<span class="truncate">Start for Free</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Main Content Wrapper -->
+<main class="flex flex-col pt-20">
+<!-- Hero Section -->
+<section class="relative pt-12 pb-20 lg:pt-24 lg:pb-32 px-6">
+<div class="max-w-[1120px] mx-auto">
+<div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+<!-- Left Content -->
+<div class="flex flex-col gap-8 text-center lg:text-left">
+<div class="space-y-4">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white dark:bg-white/5 border border-[#EAE6DF] dark:border-white/10 w-fit mx-auto lg:mx-0">
+<span class="size-2 rounded-full bg-green-500 animate-pulse"></span>
+<span class="text-xs font-semibold text-[#5C554B] dark:text-gray-300 uppercase tracking-wide">Trusted by 500+ hosts</span>
+</div>
+<h1 class="text-[#151513] dark:text-white text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.1] tracking-tight">
+                                Transform your <br class="hidden lg:block"/>
+<span class="text-primary relative inline-block">
+                                    guest experience
+                                    <svg class="absolute w-full h-3 -bottom-1 left-0 text-primary/20" preserveaspectratio="none" viewbox="0 0 100 10">
+<path d="M0 5 Q 50 10 100 5" fill="none" stroke="currentColor" stroke-width="8"></path>
+</svg>
+</span>
+                                in 10 minutes
+                            </h1>
+<p class="text-[#5C554B] dark:text-gray-300 text-lg sm:text-xl font-medium leading-relaxed max-w-xl mx-auto lg:mx-0">
+                                The mobile guidebook that saves you time and charms your guests. No app download required—just a simple link.
+                            </p>
+</div>
+<div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+<button class="flex items-center justify-center rounded-xl h-12 px-8 bg-primary hover:bg-primary-dark text-white text-base font-bold shadow-xl shadow-primary/20 transition-all hover:-translate-y-0.5">
+                                Start for free
+                            </button>
+<button class="flex items-center justify-center gap-2 rounded-xl h-12 px-8 bg-white dark:bg-white/10 border border-[#EAE6DF] dark:border-white/10 text-[#151513] dark:text-white text-base font-bold hover:bg-[#f3f2f2] dark:hover:bg-white/20 transition-all">
+<span class="material-symbols-outlined text-[20px]">play_circle</span>
+                                View Demo
+                            </button>
+</div>
+<div class="flex items-center justify-center lg:justify-start gap-4 text-sm text-[#7b766f] dark:text-gray-400 font-medium">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px] text-primary">check_circle</span>
+                                No credit card required
+                            </div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px] text-primary">check_circle</span>
+                                14-day free trial
+                            </div>
+</div>
+</div>
+<!-- Right Visual (Mockup) -->
+<div class="relative flex justify-center lg:justify-end">
+<div class="relative w-[280px] sm:w-[320px] aspect-[9/19] bg-[#151513] rounded-[3rem] p-3 shadow-2xl ring-1 ring-black/5 rotate-[-2deg] hover:rotate-0 transition-transform duration-500 ease-out z-10">
+<!-- Phone Frame -->
+<div class="h-full w-full bg-white dark:bg-gray-800 rounded-[2.5rem] overflow-hidden relative">
+<!-- Status Bar -->
+<div class="absolute top-0 w-full h-8 bg-gradient-to-b from-black/20 to-transparent z-20"></div>
+<!-- App Content -->
+<div class="flex flex-col h-full overflow-y-auto no-scrollbar bg-[#FAF7F2]">
+<!-- Header Image -->
+<div class="h-48 w-full bg-cover bg-center relative" data-alt="Cozy warm minimalist bedroom interior with sunlight" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBYCg_sHqIJePteknSrKaXNGXxtn46crAdn9F9VOt4lHOSAYB9RMZalQjAr1C-EHxeLOu4wKX1bcVmPlDXj9YJ-NzuyF3jZw_DnWhfT6IDwhctpwIFHbE-PMymTgkv81KdI8pfoUgTvSzASVaGrTD9MK7qE6iO9llSnoVVQwTMt-Rz1DZyxaZnr_ocSXX7Y4KEncRXV4lbsw9ui3WXg4FUa87ZyYCfdoRjbaiFI1x_jktqUI0vQYnIWcJTWa6ZZgBghg0ZvHA_iksg')">
+<div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+<div class="absolute bottom-4 left-4 text-white">
+<h3 class="font-bold text-lg">The Cozy Loft</h3>
+<div class="flex items-center gap-1 text-xs opacity-90">
+<span class="material-symbols-outlined text-[14px]">star</span>
+                                                5.0 Superhost
+                                            </div>
+</div>
+</div>
+<!-- Quick Actions -->
+<div class="p-4 grid grid-cols-2 gap-3 -mt-6 z-10 relative">
+<div class="bg-white p-3 rounded-xl shadow-sm flex flex-col items-center gap-2 text-center cursor-pointer hover:bg-gray-50">
+<div class="size-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">wifi</span>
+</div>
+<span class="text-xs font-bold text-gray-800">WiFi</span>
+</div>
+<div class="bg-white p-3 rounded-xl shadow-sm flex flex-col items-center gap-2 text-center cursor-pointer hover:bg-gray-50">
+<div class="size-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">key</span>
+</div>
+<span class="text-xs font-bold text-gray-800">Check-in</span>
+</div>
+</div>
+<!-- Guide Sections -->
+<div class="px-4 pb-4 space-y-3">
+<div class="bg-white p-4 rounded-xl shadow-sm">
+<div class="flex items-center gap-3 mb-2">
+<span class="material-symbols-outlined text-primary">menu_book</span>
+<h4 class="font-bold text-sm text-gray-800">House Manual</h4>
+</div>
+<p class="text-xs text-gray-500 line-clamp-2">Everything you need to know about using the appliances and heating.</p>
+</div>
+<div class="bg-white p-4 rounded-xl shadow-sm">
+<div class="flex items-center gap-3 mb-2">
+<span class="material-symbols-outlined text-primary">restaurant</span>
+<h4 class="font-bold text-sm text-gray-800">Local Eats</h4>
+</div>
+<p class="text-xs text-gray-500 line-clamp-2">Our favorite hidden gems for coffee, brunch, and dinner nearby.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Decorative background elements behind phone -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-primary/20 rounded-full blur-[80px] -z-10"></div>
+<div class="absolute bottom-0 right-0 lg:-right-12 w-32 h-32 bg-[#EAE6DF] rounded-full blur-2xl -z-10"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Value Prop Section -->
+<section class="py-16 px-6 bg-white dark:bg-white/5 border-y border-[#EAE6DF] dark:border-white/5">
+<div class="max-w-[1120px] mx-auto">
+<div class="text-center mb-16">
+<h2 class="text-[#151513] dark:text-white text-3xl font-bold mb-4">Everything you need to host better</h2>
+<p class="text-[#5C554B] dark:text-gray-300 max-w-2xl mx-auto">Designed to reduce workload and increase guest satisfaction through emotional connection.</p>
+</div>
+<div class="grid md:grid-cols-3 gap-8">
+<!-- Feature 1 -->
+<div class="p-8 rounded-2xl bg-background-light dark:bg-white/5 border border-transparent hover:border-primary/20 transition-all group">
+<div class="size-12 rounded-xl bg-white dark:bg-white/10 flex items-center justify-center text-primary mb-6 shadow-sm group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[28px]">chat</span>
+</div>
+<h3 class="text-xl font-bold text-[#151513] dark:text-white mb-3">Reduce inquiries</h3>
+<p class="text-[#5C554B] dark:text-gray-400 leading-relaxed">Automate answers for check-in, wifi, and house rules so you can relax while your guests feel supported.</p>
+</div>
+<!-- Feature 2 -->
+<div class="p-8 rounded-2xl bg-background-light dark:bg-white/5 border border-transparent hover:border-primary/20 transition-all group">
+<div class="size-12 rounded-xl bg-white dark:bg-white/10 flex items-center justify-center text-primary mb-6 shadow-sm group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[28px]">favorite</span>
+</div>
+<h3 class="text-xl font-bold text-[#151513] dark:text-white mb-3">Emotional Design</h3>
+<p class="text-[#5C554B] dark:text-gray-400 leading-relaxed">Beautiful, photo-centric layouts that match the cozy vibe of your accommodation. Not just a PDF.</p>
+</div>
+<!-- Feature 3 -->
+<div class="p-8 rounded-2xl bg-background-light dark:bg-white/5 border border-transparent hover:border-primary/20 transition-all group">
+<div class="size-12 rounded-xl bg-white dark:bg-white/10 flex items-center justify-center text-primary mb-6 shadow-sm group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[28px]">bolt</span>
+</div>
+<h3 class="text-xl font-bold text-[#151513] dark:text-white mb-3">Instant updates</h3>
+<p class="text-[#5C554B] dark:text-gray-400 leading-relaxed">Update your guidebook in real-time without needing guests to redownload anything. Always current.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Feature Split 1 -->
+<section class="py-20 px-6 overflow-hidden">
+<div class="max-w-[1120px] mx-auto">
+<div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-24">
+<div class="flex-1 order-2 lg:order-1">
+<div class="relative rounded-2xl overflow-hidden shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-500">
+<div class="aspect-video w-full bg-cover bg-center" data-alt="Modern bright living room with soft beige sofa and sunlight" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDK19KzxKPBRlraKjW0jcigvROsFi7KUFciIP5_Pb5II9raoEmpj5qQGeY9z4an_bQ3wU3gifyfkUO0baYqVHIxF35qOGViNYX7a_egsqejTRkhHOJzZ_z1KH3SuzlqqScxeSFF8pDIvPzItYXyvDSl_qh6KyAKsT1xasbTm-pnv5SMHwdGk02epDQ_vcMAFTXtiAwfvoeOiGeVx5vp9GZ4CRJn8UeKeSbHpBifHRgxLanExMnEzf1HLAd3l3kY_K0IL-zBvRpEa0M');"></div>
+<!-- Floating UI Card overlay -->
+<div class="absolute bottom-6 right-6 left-6 bg-white/95 backdrop-blur-sm p-4 rounded-xl shadow-lg border border-white/20">
+<div class="flex items-start gap-4">
+<div class="size-10 rounded-full bg-green-100 flex items-center justify-center text-green-700 shrink-0">
+<span class="material-symbols-outlined">check</span>
+</div>
+<div>
+<p class="font-bold text-[#151513] text-sm">Automated Check-in Sent</p>
+<p class="text-xs text-gray-500 mt-1">Guest received instructions for "The Modern Loft"</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex-1 space-y-6 order-1 lg:order-2">
+<div class="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider">Automation</div>
+<h2 class="text-3xl lg:text-4xl font-bold text-[#151513] dark:text-white leading-tight">Automated Check-in. <br/>Zero stress.</h2>
+<p class="text-lg text-[#5C554B] dark:text-gray-300">Stop answering the same questions. Provide seamless self check-in instructions that guests can access even offline. Visual guides make it impossible to get confused.</p>
+<ul class="space-y-4 pt-4">
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-green-600">check_circle</span>
+<span class="text-[#151513] dark:text-gray-200 font-medium">Step-by-step visual guides</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-green-600">check_circle</span>
+<span class="text-[#151513] dark:text-gray-200 font-medium">Offline access for traveling guests</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-green-600">check_circle</span>
+<span class="text-[#151513] dark:text-gray-200 font-medium">Secure code sharing</span>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<!-- Feature Split 2 -->
+<section class="py-20 px-6 bg-white dark:bg-white/5 border-y border-[#EAE6DF] dark:border-white/5">
+<div class="max-w-[1120px] mx-auto">
+<div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-24">
+<div class="flex-1 space-y-6">
+<div class="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider">Curated Guide</div>
+<h2 class="text-3xl lg:text-4xl font-bold text-[#151513] dark:text-white leading-tight">Share your local favorites like a friend.</h2>
+<p class="text-lg text-[#5C554B] dark:text-gray-300">Guests want to live like locals. Create beautiful, map-based recommendations for your favorite cafes, parks, and hidden spots. Build trust and earn better reviews.</p>
+<div class="flex gap-4 pt-4">
+<button class="flex items-center gap-2 text-primary font-bold hover:underline">
+                                Learn more about curation 
+                                <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<div class="flex-1">
+<div class="grid grid-cols-2 gap-4">
+<div class="space-y-4 mt-8">
+<div class="bg-background-light dark:bg-gray-800 p-4 rounded-xl shadow-md card-shadow">
+<div class="h-32 rounded-lg bg-cover bg-center mb-3" data-alt="Latte art coffee cup on wooden table" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCAqqqNuvt3w9LPjdT6MqpaUF_PhsKgc3jLD-pOOwfEj2DTrybAaUxo14YP9_cFHt27P2w9qTMMOuzfsUkIGXv2HZMGdEFfA-q412B5qYdRm9ZYK6BAsR6orT_Oy9cJnEAOb89DIunIGF03_8LVoh85Ch7IEZ4jy4n-luLPLa1dd4Jw1dl7qQsl7SOE27CwoRc03xELLuouEF8-aRBdQRvggjX46WpOAxrKBK1FdXOWlX9HErbh68lAyVLFVrWuZ-juJNgzQBvTxxc')"></div>
+<h4 class="font-bold text-sm text-[#151513] dark:text-white">Morning Brew</h4>
+<p class="text-xs text-gray-500">Best coffee in town, 5 min walk.</p>
+</div>
+<div class="bg-background-light dark:bg-gray-800 p-4 rounded-xl shadow-md card-shadow">
+<div class="h-24 rounded-lg bg-cover bg-center mb-3" data-alt="Abstract colorful cocktails in bar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD1HsPpSgrFssKVroXZUZU059G7eYn7SPgnh3608ajj5FUZFmvD2CHBCW-6E-sEg731APKxzl1NP9Ul2CPk1k8DDylMtIBfhEbK7ifsZFr5QN2qlFfOMuKAVfETDHpCGWNvjDrAVfzGgAoK_I9jMEBtp2sB9Gn0_Id3jJ0VHX3j3PH_7BED4Xfy3TVUNxWe4SeWenkyVyp15lUm8SxREo8P1JZ6yKQiJp2Dk9sFUgGcS6OFtC7gFYeXzkDFYqsqXXKBaZPwV-MiTY4')"></div>
+<h4 class="font-bold text-sm text-[#151513] dark:text-white">The Night Owl</h4>
+<p class="text-xs text-gray-500">Live jazz and cocktails.</p>
+</div>
+</div>
+<div class="space-y-4">
+<div class="bg-background-light dark:bg-gray-800 p-4 rounded-xl shadow-md card-shadow">
+<div class="h-24 rounded-lg bg-cover bg-center mb-3" data-alt="Delicious pizza slice close up" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAgdsZ7mchEoONz4NYuuSN1pjxebS_pZQLsFxvkhNmIA7s12rFt5G-dmHopCcW1Ff4go8ttulVjUqQZZWuv3GrSOchMrjIJs9fs3dW4PgNfQZ8GTrtqsCJAxfYZtWSXdVFKnzx2R98mtZRjryproetYOJ5KemYKDNc4Qewkg_vGxZA8e-Wv1xYDRkeLEQDDbojBFXbDdo8ZNlesD3oaI4MLcuRH6leki88k4ycC3J__xql8FYlVanRkWXOIHckkZi0jt9i_HPtTJXI')"></div>
+<h4 class="font-bold text-sm text-[#151513] dark:text-white">Luigi's Pizza</h4>
+<p class="text-xs text-gray-500">Authentic wood-fired.</p>
+</div>
+<div class="bg-background-light dark:bg-gray-800 p-4 rounded-xl shadow-md card-shadow">
+<div class="h-32 rounded-lg bg-cover bg-center mb-3" data-alt="Peaceful forest park pathway" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAFDyn8wIMFYo0v9jLeO8hXD1Rb85Wl6yXhiFo2b_JoL8Fux7KOjG9eWdyaLlaeJWic-EdBDOrF3fV7zQB04IjW2qkR7vItbYgPD1rl4SJQvV_9FJQElUou3Uomo1sciv_w-IAVtU_gvz4FvHqnlUz2OVJDWbScxIMeY136nmqhRYQSEWDPhsKF_I0efcMWjzUa5zBY7kwgaqK2-xfs8uCrDPqN8xqrDeBmJg7waplZDFnBhiOK15nZsrZEJbyHAPr6CE-KkHNOaaM')"></div>
+<h4 class="font-bold text-sm text-[#151513] dark:text-white">Central Park</h4>
+<p class="text-xs text-gray-500">Perfect for morning jogs.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Testimonials -->
+<section class="py-20 px-6">
+<div class="max-w-[1120px] mx-auto text-center">
+<h2 class="text-2xl font-bold text-[#151513] dark:text-white mb-12">Loved by hosts who care</h2>
+<div class="grid md:grid-cols-3 gap-6">
+<!-- Review 1 -->
+<div class="bg-white dark:bg-white/5 p-6 rounded-2xl border border-[#EAE6DF] dark:border-white/10 text-left shadow-sm">
+<div class="flex gap-1 text-primary mb-4">
+<span class="material-symbols-outlined text-[20px] fill-current">star</span>
+<span class="material-symbols-outlined text-[20px] fill-current">star</span>
+<span class="material-symbols-outlined text-[20px] fill-current">star</span>
+<span class="material-symbols-outlined text-[20px] fill-current">star</span>
+<span class="material-symbols-outlined text-[20px] fill-current">star</span>
+</div>
+<p class="text-[#151513] dark:text-gray-200 font-medium mb-6">"Roomy has completely changed how I interact with guests. They feel so cared for, and I spend 90% less time answering questions."</p>
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-gray-200 bg-cover bg-center" data-alt="Portrait of smiling woman host" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBz8pCWpQyN9fIgWcPx57DdFkxfRE-G6p9jkwBvtiM4T1NfzVTQ3OOD6wXnTJAZ9KWtW1QawBG9RUZ2PxUwLiXjXiou5pp2B1oj25jcp6q6ur4FCa2TaogtFJMUZHGvfG6vSNs74S5wOJtGZi3MqMQou5wXd_gcDGQ-hflCA51yywKG9624jgO7vkX4D1mV5ga193z8upeDKQ5milwFsRIzrdPTX2WuuHkoXnX90diDVZ9DNFO7U30cr3JMSH1CGTEB0lrwmjcAmZY')"></div>
+<div>
+<p class="text-sm font-bold text-[#151513] dark:text-white">Sarah Jenkins</p>
+<p class="text-xs text-gray-500">Superhost in Austin</p>
+</div>
+</div>
+</div>
+<!-- Review 2 -->
+<div class="bg-white dark:bg-white/5 p-6 rounded-2xl border border-[#EAE6DF] dark:border-white/10 text-left shadow-sm">
+<div class="flex gap-1 text-primary mb-4">
+<span class="material-symbols-outlined text-[20px] fill-current">star</span>
+<span class="material-symbols-outlined text-[20px] fill-current">star</span>
+<span class="material-symbols-outlined text-[20px] fill-current">star</span>
+<span class="material-symbols-outlined text-[20px] fill-current">star</span>
+<span class="material-symbols-outlined text-[20px] fill-current">star</span>
+</div>
+<p class="text-[#151513] dark:text-gray-200 font-medium mb-6">"The design is just beautiful. It matches the aesthetic of my cabin perfectly. Guests always compliment the guidebook."</p>
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-gray-200 bg-cover bg-center" data-alt="Portrait of man host" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBgCilvaR9GnGWaRLgUzW46CT15p95_1i1qfNhobnfE7_96nGXT1UOZq77nu3fgm2I-V491qtu4J1b7V2tVtWWuU3JNe2nkZViSOIQuBlRqv1xTYA9zBpdxPs3JEOMP3JUXr2R3zzvedKh_lC02WjfGWWB4-oJkPoFYTePLcUd7OKClK3KUxgRf1lGIEGpiCcwoj62viXflzNtOMggErYRNsnzLEeAQn31pzLc6LhSsP82ZmLiOICIflyiDBwLjTScBXyFi7aQv0W4')"></div>
+<div>
+<p class="text-sm font-bold text-[#151513] dark:text-white">Marcus Chen</p>
+<p class="text-xs text-gray-500">Host in Vancouver</p>
+</div>
+</div>
+</div>
+<!-- Review 3 -->
+<div class="bg-white dark:bg-white/5 p-6 rounded-2xl border border-[#EAE6DF] dark:border-white/10 text-left shadow-sm">
+<div class="flex gap-1 text-primary mb-4">
+<span class="material-symbols-outlined text-[20px] fill-current">star</span>
+<span class="material-symbols-outlined text-[20px] fill-current">star</span>
+<span class="material-symbols-outlined text-[20px] fill-current">star</span>
+<span class="material-symbols-outlined text-[20px] fill-current">star</span>
+<span class="material-symbols-outlined text-[20px] fill-current">star</span>
+</div>
+<p class="text-[#151513] dark:text-gray-200 font-medium mb-6">"Setting it up took literally 10 minutes. I uploaded my photos, added the wifi password, and it was ready to go."</p>
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-gray-200 bg-cover bg-center" data-alt="Portrait of young woman host" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDxqISNV90pf2FJRQhVDMU_P5uY2NNd5ym9gm6zHHDpm1T_V1gTAYFXHW0aMemeaR0cTVs4BtW_bhnB6gdAIWPepxhda8cMyfM0vN90gXl1YoJJR0_uJBNlYlxzTcixpPLKWpUE_Dv3UTM85LTThQCZy85oaWrqDus1-upvZkBFuiceg7y8ULh8p-PgRZ6ee3nO_tKvSYoXQtnXickgpsIhalZE0sCAC4bKJda5C-AaXLm6CiXaFYPIu6MBbiXOnWtruyGvp0hKCIg')"></div>
+<div>
+<p class="text-sm font-bold text-[#151513] dark:text-white">Elena Rodriguez</p>
+<p class="text-xs text-gray-500">Host in Barcelona</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="py-20 px-6">
+<div class="max-w-[1120px] mx-auto">
+<div class="bg-primary rounded-3xl p-12 lg:p-16 text-center relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] z-0"></div>
+<!-- Decorative circles -->
+<div class="absolute -top-12 -left-12 size-48 rounded-full bg-white/10 blur-3xl group-hover:bg-white/20 transition-colors duration-500"></div>
+<div class="absolute -bottom-12 -right-12 size-48 rounded-full bg-white/10 blur-3xl group-hover:bg-white/20 transition-colors duration-500"></div>
+<div class="relative z-10 flex flex-col items-center gap-8">
+<h2 class="text-3xl lg:text-4xl font-extrabold text-white">Ready to charm your guests?</h2>
+<p class="text-white/90 text-lg max-w-xl">Create your first guidebook for free today. No credit card required.</p>
+<div class="flex flex-col sm:flex-row gap-4 w-full justify-center">
+<button class="flex items-center justify-center rounded-xl h-12 px-8 bg-white text-primary hover:bg-gray-100 transition-colors text-base font-bold shadow-lg">
+                                Create free guidebook
+                            </button>
+<button class="flex items-center justify-center rounded-xl h-12 px-8 bg-primary-dark/30 border border-white/20 text-white hover:bg-primary-dark/50 transition-colors text-base font-bold">
+                                View examples
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-white dark:bg-background-dark border-t border-[#EAE6DF] dark:border-white/10 py-12 px-6">
+<div class="max-w-[1120px] mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+<div class="flex items-center gap-3 text-primary dark:text-white">
+<div class="flex items-center justify-center size-8 rounded-lg bg-primary text-white">
+<span class="material-symbols-outlined text-[20px]">door_open</span>
+</div>
+<h2 class="text-[#151513] dark:text-white text-xl font-bold tracking-tight">Roomy</h2>
+</div>
+<div class="flex gap-8 text-sm font-medium text-[#5C554B] dark:text-gray-400">
+<a class="hover:text-primary transition-colors" href="#">Features</a>
+<a class="hover:text-primary transition-colors" href="#">Pricing</a>
+<a class="hover:text-primary transition-colors" href="#">Blog</a>
+<a class="hover:text-primary transition-colors" href="#">Support</a>
+</div>
+<div class="flex gap-4">
+<a class="text-[#5C554B] dark:text-gray-400 hover:text-primary transition-colors" href="#">
+<svg aria-hidden="true" class="size-6" fill="currentColor" viewbox="0 0 24 24">
+<path clip-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" fill-rule="evenodd"></path>
+</svg>
+</a>
+<a class="text-[#5C554B] dark:text-gray-400 hover:text-primary transition-colors" href="#">
+<svg aria-hidden="true" class="size-6" fill="currentColor" viewbox="0 0 24 24">
+<path clip-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772 4.902 4.902 0 011.772-1.153c.636-.247 1.363-.416 2.427-.465 1.067-.047 1.409-.06 3.809-.06h.63zm1.673 5.378c-.845 0-1.53.685-1.53 1.53 0 .846.685 1.53 1.53 1.53.846 0 1.53-.684 1.53-1.53 0-.845-.684-1.53-1.53-1.53zM12 15.403c-1.879 0-3.403-1.524-3.403-3.403 0-1.879 1.524-3.403 3.403-3.403 1.879 0 3.403 1.524 3.403 3.403 0 1.879-1.524 3.403-3.403 3.403zM12 6.64c-2.96 0-5.36 2.4-5.36 5.36 0 2.96 2.4 5.36 5.36 5.36 2.96 0 5.36-2.4 5.36-5.36 0-2.96-2.4-5.36-5.36-5.36z" fill-rule="evenodd"></path>
+</svg>
+</a>
+</div>
+</div>
+<div class="max-w-[1120px] mx-auto text-center mt-8 text-xs text-gray-400">
+                © 2024 Roomy Guidebooks Inc. All rights reserved.
+            </div>
+</footer>
+</main>
+</body></html>

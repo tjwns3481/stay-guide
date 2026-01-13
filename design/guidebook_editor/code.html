@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Guidebook Editor</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#8b7355",
+              "background-light": "#f7f7f6",
+              "background-dark": "#1b1917",
+            },
+            fontFamily: {
+              "display": ["Plus Jakarta Sans", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        /* Custom scrollbar for webkit browsers */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d1d5db; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af; 
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#151513] dark:text-white h-screen flex flex-col overflow-hidden">
+<!-- Top Navigation -->
+<header class="flex-none flex items-center justify-between whitespace-nowrap border-b border-solid border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#151513] px-6 py-3 z-20">
+<div class="flex items-center gap-4 text-[#151513] dark:text-white">
+<div class="size-8 rounded-lg bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-[20px]">menu_book</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400 font-medium">
+<a class="hover:text-primary" href="#">Dashboard</a>
+<span class="material-symbols-outlined text-[10px]">chevron_right</span>
+<a class="hover:text-primary" href="#">My Guidebooks</a>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-tight">Seaside Cottage Guidebook</h2>
+</div>
+<div class="px-2 py-0.5 rounded-md bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-[10px] font-bold uppercase tracking-wider text-neutral-500">
+                Draft
+            </div>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-1 text-sm text-neutral-500 dark:text-neutral-400 mr-4">
+<span class="material-symbols-outlined text-base">cloud_done</span>
+<span>Saved 2m ago</span>
+</div>
+<button class="flex items-center justify-center gap-2 rounded-xl h-10 px-4 bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-[#151513] dark:text-white text-sm font-bold hover:bg-neutral-50 dark:hover:bg-neutral-700 transition-colors">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+<span class="hidden sm:inline">Preview</span>
+</button>
+<button class="flex items-center justify-center gap-2 rounded-xl h-10 px-6 bg-primary hover:bg-[#7a654a] text-white text-sm font-bold shadow-sm transition-colors">
+<span>Save &amp; Publish</span>
+</button>
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-10 border border-neutral-200 dark:border-neutral-700 ml-2" data-alt="User profile avatar showing a smiling person" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB_B-DtTCmg-ORDUE056CcW6oa_HZqYM0a49FBVLjP9LplqVfC2DRHzgjPqTrAeoqk1YiKfddT6ssUMchNKELI07NpsY2doavKxkWHwAT0Eb2612LyZvTnhnqItdZ1FSyMryi27rbK6okGsA8-IoFQqTooU5DiLoEADHYIqdYIFzVRFXojeC5pdz4YGgASYXKN0rFMl5mkNvzpBC4uu-kU3yH12fskcxQbVQjsWU9S0StmGtTl_MNOaZEI6N3n4RA3Eo912iWxL75c");'></div>
+</div>
+</header>
+<!-- Main Workspace -->
+<main class="flex flex-1 overflow-hidden relative">
+<!-- Left Column: Editor -->
+<div class="flex-1 h-full overflow-y-auto bg-white dark:bg-background-dark">
+<div class="max-w-3xl mx-auto px-6 py-10 pb-32">
+<!-- Section: Basic Info -->
+<div class="mb-10">
+<h2 class="text-2xl font-bold mb-6 px-1 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">edit_document</span>
+                        Basic Info
+                    </h2>
+<div class="space-y-6">
+<!-- Cover Image Uploader -->
+<div class="group relative rounded-xl overflow-hidden border-2 border-dashed border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-900 min-h-[240px] flex flex-col items-center justify-center text-center cursor-pointer hover:border-primary transition-colors">
+<!-- Simulated Image Preview -->
+<div class="absolute inset-0 bg-cover bg-center opacity-60 group-hover:opacity-40 transition-opacity" data-alt="Cover photo of a cozy living room with seaside view" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCCl5fZ0hGSq_k03O76627dzgLHIZNjvPPZYCcgDzkWKAxQcZJRY3hHvgV7XT7npwDxXTuieKyXtlZs-tiOqRPzZ8Pnen4_3hMj19HG_wb0pDZQyDvzBZ18wGRzLGYeYb-NJ6220zgyEDHHTPg3r5xmZPDbYv1PAWU-zsetAYVrowa9zpHiD9ro88MoGjFuRFu4zHQae4uEvyxs_YWAraRUedZlDBB6POxv3rYconXwzfquiUzbg8LQGwCfCC-mGIOTNaPkddkQoRA");'></div>
+<div class="relative z-10 flex flex-col items-center p-6 bg-white/80 dark:bg-black/60 backdrop-blur-sm rounded-xl shadow-sm">
+<span class="material-symbols-outlined text-3xl text-primary mb-2">add_photo_alternate</span>
+<p class="font-bold text-sm">Change Cover Photo</p>
+<p class="text-xs text-neutral-500 dark:text-neutral-300 mt-1">Drag &amp; drop or click to upload</p>
+</div>
+</div>
+<!-- Form Fields Row -->
+<div class="flex flex-col md:flex-row gap-6">
+<label class="flex flex-col flex-1">
+<p class="text-sm font-bold text-neutral-700 dark:text-neutral-300 mb-2">Stay Name</p>
+<input class="w-full rounded-xl border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-base py-3 px-4 focus:ring-2 focus:ring-primary focus:border-primary transition-all placeholder:text-neutral-400" placeholder="e.g. The Cozy Loft" type="text" value="Seaside Cottage"/>
+</label>
+<label class="flex flex-col flex-1">
+<p class="text-sm font-bold text-neutral-700 dark:text-neutral-300 mb-2">Guidebook Slug</p>
+<div class="flex items-center w-full rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-900 overflow-hidden focus-within:ring-2 focus-within:ring-primary focus-within:border-primary transition-all">
+<span class="pl-4 pr-1 text-neutral-400 text-sm whitespace-nowrap select-none">guidebook.com/stay/</span>
+<input class="flex-1 bg-transparent border-none focus:ring-0 text-base py-3 px-1 text-[#151513] dark:text-white placeholder:text-neutral-400" type="text" value="seaside-cottage"/>
+</div>
+</label>
+</div>
+</div>
+</div>
+<hr class="border-neutral-100 dark:border-neutral-800 my-10"/>
+<!-- Section: Information Blocks -->
+<div>
+<div class="flex items-center justify-between mb-6 px-1">
+<h2 class="text-2xl font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">view_agenda</span>
+                            Information Blocks
+                        </h2>
+<span class="text-sm text-neutral-500 font-medium">4 Active Blocks</span>
+</div>
+<div class="space-y-4">
+<!-- Card: WiFi (Active) -->
+<div class="group flex items-center gap-4 bg-white dark:bg-neutral-800 p-4 rounded-xl border border-neutral-200 dark:border-neutral-700 shadow-sm hover:shadow-md hover:border-primary/50 transition-all cursor-move">
+<div class="text-neutral-300 group-hover:text-primary cursor-grab active:cursor-grabbing">
+<span class="material-symbols-outlined">drag_indicator</span>
+</div>
+<div class="size-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
+<span class="material-symbols-outlined">wifi</span>
+</div>
+<div class="flex-1 min-w-0">
+<h3 class="font-bold text-lg truncate">WiFi Network</h3>
+<p class="text-sm text-neutral-500 dark:text-neutral-400 truncate">Connect: SeasideGuest / Pass: Wave2024</p>
+</div>
+<div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 hover:bg-neutral-100 dark:hover:bg-neutral-700 rounded-lg text-neutral-500 transition-colors">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+<button class="p-2 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg text-neutral-400 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+</div>
+</div>
+<!-- Card: Check-in (Active) -->
+<div class="group flex items-center gap-4 bg-white dark:bg-neutral-800 p-4 rounded-xl border border-neutral-200 dark:border-neutral-700 shadow-sm hover:shadow-md hover:border-primary/50 transition-all cursor-move">
+<div class="text-neutral-300 group-hover:text-primary cursor-grab active:cursor-grabbing">
+<span class="material-symbols-outlined">drag_indicator</span>
+</div>
+<div class="size-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
+<span class="material-symbols-outlined">key</span>
+</div>
+<div class="flex-1 min-w-0">
+<h3 class="font-bold text-lg truncate">Check-in Instructions</h3>
+<p class="text-sm text-neutral-500 dark:text-neutral-400 truncate">4:00 PM - Keypad Code: 1234#</p>
+</div>
+<div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 hover:bg-neutral-100 dark:hover:bg-neutral-700 rounded-lg text-neutral-500 transition-colors">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+<button class="p-2 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg text-neutral-400 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+</div>
+</div>
+<!-- Card: House Rules (Active) -->
+<div class="group flex items-center gap-4 bg-white dark:bg-neutral-800 p-4 rounded-xl border border-neutral-200 dark:border-neutral-700 shadow-sm hover:shadow-md hover:border-primary/50 transition-all cursor-move">
+<div class="text-neutral-300 group-hover:text-primary cursor-grab active:cursor-grabbing">
+<span class="material-symbols-outlined">drag_indicator</span>
+</div>
+<div class="size-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
+<span class="material-symbols-outlined">gavel</span>
+</div>
+<div class="flex-1 min-w-0">
+<h3 class="font-bold text-lg truncate">House Rules</h3>
+<p class="text-sm text-neutral-500 dark:text-neutral-400 truncate">No smoking, Quiet hours 10pm-8am</p>
+</div>
+<div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 hover:bg-neutral-100 dark:hover:bg-neutral-700 rounded-lg text-neutral-500 transition-colors">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+<button class="p-2 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg text-neutral-400 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+</div>
+</div>
+<!-- Card: Map (Active) -->
+<div class="group flex items-center gap-4 bg-white dark:bg-neutral-800 p-4 rounded-xl border border-neutral-200 dark:border-neutral-700 shadow-sm hover:shadow-md hover:border-primary/50 transition-all cursor-move">
+<div class="text-neutral-300 group-hover:text-primary cursor-grab active:cursor-grabbing">
+<span class="material-symbols-outlined">drag_indicator</span>
+</div>
+<div class="size-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary flex-shrink-0">
+<span class="material-symbols-outlined">map</span>
+</div>
+<div class="flex-1 min-w-0">
+<h3 class="font-bold text-lg truncate">Local Recommendations</h3>
+<p class="text-sm text-neutral-500 dark:text-neutral-400 truncate">12 locations pinned</p>
+</div>
+<div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 hover:bg-neutral-100 dark:hover:bg-neutral-700 rounded-lg text-neutral-500 transition-colors">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+<button class="p-2 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg text-neutral-400 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+</div>
+</div>
+<!-- Add New Block Button -->
+<button class="w-full flex items-center justify-center gap-2 py-4 rounded-xl border-2 border-dashed border-neutral-300 dark:border-neutral-700 text-primary font-bold hover:bg-primary/5 hover:border-primary/50 transition-colors mt-4">
+<span class="material-symbols-outlined">add_circle</span>
+                            Add Information Block
+                        </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Live Preview -->
+<div class="hidden xl:flex w-[500px] h-full flex-col items-center justify-center bg-background-light dark:bg-[#101010] border-l border-neutral-200 dark:border-neutral-800 relative shadow-inner">
+<div class="absolute top-6 flex items-center gap-2 bg-neutral-200 dark:bg-neutral-800 px-3 py-1.5 rounded-full z-10">
+<span class="size-2 rounded-full bg-green-500 animate-pulse"></span>
+<span class="text-xs font-bold text-neutral-600 dark:text-neutral-300 uppercase tracking-wide">Live Preview</span>
+</div>
+<!-- Phone Frame -->
+<div class="relative w-[340px] h-[680px] bg-white dark:bg-black rounded-[40px] border-[12px] border-neutral-800 dark:border-neutral-700 shadow-2xl overflow-hidden flex flex-col">
+<!-- Phone Status Bar -->
+<div class="h-6 w-full bg-transparent absolute top-0 z-20 flex justify-between px-6 items-center pt-2">
+<span class="text-[10px] font-bold text-white">9:41</span>
+<div class="flex gap-1">
+<span class="material-symbols-outlined text-[12px] text-white">signal_cellular_alt</span>
+<span class="material-symbols-outlined text-[12px] text-white">wifi</span>
+<span class="material-symbols-outlined text-[12px] text-white">battery_full</span>
+</div>
+</div>
+<!-- Phone Content (Scrollable) -->
+<div class="flex-1 overflow-y-auto hide-scrollbar bg-white relative">
+<!-- Preview: Hero Image -->
+<div class="h-[240px] w-full bg-cover bg-center relative" data-alt="Mobile preview cover photo showing a cozy living room" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBXnsj5hiC9KokvoXjuTdIHHaqgxBWMlGmuXxaCAuWhrhGC0ff9C-LLT4wWfjB2Rj7JB7VlzVY8GITQk5WBckTXq3F0GUopdzdc4bTx08gku-M9WATMxhgd3qPrqUALrdDpPThNUbnACdTL6jfXFJBojLvxI_yvYDhEYlQ7nGx_YyHU2OOqMrhP-fZwVPEFUXjo7FzIiBZzE-G_F84L6ANdzRQ_FJtqVkHU6NTEo72dVcPoqIeCwtQh-QI_XaeV7R6ye4el73kfTxw");'>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+<div class="absolute bottom-4 left-4 right-4 text-white">
+<div class="text-xs font-medium uppercase tracking-wider mb-1 opacity-90">Welcome to</div>
+<h1 class="text-2xl font-bold leading-tight">Seaside Cottage</h1>
+</div>
+</div>
+<!-- Preview: Quick Actions -->
+<div class="px-4 py-4 flex gap-3 -mt-6 relative z-10">
+<button class="flex-1 bg-primary text-white py-3 rounded-lg text-sm font-bold shadow-lg flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">directions</span>
+                            Directions
+                        </button>
+<button class="flex-1 bg-white text-[#151513] border border-neutral-100 py-3 rounded-lg text-sm font-bold shadow-lg flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">chat</span>
+                            Message
+                        </button>
+</div>
+<!-- Preview: List -->
+<div class="px-4 pb-8 space-y-3">
+<div class="flex items-center gap-3 p-3 rounded-lg border border-neutral-100 shadow-sm bg-white">
+<div class="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-xl">wifi</span>
+</div>
+<div>
+<h4 class="text-sm font-bold text-[#151513]">WiFi Network</h4>
+<p class="text-[10px] text-neutral-500">SeasideGuest</p>
+</div>
+<span class="material-symbols-outlined text-neutral-300 ml-auto">chevron_right</span>
+</div>
+<div class="flex items-center gap-3 p-3 rounded-lg border border-neutral-100 shadow-sm bg-white">
+<div class="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-xl">key</span>
+</div>
+<div>
+<h4 class="text-sm font-bold text-[#151513]">Check-in Guide</h4>
+<p class="text-[10px] text-neutral-500">Starts at 4:00 PM</p>
+</div>
+<span class="material-symbols-outlined text-neutral-300 ml-auto">chevron_right</span>
+</div>
+<div class="flex items-center gap-3 p-3 rounded-lg border border-neutral-100 shadow-sm bg-white">
+<div class="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-xl">gavel</span>
+</div>
+<div>
+<h4 class="text-sm font-bold text-[#151513]">House Rules</h4>
+<p class="text-[10px] text-neutral-500">Read before stay</p>
+</div>
+<span class="material-symbols-outlined text-neutral-300 ml-auto">chevron_right</span>
+</div>
+<div class="flex items-center gap-3 p-3 rounded-lg border border-neutral-100 shadow-sm bg-white">
+<div class="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-xl">map</span>
+</div>
+<div>
+<h4 class="text-sm font-bold text-[#151513]">Local Guide</h4>
+<p class="text-[10px] text-neutral-500">12 Recommendations</p>
+</div>
+<span class="material-symbols-outlined text-neutral-300 ml-auto">chevron_right</span>
+</div>
+<!-- Preview: Map Preview -->
+<div class="mt-4 rounded-xl overflow-hidden h-32 w-full bg-neutral-100 relative shadow-sm border border-neutral-100">
+<div class="absolute inset-0 bg-cover bg-center opacity-80" data-alt="Abstract map showing streets and location marker" data-location="Seaside Map" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAEZA7Opy5J7q_zg_JNVfXvgyyxp_v28bj11IPE69icHaK3tvNCSH2ItETu89ZyPS_M9lzPQCz4R2wE0PeA7_3ApFVGk-W_2WdJVbymLp3vX0qfp6WQn0_VM2caywaIkXq4XrNjwQGIpK2UbbhqeqVviuhcqiIBxSqBOiL08TFWlcTXq63qezBdY5UiNWeQY3o6LpyT0F83aTTw0jMi6QyOW0S0KasjeiWCB33GaJBuTm_IxOEHklR4U9j1mVZkXDI2RUjYvVNlnrg");'></div>
+<div class="absolute bottom-2 left-2 bg-white px-2 py-1 rounded-md shadow-sm">
+<p class="text-[10px] font-bold text-[#151513]">Tap to explore map</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Phone Home Indicator -->
+<div class="absolute bottom-1 w-full flex justify-center pb-2 pointer-events-none">
+<div class="h-1 w-1/3 bg-neutral-900/20 rounded-full"></div>
+</div>
+</div>
+<p class="text-neutral-400 dark:text-neutral-500 text-xs mt-6 font-medium">Changes auto-save instantly</p>
+</div>
+</main>
+</body></html>

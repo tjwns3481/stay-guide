@@ -1,6 +1,7 @@
 import type { Config } from 'tailwindcss';
 
 const config: Config = {
+  darkMode: ['class'],
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -21,6 +22,8 @@ const config: Config = {
           700: '#4A3F30',
           800: '#2D2620',
           900: '#1A1714',
+          DEFAULT: 'hsl(var(--primary))',
+          foreground: 'hsl(var(--primary-foreground))',
         },
         // Secondary: Soft Beige (부드러운 배경)
         secondary: {
@@ -34,19 +37,23 @@ const config: Config = {
           700: '#9C8C70',
           800: '#807054',
           900: '#645438',
+          DEFAULT: 'hsl(var(--secondary))',
+          foreground: 'hsl(var(--secondary-foreground))',
         },
-        // Accent: Deep Green (포인트 컬러)
+        // Accent: Terracotta (포인트 컬러) - Design System 업데이트
         accent: {
-          50: '#F0F5F3',
-          100: '#D9E8E2',
-          200: '#B3D1C5',
-          300: '#8DBAA8',
-          400: '#67A38B',
-          500: '#4A7C5F',
-          600: '#3D664D',
-          700: '#30503C',
-          800: '#233A2B',
-          900: '#16241A',
+          50: '#FDF2ED',
+          100: '#FAE5DB',
+          200: '#F4CBB7',
+          300: '#EFB193',
+          400: '#E9976F',
+          500: '#C17C60', // Main - Terracotta
+          600: '#A66A52',
+          700: '#8B5845',
+          800: '#6F4638',
+          900: '#54342A',
+          DEFAULT: 'hsl(var(--accent))',
+          foreground: 'hsl(var(--accent-foreground))',
         },
         // Neutral: Warm Gray
         neutral: {
@@ -61,23 +68,67 @@ const config: Config = {
           800: '#262626',
           900: '#171717',
         },
+        // Design System Colors (warm palette)
+        warm: {
+          50: '#FAF7F2',  // Cream
+          100: '#F5F0E8',
+          200: '#E8E2D9', // Light Tan
+          300: '#D4C4B0', // Soft Beige
+          400: '#C17C60', // Terracotta
+          500: '#8B7355', // Warm Brown (Primary)
+          600: '#6B6560', // Warm Gray
+          700: '#5C4D3D', // Deep Brown
+          800: '#2D2A26', // Charcoal
+        },
+        // shadcn/ui base colors
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
+        card: {
+          DEFAULT: 'hsl(var(--card))',
+          foreground: 'hsl(var(--card-foreground))',
+        },
+        popover: {
+          DEFAULT: 'hsl(var(--card))',
+          foreground: 'hsl(var(--card-foreground))',
+        },
+        muted: {
+          DEFAULT: 'hsl(var(--muted))',
+          foreground: 'hsl(var(--muted-foreground))',
+        },
+        destructive: {
+          DEFAULT: 'hsl(var(--destructive))',
+          foreground: 'hsl(var(--destructive-foreground))',
+        },
+        border: 'hsl(var(--border))',
+        input: 'hsl(var(--input))',
+        ring: 'hsl(var(--ring))',
       },
       fontFamily: {
-        sans: ['"Pretendard Variable"', 'Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'Roboto', 'sans-serif'],
+        sans: [
+          '"Pretendard Variable"',
+          'Pretendard',
+          'system-ui',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          'sans-serif',
+        ],
       },
       borderRadius: {
-        'card': '16px',
-        'button': '12px',
-        'input': '8px',
+        lg: 'var(--radius)',
+        md: 'calc(var(--radius) - 2px)',
+        sm: 'calc(var(--radius) - 4px)',
+        card: '16px',
+        button: '12px',
+        input: '8px',
       },
       boxShadow: {
-        'card': '0 2px 8px rgba(139, 115, 85, 0.08)',
+        card: '0 2px 8px rgba(139, 115, 85, 0.08)',
         'card-hover': '0 4px 16px rgba(139, 115, 85, 0.12)',
-        'button': '0 2px 4px rgba(139, 115, 85, 0.1)',
+        button: '0 2px 4px rgba(139, 115, 85, 0.1)',
       },
     },
   },
-  plugins: [],
+  plugins: [require('tailwindcss-animate')],
 };
 
 export default config;

@@ -742,7 +742,7 @@ cd ../roomy-phase3-guidebook
 
 ---
 
-### [ ] Phase 3, T3.2: 가이드북 뷰 컴포넌트 RED→GREEN
+### [x] Phase 3, T3.2: 가이드북 뷰 컴포넌트 RED→GREEN
 
 **담당**: frontend-specialist
 

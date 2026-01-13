@@ -779,11 +779,11 @@ cd ../roomy-phase3-guidebook
 
 ---
 
-### [ ] Phase 3, T3.3: SSG/ISR 설정 RED→GREEN
+### [x] Phase 3, T3.3: SSG/ISR 설정 RED→GREEN
 
 **담당**: frontend-specialist
 
-**Git Worktree**: phase/3-guidebook (T3.1과 동일 브랜치)
+**Git Worktree**: phase/3-ssg
 
 **TDD 사이클**:
 
@@ -795,30 +795,31 @@ cd ../roomy-phase3-guidebook
 
 2. **GREEN**: 최소 구현 (테스트 통과)
    ```bash
-   # 구현 파일: src/app/[slug]/page.tsx
+   # 구현 파일: src/app/g/[slug]/page.tsx
    pnpm test src/__tests__/integration/pages/guidebook-page.test.tsx
    ```
 
 **산출물**:
 - `src/__tests__/integration/pages/guidebook-page.test.tsx`
-- `src/app/[slug]/page.tsx`
-- `src/app/[slug]/loading.tsx`
-- `src/app/[slug]/not-found.tsx`
+- `src/app/g/[slug]/page.tsx` (revalidate=60)
+- `src/app/g/[slug]/loading.tsx`
+- `src/app/g/[slug]/not-found.tsx`
+- `src/lib/data/guidebook.ts` (React cache 적용)
 
 **인수 조건**:
-- [ ] 테스트 먼저 작성됨 (RED 확인)
-- [ ] SSG로 정적 페이지 생성
-- [ ] ISR로 재검증 (revalidate)
-- [ ] 404 페이지 처리
-- [ ] 모든 테스트 통과 (GREEN)
+- [x] 테스트 먼저 작성됨 (RED 확인)
+- [x] SSG로 정적 페이지 생성 (generateStaticParams)
+- [x] ISR로 재검증 (revalidate=60초)
+- [x] 404 페이지 처리
+- [x] 모든 테스트 통과 (GREEN) - 9개 테스트
 
 ---
 
-### [ ] Phase 3, T3.4: 메타 태그 및 OG 이미지 RED→GREEN
+### [x] Phase 3, T3.4: 메타 태그 및 OG 이미지 RED→GREEN
 
 **담당**: frontend-specialist
 
-**Git Worktree**: phase/3-guidebook (T3.1과 동일 브랜치)
+**Git Worktree**: phase/3-meta
 
 **TDD 사이클**:
 
@@ -830,19 +831,22 @@ cd ../roomy-phase3-guidebook
 
 2. **GREEN**: 최소 구현 (테스트 통과)
    ```bash
-   # 구현 파일: src/app/[slug]/page.tsx (generateMetadata)
+   # 구현 파일: src/lib/utils/metadata.ts
+   # 구현 파일: src/app/api/og/route.tsx
    pnpm test src/__tests__/unit/utils/metadata.test.ts
    ```
 
 **산출물**:
 - `src/__tests__/unit/utils/metadata.test.ts`
-- `src/app/[slug]/page.tsx` (generateMetadata 추가)
+- `src/lib/utils/metadata.ts` (메타데이터 유틸리티)
+- `src/app/api/og/route.tsx` (동적 OG 이미지 Edge API)
+- `src/app/g/[slug]/page.tsx` (리팩토링)
 
 **인수 조건**:
-- [ ] 테스트 먼저 작성됨 (RED 확인)
-- [ ] 동적 메타 태그 생성
-- [ ] OG 이미지 설정
-- [ ] 모든 테스트 통과 (GREEN)
+- [x] 테스트 먼저 작성됨 (RED 확인)
+- [x] 동적 메타 태그 생성 (OpenGraph, Twitter, robots)
+- [x] OG 이미지 설정 (동적 이미지 생성 API)
+- [x] 모든 테스트 통과 (GREEN) - 12개 테스트
 
 **완료 시**:
 - [ ] 사용자 승인 후 main 브랜치에 병합

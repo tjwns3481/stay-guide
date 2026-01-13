@@ -507,7 +507,7 @@ cd ../roomy-phase1-auth
 
 ## M2: FEAT-1 정보 블록 (Phase 2)
 
-### [ ] Phase 2, T2.1: 정보 블록 DB 스키마 RED→GREEN
+### [x] Phase 2, T2.1: 정보 블록 DB 스키마 RED→GREEN
 
 **담당**: database-specialist
 
@@ -544,7 +544,7 @@ cd ../roomy-phase2-blocks
 
 ---
 
-### [ ] Phase 2, T2.2: 정보 블록 CRUD API RED→GREEN
+### [x] Phase 2, T2.2: 정보 블록 CRUD API RED→GREEN
 
 **담당**: backend-specialist
 
@@ -577,7 +577,7 @@ cd ../roomy-phase2-blocks
 
 ---
 
-### [ ] Phase 2, T2.3: 와이파이 블록 컴포넌트 RED→GREEN
+### [x] Phase 2, T2.3: 와이파이 블록 컴포넌트 RED→GREEN
 
 **담당**: frontend-specialist
 
@@ -613,7 +613,7 @@ cd ../roomy-phase2-blocks
 
 ---
 
-### [ ] Phase 2, T2.4: 지도 블록 컴포넌트 RED→GREEN
+### [x] Phase 2, T2.4: 지도 블록 컴포넌트 RED→GREEN
 
 **담당**: frontend-specialist
 
@@ -653,7 +653,7 @@ cd ../roomy-phase2-blocks
 
 ---
 
-### [ ] Phase 2, T2.5: 체크인/추천 블록 컴포넌트 RED→GREEN
+### [x] Phase 2, T2.5: 체크인/추천 블록 컴포넌트 RED→GREEN
 
 **담당**: frontend-specialist
 

@@ -345,9 +345,14 @@ npx playwright install
 
 ---
 
-## M1: FEAT-0 호스트 인증 (Phase 1)
+## M1: FEAT-0 호스트 인증 (Phase 1) - Clerk 통합 완료
 
-### [ ] Phase 1, T1.1: 회원가입 API RED→GREEN
+> **Note**: 원래 계획된 Supabase Auth 대신 Clerk를 사용하여 구현됨
+> - Google OAuth + Kakao 소셜 로그인 지원
+> - 커스텀 UI (디자인 시스템 적용)
+> - 호스트 DB 자동 동기화
+
+### [x] Phase 1, T1.1: 회원가입 API RED→GREEN
 
 **담당**: backend-specialist
 
@@ -395,7 +400,7 @@ cd ../roomy-phase1-auth
 
 ---
 
-### [ ] Phase 1, T1.2: 로그인/로그아웃 API RED→GREEN
+### [x] Phase 1, T1.2: 로그인/로그아웃 API RED→GREEN
 
 **담당**: backend-specialist
 
@@ -429,7 +434,7 @@ cd ../roomy-phase1-auth
 
 ---
 
-### [ ] Phase 1, T1.3: 인증 UI 컴포넌트 RED→GREEN
+### [x] Phase 1, T1.3: 인증 UI 컴포넌트 RED→GREEN
 
 **담당**: frontend-specialist
 
@@ -469,7 +474,7 @@ cd ../roomy-phase1-auth
 
 ---
 
-### [ ] Phase 1, T1.4: 인증 미들웨어 RED→GREEN
+### [x] Phase 1, T1.4: 인증 미들웨어 RED→GREEN
 
 **담당**: backend-specialist
 

@@ -63,7 +63,7 @@ const config: Config = {
         },
       },
       fontFamily: {
-        sans: ['var(--font-pretendard)', 'Pretendard', 'system-ui', 'sans-serif'],
+        sans: ['"Pretendard Variable"', 'Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'Roboto', 'sans-serif'],
       },
       borderRadius: {
         'card': '16px',

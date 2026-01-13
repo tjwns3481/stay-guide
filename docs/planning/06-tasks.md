@@ -150,7 +150,7 @@ flowchart TD
 
 ## M0: 프로젝트 셋업 (Phase 0)
 
-### [ ] Phase 0, T0.1: Next.js 프로젝트 초기화
+### [x] Phase 0, T0.1: Next.js 프로젝트 초기화
 
 **담당**: frontend-specialist
 
@@ -173,8 +173,8 @@ cd roomy
 - `src/app/` 기본 구조
 
 **완료 조건**:
-- [ ] `pnpm dev` 실행 시 localhost:3000 접속 가능
-- [ ] TypeScript 컴파일 에러 없음
+- [x] `pnpm dev` 실행 시 localhost:3000 접속 가능
+- [x] TypeScript 컴파일 에러 없음
 
 ---
 

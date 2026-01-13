@@ -5,16 +5,12 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
+import { currentUser } from '@clerk/nextjs/server';
 import { db } from '@/db';
-import { guidebooks } from '@/db/schema';
+import { guidebooks, hosts } from '@/db/schema';
 import { eq, desc } from 'drizzle-orm';
 import { guidebookSchema } from '@/lib/validations/guidebook';
 import { z, ZodError } from 'zod';
-
-// 생성 시 hostId 필수
-const createGuidebookSchema = guidebookSchema.extend({
-  hostId: z.string().uuid('유효한 UUID 형식이 아닙니다'),
-});
 
 /**
  * GET /api/guidebooks
@@ -77,14 +73,60 @@ export async function GET(request: NextRequest) {
 
 /**
  * POST /api/guidebooks
- * 새 가이드북 생성
+ * 새 가이드북 생성 (인증된 사용자의 host를 자동으로 찾음)
  */
 export async function POST(request: NextRequest) {
   try {
+    // 인증 확인
+    const user = await currentUser();
+    if (!user) {
+      return NextResponse.json(
+        {
+          error: {
+            code: 'UNAUTHORIZED',
+            message: '로그인이 필요합니다',
+          },
+        },
+        { status: 401 }
+      );
+    }
+
+    // 사용자의 이메일로 host 찾기
+    const email = user.primaryEmailAddress?.emailAddress;
+    if (!email) {
+      return NextResponse.json(
+        {
+          error: {
+            code: 'NO_EMAIL',
+            message: '이메일 정보가 없습니다',
+          },
+        },
+        { status: 400 }
+      );
+    }
+
+    // host 조회 또는 생성
+    let [host] = await db
+      .select()
+      .from(hosts)
+      .where(eq(hosts.email, email))
+      .limit(1);
+
+    if (!host) {
+      // 호스트가 없으면 자동 생성
+      [host] = await db
+        .insert(hosts)
+        .values({
+          email,
+          name: user.fullName || user.firstName || email.split('@')[0],
+        })
+        .returning();
+    }
+
     const body = await request.json();
 
     // 입력 검증
-    const validatedData = createGuidebookSchema.parse(body);
+    const validatedData = guidebookSchema.parse(body);
 
     // slug 중복 확인
     const existingGuidebook = await db
@@ -105,11 +147,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 가이드북 생성
+    // 가이드북 생성 (인증된 사용자의 hostId 사용)
     const [newGuidebook] = await db
       .insert(guidebooks)
       .values({
-        hostId: validatedData.hostId,
+        hostId: host.id,
         slug: validatedData.slug,
         title: validatedData.title,
         description: validatedData.description,

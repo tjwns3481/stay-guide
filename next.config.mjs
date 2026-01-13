@@ -8,6 +8,12 @@ const nextConfig = {
       },
     ],
   },
+  experimental: {
+    outputFileTracingExcludes: {
+      '*': [],
+    },
+  },
+  outputFileTracing: false,
 };
 
 export default nextConfig;

@@ -76,5 +76,8 @@ export default async function GuestGuidePage({ params }: PageProps) {
     notFound()
   }
 
-  return <GuideRenderer guide={guide} />
+  // 워터마크 표시 여부 결정: noWatermark 기능이 있으면 숨김
+  const showWatermark = !guide.ownerLicense?.features?.noWatermark
+
+  return <GuideRenderer guide={guide} showWatermark={showWatermark} />
 }

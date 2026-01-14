@@ -2,6 +2,7 @@ import { Hono } from 'hono'
 import { zValidator } from '@hono/zod-validator'
 import { z } from 'zod'
 import { prisma } from '../lib/prisma'
+import { Prisma } from '@prisma/client'
 import { authMiddleware } from '../middleware/auth'
 import { generateGuideSlug, isValidSlug } from '../lib/slug'
 
@@ -158,7 +159,7 @@ guideRoutes.get('/', authMiddleware, zValidator('query', paginationSchema), asyn
   return c.json({
     success: true,
     data: {
-      items: guides.map((guide) => ({
+      items: guides.map((guide: any) => ({
         id: guide.id,
         slug: guide.slug,
         title: guide.title,
@@ -451,7 +452,7 @@ guideRoutes.patch('/:id', authMiddleware, zValidator('json', updateGuideSchema),
     accommodationName?: string
     slug?: string
     themeId?: string | null
-    themeSettings?: object | typeof import('@prisma/client').Prisma.JsonNull
+    themeSettings?: Prisma.InputJsonValue
   } = {}
 
   if (data.title) updateData.title = data.title
@@ -459,9 +460,7 @@ guideRoutes.patch('/:id', authMiddleware, zValidator('json', updateGuideSchema),
   if (data.slug) updateData.slug = data.slug
   if (data.themeId !== undefined) updateData.themeId = data.themeId
   if (data.themeSettings !== undefined) {
-    updateData.themeSettings = data.themeSettings === null
-      ? (await import('@prisma/client')).Prisma.JsonNull
-      : (data.themeSettings as object)
+    updateData.themeSettings = data.themeSettings as Prisma.InputJsonValue
   }
 
   // 안내서 업데이트
@@ -686,9 +685,6 @@ guideRoutes.post('/:id/duplicate', authMiddleware, async (c) => {
   // 새 슬러그 생성
   const newSlug = generateGuideSlug()
 
-  // Prisma import for JsonNull handling
-  const { Prisma } = await import('@prisma/client')
-
   // 안내서 복제
   const duplicatedGuide = await prisma.guide.create({
     data: {
@@ -698,16 +694,12 @@ guideRoutes.post('/:id/duplicate', authMiddleware, async (c) => {
       slug: newSlug,
       isPublished: false,
       themeId: originalGuide.themeId,
-      themeSettings: originalGuide.themeSettings === null
-        ? Prisma.JsonNull
-        : (originalGuide.themeSettings as object),
+      themeSettings: originalGuide.themeSettings as Prisma.InputJsonValue,
       blocks: {
-        create: originalGuide.blocks.map((block) => ({
+        create: originalGuide.blocks.map((block: any) => ({
           type: block.type,
           order: block.order,
-          content: block.content === null
-            ? Prisma.JsonNull
-            : (block.content as object),
+          content: block.content as Prisma.InputJsonValue,
           isVisible: block.isVisible,
         })),
       },

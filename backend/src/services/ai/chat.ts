@@ -58,7 +58,7 @@ export async function* streamChat(
     const messages: OpenAI.ChatCompletionMessageParam[] = [
       { role: 'system', content: SYSTEM_PROMPT },
       { role: 'system', content: `숙소 정보:\n${context}` },
-      ...previousMessages.reverse().map(m => ({
+      ...previousMessages.reverse().map((m: any) => ({
         role: m.role as 'user' | 'assistant',
         content: m.content,
       })),

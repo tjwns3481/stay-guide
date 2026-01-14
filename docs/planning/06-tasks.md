@@ -14,17 +14,18 @@
 
 ## 마일스톤 개요
 
-| 마일스톤 | Phase | 설명 | 예상 태스크 |
-|----------|-------|------|------------|
-| M0 | Phase 0 | 프로젝트 셋업 | T0.1 ~ T0.4 |
-| M0.5 | Phase 0 | 계약 & 테스트 설계 | T0.5.1 ~ T0.5.4 |
-| M1 | Phase 1 | FEAT-0: 인증 & 온보딩 | T1.1 ~ T1.3 |
-| M2 | Phase 2 | FEAT-1: 커스텀 에디터 | T2.1 ~ T2.4 |
-| M3 | Phase 3 | FEAT-2: 필수 정보 블록 | T3.1 ~ T3.3 |
-| M4 | Phase 4 | FEAT-3: 테마 & 디자인 | T4.1 ~ T4.2 |
-| M5 | Phase 5 | FEAT-4: AI 컨시어지 | T5.1 ~ T5.3 |
-| M6 | Phase 6 | 라이선스 & 결제 | T6.1 ~ T6.2 |
-| M7 | Phase 7 | 통합 & 배포 | T7.1 ~ T7.2 |
+| 마일스톤 | Phase | 설명 | 예상 태스크 | 상태 |
+|----------|-------|------|------------|------|
+| M0 | Phase 0 | 프로젝트 셋업 | T0.1 ~ T0.4 | ✅ 완료 |
+| M0.5 | Phase 0 | 계약 & 테스트 설계 | T0.5.1 ~ T0.5.4 | ✅ 완료 |
+| M1 | Phase 1 | FEAT-0: 인증 & 온보딩 | T1.1 ~ T1.3 | ✅ 완료 |
+| M2 | Phase 2 | FEAT-1: 커스텀 에디터 | T2.1 ~ T2.4 | ✅ 완료 |
+| M3 | Phase 3 | FEAT-2: 필수 정보 블록 | T3.1 ~ T3.3 | ✅ 완료 |
+| M4 | Phase 4 | FEAT-3: 테마 & 디자인 | T4.1 ~ T4.2 | ✅ 완료 |
+| M5 | Phase 5 | FEAT-4: AI 컨시어지 | T5.1 ~ T5.3 | ✅ 완료 |
+| M6 | Phase 6 | 라이선스 & 결제 | T6.1 ~ T6.2 | ✅ 완료 |
+| M7 | Phase 7 | 통합 & 배포 | T7.1 ~ T7.2 | ✅ 완료 |
+| M8 | Phase 8 | 배포 준비 & 품질 개선 | T8.1 ~ T8.7 | ⏳ 진행 예정 |
 
 ---
 
@@ -986,15 +987,204 @@ cd ../roomy-phase5-ai
 
 ---
 
+## M8: 배포 준비 & 품질 개선
+
+> **상태**: 진행 중 (T8.6 완료)
+
+### [ ] Phase 8, T8.1: Supabase 프로젝트 생성 & DB 연결
+
+**담당**: database-specialist
+
+**작업 내용**:
+- Supabase 프로젝트 생성 (https://app.supabase.com)
+- PostgreSQL 연결 문자열 설정
+- pgvector 확장 활성화
+- Prisma 마이그레이션 실행
+
+**산출물**:
+- Supabase 프로젝트 (대시보드 접속 가능)
+- `backend/prisma/migrations/` (마이그레이션 파일)
+- `.env.local` 환경 변수 설정 완료
+- `backend/DATABASE_SETUP.md` (설정 가이드) ✅
+- `backend/scripts/test-db-connection.ts` (연결 테스트) ✅
+
+**인수 조건**:
+- [x] 설정 가이드 문서 작성 (`backend/DATABASE_SETUP.md`)
+- [x] 연결 테스트 스크립트 작성
+- [ ] Supabase 프로젝트 생성 (사용자 작업 필요)
+- [ ] `DATABASE_URL` 환경 변수 설정 (사용자 작업 필요)
+- [ ] `npx prisma db push` 성공
+- [ ] Supabase 대시보드에서 테이블 확인
+
+---
+
+### [ ] Phase 8, T8.2: Clerk 소셜 로그인 프로바이더 설정
+
+**담당**: frontend-specialist
+
+**작업 내용**:
+- Clerk 대시보드에서 Google OAuth 설정
+- Clerk 대시보드에서 Kakao OAuth 설정
+- 환경 변수 설정 (`NEXT_PUBLIC_CLERK_*`)
+
+**산출물**:
+- Clerk 프로바이더 설정 완료
+- `.env.local` Clerk 환경 변수
+- `frontend/CLERK_SETUP.md` (설정 가이드) ✅
+
+**인수 조건**:
+- [x] 설정 가이드 문서 작성 (`frontend/CLERK_SETUP.md`)
+- [ ] Google 소셜 로그인 작동 (사용자 작업 필요)
+- [ ] Kakao 소셜 로그인 작동 (사용자 작업 필요)
+- [ ] 인증 플로우 E2E 테스트 통과
+
+---
+
+### [ ] Phase 8, T8.3: 이미지 업로드 API 구현
+
+**담당**: backend-specialist
+
+**작업 내용**:
+- Supabase Storage 설정
+- 이미지 업로드 API (POST /api/upload)
+- Hero 블록 이미지 업로드 연동
+
+**산출물**:
+- `frontend/src/app/api/[[...route]]/routes/upload.ts`
+- Supabase Storage 버킷 설정
+
+**현재 TODO**:
+- `frontend/src/components/blocks/editors/HeroEditor.tsx:45` - 실제 이미지 업로드 API 연동
+
+**인수 조건**:
+- [ ] 이미지 업로드 API 작동
+- [ ] Hero 에디터에서 이미지 업로드 성공
+- [ ] 업로드된 이미지 미리보기 표시
+
+---
+
+### [ ] Phase 8, T8.4: 조회수 추적 구현
+
+**담당**: backend-specialist
+
+**작업 내용**:
+- 안내서 조회수 추적 로직 구현
+- 게스트 뷰 접근 시 조회수 증가
+
+**현재 TODO**:
+- `backend/src/routes/guide.ts:169` - 조회수 추적 구현
+- `frontend/src/app/api/[[...route]]/routes/guide.ts:169` - 조회수 추적 구현
+
+**산출물**:
+- 조회수 추적 API 로직
+
+**인수 조건**:
+- [ ] 게스트 뷰 접근 시 조회수 증가
+- [ ] 호스트 대시보드에서 조회수 확인
+
+---
+
+### [ ] Phase 8, T8.5: Health Check DB 연결 확인
+
+**담당**: backend-specialist
+
+**작업 내용**:
+- Health 엔드포인트에 DB 연결 확인 추가
+
+**현재 TODO**:
+- `backend/src/routes/health.ts:14` - Add database connection check
+- `frontend/src/app/api/[[...route]]/routes/health.ts:14` - Add database connection check
+
+**산출물**:
+- 업데이트된 health 라우트
+
+**인수 조건**:
+- [ ] `/api/health`에서 DB 연결 상태 확인
+- [ ] DB 연결 실패 시 적절한 에러 응답
+
+---
+
+### [x] Phase 8, T8.6: ESLint 설정 완료 ✅
+
+**담당**: frontend-specialist
+
+**완료일**: 2026-01-14
+
+**작업 내용**:
+- ESLint 설정 파일 생성
+- 린트 오류 수정
+
+**산출물**:
+- `frontend/.eslintrc.json`
+
+**인수 조건**:
+- [x] `npm run lint` 성공 (0 errors, 6 warnings)
+- [x] 린트 오류 0개
+- [x] `npm run build` 성공
+
+---
+
+### [ ] Phase 8, T8.7: Vercel 배포 완료
+
+**담당**: frontend-specialist
+
+**의존성**: T8.1, T8.2 완료 필요
+
+**작업 내용**:
+- Vercel 프로젝트 연결
+- 환경 변수 설정
+- 프로덕션 배포
+
+**인수 조건**:
+- [ ] Vercel 배포 URL 접속 가능
+- [ ] 모든 기능 프로덕션 환경에서 작동
+
+---
+
 ## 다음 단계
 
-1. **M0 Phase 0 태스크부터 시작**
-   - T0.1 ~ T0.4는 병렬 실행 가능
-   - main 브랜치에서 직접 작업
+### 즉시 실행 가능 (병렬)
+1. **T8.1**: Supabase 프로젝트 생성 & DB 연결
+2. **T8.2**: Clerk 소셜 로그인 프로바이더 설정
+3. **T8.6**: ESLint 설정 완료
 
-2. **M0.5 계약 정의 후 Phase 1+ 시작**
-   - API 계약 먼저 정의
-   - TDD로 BE/FE 병렬 개발
+### T8.1 완료 후
+4. **T8.3**: 이미지 업로드 API 구현
+5. **T8.4**: 조회수 추적 구현
+6. **T8.5**: Health Check DB 연결 확인
 
-3. **각 Phase 완료 시 자동 병합**
-   - 테스트 통과 → 자동 커밋 → main 병합 → worktree 정리
+### T8.1 + T8.2 완료 후
+7. **T8.7**: Vercel 배포 완료
+
+---
+
+## 의존성 그래프 (M8)
+
+```mermaid
+flowchart TD
+    subgraph M8[M8: 배포 준비]
+        T8.1[T8.1 Supabase 셋업]
+        T8.2[T8.2 Clerk 프로바이더]
+        T8.3[T8.3 이미지 업로드]
+        T8.4[T8.4 조회수 추적]
+        T8.5[T8.5 Health Check]
+        T8.6[T8.6 ESLint 설정]
+        T8.7[T8.7 Vercel 배포]
+    end
+
+    T8.1 --> T8.3
+    T8.1 --> T8.4
+    T8.1 --> T8.5
+    T8.1 --> T8.7
+    T8.2 --> T8.7
+
+    style T8.1 fill:#FFD700
+    style T8.2 fill:#FFD700
+    style T8.3 fill:#FFB6C1
+    style T8.4 fill:#FFB6C1
+    style T8.5 fill:#FFB6C1
+    style T8.6 fill:#90EE90
+    style T8.7 fill:#FFB6C1
+```
+
+> 범례: 🟢 Green = 완료, 🟡 Yellow = 즉시 실행 가능, 🩷 Pink = 의존성 대기

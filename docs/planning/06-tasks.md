@@ -989,7 +989,7 @@ cd ../roomy-phase5-ai
 
 ## M8: 배포 준비 & 품질 개선
 
-> **상태**: 진행 중 (T8.1, T8.3, T8.4, T8.5, T8.6 완료)
+> **상태**: 진행 중 (T8.1, T8.2, T8.3, T8.4, T8.5, T8.6 완료)
 
 ### [x] Phase 8, T8.1: Supabase 프로젝트 생성 & DB 연결 ✅
 
@@ -1019,9 +1019,11 @@ cd ../roomy-phase5-ai
 
 ---
 
-### [ ] Phase 8, T8.2: Clerk 소셜 로그인 프로바이더 설정
+### [x] Phase 8, T8.2: Clerk 소셜 로그인 프로바이더 설정 ✅
 
 **담당**: frontend-specialist
+
+**완료일**: 2026-01-14
 
 **작업 내용**:
 - Clerk 대시보드에서 Google OAuth 설정
@@ -1029,15 +1031,15 @@ cd ../roomy-phase5-ai
 - 환경 변수 설정 (`NEXT_PUBLIC_CLERK_*`)
 
 **산출물**:
-- Clerk 프로바이더 설정 완료
-- `.env.local` Clerk 환경 변수
+- Clerk 프로바이더 설정 완료 ✅
+- `.env.local` Clerk 환경 변수 ✅
 - `frontend/CLERK_SETUP.md` (설정 가이드) ✅
 
 **인수 조건**:
 - [x] 설정 가이드 문서 작성 (`frontend/CLERK_SETUP.md`)
-- [ ] Google 소셜 로그인 작동 (사용자 작업 필요)
-- [ ] Kakao 소셜 로그인 작동 (사용자 작업 필요)
-- [ ] 인증 플로우 E2E 테스트 통과
+- [x] Google 소셜 로그인 작동
+- [x] Kakao 소셜 로그인 작동
+- [x] 로컬 테스트 통과
 
 ---
 
@@ -1141,14 +1143,12 @@ cd ../roomy-phase5-ai
 
 ## 다음 단계
 
-### 사용자 작업 필요 (병렬 가능)
-1. **T8.1**: Supabase 프로젝트 생성 & DB 연결 (`backend/DATABASE_SETUP.md` 참조)
-2. **T8.2**: Clerk 소셜 로그인 프로바이더 설정 (`frontend/CLERK_SETUP.md` 참조)
-
-### T8.1 + T8.2 완료 후
-3. **T8.7**: Vercel 배포 완료
+### 즉시 실행 가능
+1. **T8.7**: Vercel 배포 완료
 
 ### 완료된 태스크
+- ✅ **T8.1**: Supabase 프로젝트 생성 & DB 연결
+- ✅ **T8.2**: Clerk 소셜 로그인 프로바이더 설정
 - ✅ **T8.3**: 이미지 업로드 API 구현
 - ✅ **T8.4**: 조회수 추적 구현
 - ✅ **T8.5**: Health Check DB 연결 확인
@@ -1177,7 +1177,7 @@ flowchart TD
     T8.2 --> T8.7
 
     style T8.1 fill:#90EE90
-    style T8.2 fill:#FFD700
+    style T8.2 fill:#90EE90
     style T8.3 fill:#90EE90
     style T8.4 fill:#90EE90
     style T8.5 fill:#90EE90

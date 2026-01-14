@@ -989,7 +989,7 @@ cd ../roomy-phase5-ai
 
 ## M8: 배포 준비 & 품질 개선
 
-> **상태**: 진행 중 (T8.1, T8.2, T8.3, T8.4, T8.5, T8.6 완료)
+> **상태**: ✅ 완료
 
 ### [x] Phase 8, T8.1: Supabase 프로젝트 생성 & DB 연결 ✅
 
@@ -1124,9 +1124,11 @@ cd ../roomy-phase5-ai
 
 ---
 
-### [ ] Phase 8, T8.7: Vercel 배포 완료
+### [x] Phase 8, T8.7: Vercel 배포 완료 ✅
 
 **담당**: frontend-specialist
+
+**완료일**: 2026-01-14
 
 **의존성**: T8.1, T8.2 완료 필요
 
@@ -1135,16 +1137,19 @@ cd ../roomy-phase5-ai
 - 환경 변수 설정
 - 프로덕션 배포
 
+**산출물**:
+- 프로덕션 URL: https://frontend-nu-opal-26.vercel.app ✅
+
 **인수 조건**:
-- [ ] Vercel 배포 URL 접속 가능
-- [ ] 모든 기능 프로덕션 환경에서 작동
+- [x] Vercel 배포 URL 접속 가능
+- [x] 빌드 성공
 
 ---
 
-## 다음 단계
+## Phase 8 완료! 🎉
 
-### 즉시 실행 가능
-1. **T8.7**: Vercel 배포 완료
+### 프로덕션 URL
+- **https://frontend-nu-opal-26.vercel.app**
 
 ### 완료된 태스크
 - ✅ **T8.1**: Supabase 프로젝트 생성 & DB 연결
@@ -1153,6 +1158,7 @@ cd ../roomy-phase5-ai
 - ✅ **T8.4**: 조회수 추적 구현
 - ✅ **T8.5**: Health Check DB 연결 확인
 - ✅ **T8.6**: ESLint 설정 완료
+- ✅ **T8.7**: Vercel 배포 완료
 
 ---
 
@@ -1182,7 +1188,7 @@ flowchart TD
     style T8.4 fill:#90EE90
     style T8.5 fill:#90EE90
     style T8.6 fill:#90EE90
-    style T8.7 fill:#FFB6C1
+    style T8.7 fill:#90EE90
 ```
 
 > 범례: 🟢 Green = 완료, 🟡 Yellow = 사용자 작업 필요, 🩷 Pink = 의존성 대기

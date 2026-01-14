@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma'
+import { Prisma } from '@prisma/client'
 
 // 라이선스 키 형식: ROOMY-XXXX-XXXX-XXXX
 const LICENSE_KEY_REGEX = /^ROOMY-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/
@@ -136,7 +137,7 @@ export async function activateLicense(userId: string, licenseKey: string) {
       licenseKey,
       plan,
       status: 'active',
-      features,
+      features: features as unknown as Prisma.InputJsonValue,
       startsAt: new Date(),
       expiresAt,
     },

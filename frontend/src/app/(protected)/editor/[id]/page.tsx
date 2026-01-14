@@ -21,11 +21,6 @@ export default function EditorPage() {
   const [isCreating, setIsCreating] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  // API 클라이언트에 토큰 getter 설정
-  useEffect(() => {
-    api.setTokenGetter(getToken)
-  }, [getToken])
-
   // "new" 케이스 처리: 새 안내서 생성 후 리다이렉트
   useEffect(() => {
     if (guideId === 'new' && !isCreating) {
@@ -33,6 +28,9 @@ export default function EditorPage() {
 
       const createNewGuide = async () => {
         try {
+          // API 클라이언트에 토큰 getter 설정 (호출 직전에 설정)
+          api.setTokenGetter(getToken)
+
           const response = await api.post<CreateGuideResponse>('/guides', {
             title: '새 안내서',
             accommodationName: '숙소 이름',
@@ -51,7 +49,7 @@ export default function EditorPage() {
 
       createNewGuide()
     }
-  }, [guideId, isCreating, router])
+  }, [guideId, isCreating, router, getToken])
 
   if (!guideId) {
     return (

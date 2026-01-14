@@ -1,5 +1,5 @@
 import { Context, Next } from 'hono'
-import { createClerkClient } from '@clerk/backend'
+import { createClerkClient, verifyToken } from '@clerk/backend'
 
 const clerk = createClerkClient({
   secretKey: process.env.CLERK_SECRET_KEY || 'test_secret_key',
@@ -51,15 +51,18 @@ export const authMiddleware = async (c: Context, next: Next) => {
   }
 
   try {
-    const session = await clerk.sessions.verifySession(token, token)
+    // JWT 토큰 검증
+    const payload = await verifyToken(token, {
+      secretKey: process.env.CLERK_SECRET_KEY || 'test_secret_key',
+    })
 
-    if (!session) {
-      return c.json({ error: 'Unauthorized', message: 'Invalid session' }, 401)
+    if (!payload || !payload.sub) {
+      return c.json({ error: 'Unauthorized', message: 'Invalid token' }, 401)
     }
 
     c.set('auth', {
-      userId: session.userId,
-      sessionId: session.id,
+      userId: payload.sub, // sub는 Clerk의 userId
+      sessionId: payload.sid || 'unknown',
     })
 
     await next()
@@ -77,12 +80,14 @@ export const optionalAuthMiddleware = async (c: Context, next: Next) => {
     const token = authHeader.slice(7)
 
     try {
-      const session = await clerk.sessions.verifySession(token, token)
+      const payload = await verifyToken(token, {
+        secretKey: process.env.CLERK_SECRET_KEY || 'test_secret_key',
+      })
 
-      if (session) {
+      if (payload && payload.sub) {
         c.set('auth', {
-          userId: session.userId,
-          sessionId: session.id,
+          userId: payload.sub,
+          sessionId: payload.sid || 'unknown',
         })
       }
     } catch {

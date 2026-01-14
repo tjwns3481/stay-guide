@@ -185,22 +185,34 @@ guideRoutes.post('/', authMiddleware, zValidator('json', createGuideSchema), asy
   const auth = c.get('auth')
   const data = c.req.valid('json')
 
-  // 사용자 조회
-  const user = await prisma.user.findFirst({
+  // 사용자 조회 또는 생성 (findOrCreate 패턴)
+  let user = await prisma.user.findFirst({
     where: { clerkId: auth.userId },
   })
 
   if (!user) {
-    return c.json(
-      {
-        success: false,
-        error: {
-          code: 'USER_NOT_FOUND',
-          message: '사용자를 찾을 수 없습니다',
+    // 사용자가 없으면 자동 생성
+    try {
+      user = await prisma.user.create({
+        data: {
+          clerkId: auth.userId,
+          email: `${auth.userId}@temp.roomy.app`, // 임시 이메일, 나중에 웹훅으로 업데이트
+          name: '새 사용자',
         },
-      },
-      404
-    )
+      })
+    } catch (createError) {
+      console.error('Failed to create user:', createError)
+      return c.json(
+        {
+          success: false,
+          error: {
+            code: 'USER_CREATION_FAILED',
+            message: '사용자 생성에 실패했습니다',
+          },
+        },
+        500
+      )
+    }
   }
 
   // 슬러그 처리

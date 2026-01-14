@@ -1,0 +1,80 @@
+import { Metadata } from 'next'
+import { notFound } from 'next/navigation'
+import { GuideRenderer } from '@/components/guest/GuideRenderer'
+import type { GuideDetail } from '@/contracts/guide.contract'
+
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8787'
+
+interface PageProps {
+  params: Promise<{
+    slug: string
+  }>
+}
+
+// 슬러그로 안내서 가져오기 (서버 컴포넌트에서 직접 fetch)
+async function getGuideBySlug(slug: string): Promise<GuideDetail | null> {
+  try {
+    const res = await fetch(`${API_BASE}/api/guides/slug/${slug}`, {
+      cache: 'no-store',
+    })
+
+    if (!res.ok) {
+      return null
+    }
+
+    const data = await res.json()
+
+    if (!data.success || !data.data) {
+      return null
+    }
+
+    const guide = data.data as GuideDetail
+
+    // 발행되지 않은 안내서는 404
+    if (!guide.isPublished) {
+      return null
+    }
+
+    return guide
+  } catch (error) {
+    console.error('Failed to fetch guide:', error)
+    return null
+  }
+}
+
+// SEO 메타데이터 생성
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params
+  const guide = await getGuideBySlug(slug)
+
+  if (!guide) {
+    return {
+      title: '안내서를 찾을 수 없습니다',
+    }
+  }
+
+  // Hero 블록에서 이미지 가져오기
+  const heroBlock = guide.blocks.find((b) => b.type === 'hero' && b.isVisible)
+  const imageUrl = heroBlock?.content?.imageUrl as string | undefined
+
+  return {
+    title: `${guide.title} - ${guide.accommodationName}`,
+    description: `${guide.accommodationName}의 숙소 안내서입니다.`,
+    openGraph: {
+      title: `${guide.title} - ${guide.accommodationName}`,
+      description: `${guide.accommodationName}의 숙소 안내서입니다.`,
+      images: imageUrl ? [{ url: imageUrl }] : [],
+    },
+  }
+}
+
+export default async function GuestGuidePage({ params }: PageProps) {
+  const { slug } = await params
+  const guide = await getGuideBySlug(slug)
+
+  if (!guide) {
+    notFound()
+  }
+
+  return <GuideRenderer guide={guide} />
+}

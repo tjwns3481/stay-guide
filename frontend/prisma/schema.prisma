@@ -38,6 +38,7 @@ model Guide {
   title             String
   accommodationName String   @map("accommodation_name")
   isPublished       Boolean  @default(false) @map("is_published")
+  viewCount         Int      @default(0) @map("view_count")
   themeId           String?  @map("theme_id")
   themeSettings     Json?    @map("theme_settings") @db.JsonB
   createdAt         DateTime @default(now()) @map("created_at")

@@ -166,7 +166,7 @@ guideRoutes.get('/', authMiddleware, zValidator('query', paginationSchema), asyn
         accommodationName: guide.accommodationName,
         isPublished: guide.isPublished,
         blocksCount: guide._count.blocks,
-        viewCount: 0, // TODO: 조회수 추적 구현
+        viewCount: guide.viewCount || 0,
         createdAt: guide.createdAt.toISOString(),
         updatedAt: guide.updatedAt.toISOString(),
       })),
@@ -299,6 +299,16 @@ guideRoutes.get('/slug/:slug', async (c) => {
       404
     )
   }
+
+  // 조회수 증가 (비동기로 처리하여 응답 속도에 영향 없도록)
+  prisma.guide
+    .update({
+      where: { id: guide.id },
+      data: { viewCount: { increment: 1 } },
+    })
+    .catch((error) => {
+      console.error('Failed to increment view count:', error)
+    })
 
   return c.json({
     success: true,

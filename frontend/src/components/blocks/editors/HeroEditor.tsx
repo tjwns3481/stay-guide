@@ -42,13 +42,31 @@ export function HeroEditor({ block }: HeroEditorProps) {
     setIsUploading(true)
 
     try {
-      // TODO: 실제 이미지 업로드 API 연동
-      // 지금은 로컬 URL로 미리보기
-      const localUrl = URL.createObjectURL(file)
-      updateContent({ imageUrl: localUrl })
+      // FormData 생성
+      const formData = new FormData()
+      formData.append('file', file)
+
+      // 이미지 업로드 API 호출
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error?.message || '업로드 실패')
+      }
+
+      const result = await response.json()
+
+      if (result.success && result.data?.url) {
+        updateContent({ imageUrl: result.data.url })
+      } else {
+        throw new Error('업로드된 URL을 받지 못했습니다')
+      }
     } catch (error) {
       console.error('이미지 업로드 실패:', error)
-      alert('이미지 업로드에 실패했습니다.')
+      alert(error instanceof Error ? error.message : '이미지 업로드에 실패했습니다.')
     } finally {
       setIsUploading(false)
     }

@@ -12,6 +12,7 @@ import { userRoutes } from './routes/user'
 import { webhookRoutes } from './routes/webhook'
 import { aiRoutes } from './routes/ai'
 import licenseRoutes from './routes/license'
+import { uploadRoutes } from './routes/upload'
 
 const app = new Hono().basePath('/api')
 
@@ -36,6 +37,7 @@ app.route('/guides', aiRoutes) // AI 라우트는 guides 하위에 마운트
 app.route('/users', userRoutes)
 app.route('/webhooks', webhookRoutes)
 app.route('/licenses', licenseRoutes)
+app.route('/upload', uploadRoutes)
 
 // Root
 app.get('/', (c) => {

@@ -989,7 +989,7 @@ cd ../roomy-phase5-ai
 
 ## M8: 배포 준비 & 품질 개선
 
-> **상태**: 진행 중 (T8.6 완료)
+> **상태**: 진행 중 (T8.3, T8.4, T8.5, T8.6 완료)
 
 ### [ ] Phase 8, T8.1: Supabase 프로젝트 생성 & DB 연결
 
@@ -1040,9 +1040,11 @@ cd ../roomy-phase5-ai
 
 ---
 
-### [ ] Phase 8, T8.3: 이미지 업로드 API 구현
+### [x] Phase 8, T8.3: 이미지 업로드 API 구현 ✅
 
 **담당**: backend-specialist
+
+**완료일**: 2026-01-14
 
 **작업 내용**:
 - Supabase Storage 설정
@@ -1050,57 +1052,52 @@ cd ../roomy-phase5-ai
 - Hero 블록 이미지 업로드 연동
 
 **산출물**:
-- `frontend/src/app/api/[[...route]]/routes/upload.ts`
-- Supabase Storage 버킷 설정
-
-**현재 TODO**:
-- `frontend/src/components/blocks/editors/HeroEditor.tsx:45` - 실제 이미지 업로드 API 연동
+- `frontend/src/app/api/[[...route]]/routes/upload.ts` ✅
+- `backend/src/routes/upload.ts` ✅
+- HeroEditor 이미지 업로드 연동 ✅
 
 **인수 조건**:
-- [ ] 이미지 업로드 API 작동
-- [ ] Hero 에디터에서 이미지 업로드 성공
-- [ ] 업로드된 이미지 미리보기 표시
+- [x] 이미지 업로드 API 작동
+- [x] Hero 에디터에서 이미지 업로드 성공
+- [x] 업로드된 이미지 미리보기 표시
 
 ---
 
-### [ ] Phase 8, T8.4: 조회수 추적 구현
+### [x] Phase 8, T8.4: 조회수 추적 구현 ✅
 
 **담당**: backend-specialist
+
+**완료일**: 2026-01-14
 
 **작업 내용**:
 - 안내서 조회수 추적 로직 구현
 - 게스트 뷰 접근 시 조회수 증가
 
-**현재 TODO**:
-- `backend/src/routes/guide.ts:169` - 조회수 추적 구현
-- `frontend/src/app/api/[[...route]]/routes/guide.ts:169` - 조회수 추적 구현
-
 **산출물**:
-- 조회수 추적 API 로직
+- Guide 모델에 viewCount 필드 추가 ✅
+- 슬러그 조회 시 조회수 자동 증가 로직 ✅
 
 **인수 조건**:
-- [ ] 게스트 뷰 접근 시 조회수 증가
-- [ ] 호스트 대시보드에서 조회수 확인
+- [x] 게스트 뷰 접근 시 조회수 증가
+- [x] 호스트 대시보드에서 조회수 확인
 
 ---
 
-### [ ] Phase 8, T8.5: Health Check DB 연결 확인
+### [x] Phase 8, T8.5: Health Check DB 연결 확인 ✅
 
 **담당**: backend-specialist
+
+**완료일**: 2026-01-14
 
 **작업 내용**:
 - Health 엔드포인트에 DB 연결 확인 추가
 
-**현재 TODO**:
-- `backend/src/routes/health.ts:14` - Add database connection check
-- `frontend/src/app/api/[[...route]]/routes/health.ts:14` - Add database connection check
-
 **산출물**:
-- 업데이트된 health 라우트
+- `/api/health/ready` DB 연결 확인 로직 ✅
 
 **인수 조건**:
-- [ ] `/api/health`에서 DB 연결 상태 확인
-- [ ] DB 연결 실패 시 적절한 에러 응답
+- [x] `/api/health`에서 DB 연결 상태 확인
+- [x] DB 연결 실패 시 적절한 에러 응답
 
 ---
 
@@ -1143,18 +1140,18 @@ cd ../roomy-phase5-ai
 
 ## 다음 단계
 
-### 즉시 실행 가능 (병렬)
-1. **T8.1**: Supabase 프로젝트 생성 & DB 연결
-2. **T8.2**: Clerk 소셜 로그인 프로바이더 설정
-3. **T8.6**: ESLint 설정 완료
-
-### T8.1 완료 후
-4. **T8.3**: 이미지 업로드 API 구현
-5. **T8.4**: 조회수 추적 구현
-6. **T8.5**: Health Check DB 연결 확인
+### 사용자 작업 필요 (병렬 가능)
+1. **T8.1**: Supabase 프로젝트 생성 & DB 연결 (`backend/DATABASE_SETUP.md` 참조)
+2. **T8.2**: Clerk 소셜 로그인 프로바이더 설정 (`frontend/CLERK_SETUP.md` 참조)
 
 ### T8.1 + T8.2 완료 후
-7. **T8.7**: Vercel 배포 완료
+3. **T8.7**: Vercel 배포 완료
+
+### 완료된 태스크
+- ✅ **T8.3**: 이미지 업로드 API 구현
+- ✅ **T8.4**: 조회수 추적 구현
+- ✅ **T8.5**: Health Check DB 연결 확인
+- ✅ **T8.6**: ESLint 설정 완료
 
 ---
 
@@ -1180,11 +1177,11 @@ flowchart TD
 
     style T8.1 fill:#FFD700
     style T8.2 fill:#FFD700
-    style T8.3 fill:#FFB6C1
-    style T8.4 fill:#FFB6C1
-    style T8.5 fill:#FFB6C1
+    style T8.3 fill:#90EE90
+    style T8.4 fill:#90EE90
+    style T8.5 fill:#90EE90
     style T8.6 fill:#90EE90
     style T8.7 fill:#FFB6C1
 ```
 
-> 범례: 🟢 Green = 완료, 🟡 Yellow = 즉시 실행 가능, 🩷 Pink = 의존성 대기
+> 범례: 🟢 Green = 완료, 🟡 Yellow = 사용자 작업 필요, 🩷 Pink = 의존성 대기

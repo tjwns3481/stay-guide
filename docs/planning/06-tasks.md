@@ -1138,7 +1138,7 @@ cd ../roomy-phase5-ai
 - 프로덕션 배포
 
 **산출물**:
-- 프로덕션 URL: https://frontend-nu-opal-26.vercel.app ✅
+- 프로덕션 URL: https://roomy-app.vercel.app ✅
 
 **인수 조건**:
 - [x] Vercel 배포 URL 접속 가능
@@ -1149,7 +1149,7 @@ cd ../roomy-phase5-ai
 ## Phase 8 완료! 🎉
 
 ### 프로덕션 URL
-- **https://frontend-nu-opal-26.vercel.app**
+- **https://roomy-app.vercel.app**
 
 ### 완료된 태스크
 - ✅ **T8.1**: Supabase 프로젝트 생성 & DB 연결

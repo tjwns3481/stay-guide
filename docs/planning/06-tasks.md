@@ -989,11 +989,13 @@ cd ../roomy-phase5-ai
 
 ## M8: 배포 준비 & 품질 개선
 
-> **상태**: 진행 중 (T8.3, T8.4, T8.5, T8.6 완료)
+> **상태**: 진행 중 (T8.1, T8.3, T8.4, T8.5, T8.6 완료)
 
-### [ ] Phase 8, T8.1: Supabase 프로젝트 생성 & DB 연결
+### [x] Phase 8, T8.1: Supabase 프로젝트 생성 & DB 연결 ✅
 
 **담당**: database-specialist
+
+**완료일**: 2026-01-14
 
 **작업 내용**:
 - Supabase 프로젝트 생성 (https://app.supabase.com)
@@ -1002,19 +1004,18 @@ cd ../roomy-phase5-ai
 - Prisma 마이그레이션 실행
 
 **산출물**:
-- Supabase 프로젝트 (대시보드 접속 가능)
-- `backend/prisma/migrations/` (마이그레이션 파일)
-- `.env.local` 환경 변수 설정 완료
+- Supabase 프로젝트 (대시보드 접속 가능) ✅
+- `.env` 환경 변수 설정 완료 ✅
 - `backend/DATABASE_SETUP.md` (설정 가이드) ✅
 - `backend/scripts/test-db-connection.ts` (연결 테스트) ✅
 
 **인수 조건**:
 - [x] 설정 가이드 문서 작성 (`backend/DATABASE_SETUP.md`)
 - [x] 연결 테스트 스크립트 작성
-- [ ] Supabase 프로젝트 생성 (사용자 작업 필요)
-- [ ] `DATABASE_URL` 환경 변수 설정 (사용자 작업 필요)
-- [ ] `npx prisma db push` 성공
-- [ ] Supabase 대시보드에서 테이블 확인
+- [x] Supabase 프로젝트 생성
+- [x] `DATABASE_URL` 환경 변수 설정
+- [x] `npx prisma db push` 성공
+- [x] Supabase 대시보드에서 테이블 확인
 
 ---
 
@@ -1175,7 +1176,7 @@ flowchart TD
     T8.1 --> T8.7
     T8.2 --> T8.7
 
-    style T8.1 fill:#FFD700
+    style T8.1 fill:#90EE90
     style T8.2 fill:#FFD700
     style T8.3 fill:#90EE90
     style T8.4 fill:#90EE90

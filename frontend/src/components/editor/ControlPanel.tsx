@@ -4,7 +4,6 @@ import { useState } from 'react'
 import {
   ChevronDown,
   ChevronRight,
-  ChevronLeft,
   Plus,
   Settings,
   Palette,
@@ -37,11 +36,9 @@ const BLOCK_ICONS: Record<BlockType, React.ReactNode> = {
 export function ControlPanel() {
   const {
     guide,
-    activePanel,
     setActivePanel,
     addBlock,
     updateGuide,
-    selectedBlockId,
     selectBlock,
     getSelectedBlock,
   } = useEditorStore()

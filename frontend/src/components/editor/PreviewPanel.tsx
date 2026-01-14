@@ -12,12 +12,10 @@ export function PreviewPanel() {
   const { guide } = useEditorStore()
   const [device, setDevice] = useState<PreviewDevice>('mobile')
 
-  if (!guide) return null
-
-  const visibleBlocks = guide.blocks.filter((b) => b.isVisible)
-
-  // 테마 스타일 계산
+  // 테마 스타일 계산 - 훅은 조건문 전에 호출되어야 함
   const themeStyle = useMemo(() => {
+    if (!guide) return {} as React.CSSProperties
+
     const themeSettings = guide.themeSettings as ThemeSettings | null
     const theme =
       themeSettings?.preset && THEME_PRESETS[themeSettings.preset as ThemePreset]
@@ -30,7 +28,11 @@ export function PreviewPanel() {
       '--theme-background': themeSettings?.backgroundColor || theme.backgroundColor,
       '--theme-font': themeSettings?.fontFamily || theme.fontFamily,
     } as React.CSSProperties
-  }, [guide.themeSettings])
+  }, [guide])
+
+  if (!guide) return null
+
+  const visibleBlocks = guide.blocks.filter((b) => b.isVisible)
 
   return (
     <div className="flex flex-col items-center">

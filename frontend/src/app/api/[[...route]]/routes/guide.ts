@@ -204,7 +204,7 @@ guideRoutes.post('/', authMiddleware, zValidator('json', createGuideSchema), asy
   }
 
   // 슬러그 처리
-  let slug = data.slug || generateGuideSlug()
+  const slug = data.slug || generateGuideSlug()
 
   // 슬러그 유효성 검사
   if (data.slug && !isValidSlug(data.slug)) {

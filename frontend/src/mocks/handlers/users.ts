@@ -1,5 +1,5 @@
 import { http, HttpResponse, delay } from 'msw'
-import { currentUser, mockUsers } from '../data'
+import { currentUser } from '../data'
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8787'
 

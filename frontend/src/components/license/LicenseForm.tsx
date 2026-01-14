@@ -43,7 +43,7 @@ export function LicenseForm() {
         text: '라이선스가 활성화되었습니다.',
       })
       setLicenseKey('')
-    } catch (err) {
+    } catch {
       setMessage({
         type: 'error',
         text: error || '라이선스 활성화에 실패했습니다.',

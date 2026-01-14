@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useCallback } from 'react'
-import { useEditorStore, Guide, Block } from '@/stores/editor'
+import { useEditorStore } from '@/stores/editor'
 
 interface UseAutoSaveOptions {
   /** 디바운스 딜레이 (ms) */

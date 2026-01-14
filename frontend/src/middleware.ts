@@ -15,8 +15,8 @@ const isAuthRoute = createRouteMatcher([
   '/sign-up(.*)',
 ])
 
-// 공개 라우트 정의 (인증 불필요)
-const isPublicRoute = createRouteMatcher([
+// 공개 라우트 정의 (인증 불필요) - 현재는 사용하지 않지만 향후 확장을 위해 유지
+const _isPublicRoute = createRouteMatcher([
   '/',
   '/g/(.*)',  // 게스트용 안내서 페이지
   '/demo(.*)',

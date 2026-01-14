@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Wifi, Plus, X, Trash2, GripVertical } from 'lucide-react'
+import { Wifi, Plus, Trash2, GripVertical } from 'lucide-react'
 import { useEditorStore, Block } from '@/stores/editor'
 
 interface WifiInfo {

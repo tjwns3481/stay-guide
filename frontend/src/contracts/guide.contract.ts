@@ -4,6 +4,7 @@ import {
   PaginationRequestSchema,
   PaginatedResponseSchema,
   ThemeSettingsSchema,
+  LicenseFeaturesSchema,
 } from './types'
 
 // ============================================
@@ -48,6 +49,11 @@ export const GuideDetailSchema = GuideSchema.extend({
       isVisible: z.boolean(),
     })
   ),
+  ownerLicense: z
+    .object({
+      features: LicenseFeaturesSchema,
+    })
+    .optional(),
 })
 
 // ============================================

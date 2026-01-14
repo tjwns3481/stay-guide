@@ -4,14 +4,16 @@ import { useState } from 'react'
 import type { GuideDetail } from '@/contracts/guide.contract'
 import { BlockRenderer } from './BlockRenderer'
 import { ThemeProvider } from './ThemeProvider'
+import { Watermark } from './Watermark'
 import type { ThemeSettings } from '@/contracts/types'
 import { AiFloatingButton, ChatInterface } from '@/components/ai'
 
 interface GuideRendererProps {
   guide: GuideDetail
+  showWatermark?: boolean
 }
 
-export function GuideRenderer({ guide }: GuideRendererProps) {
+export function GuideRenderer({ guide, showWatermark = true }: GuideRendererProps) {
   const [isChatOpen, setIsChatOpen] = useState(false)
 
   // 보이는 블록만 필터링하고 order 순서로 정렬
@@ -62,6 +64,9 @@ export function GuideRenderer({ guide }: GuideRendererProps) {
           isOpen={isChatOpen}
           onClose={() => setIsChatOpen(false)}
         />
+
+        {/* 워터마크 */}
+        <Watermark show={showWatermark} />
       </div>
     </ThemeProvider>
   )

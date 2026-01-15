@@ -22,8 +22,6 @@ import {
 import { CSS } from '@dnd-kit/utilities'
 import {
   GripVertical,
-  Eye,
-  EyeOff,
   Copy,
   Trash2,
   Image,
@@ -230,7 +228,7 @@ function BlockItemContent({
   isSelected,
   isDragOverlay = false,
   onSelect,
-  onClose,
+  onClose: _onClose,
   onToggleVisibility,
   onDuplicate,
   onDelete,

@@ -1,5 +1,6 @@
 import { UserButton } from '@clerk/nextjs'
 import Link from 'next/link'
+import { ApiClientProvider } from '@/components/providers/ApiClientProvider'
 
 export default function ProtectedLayout({
   children,
@@ -7,6 +8,7 @@ export default function ProtectedLayout({
   children: React.ReactNode
 }) {
   return (
+    <ApiClientProvider>
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="sticky top-0 z-50 border-b border-neutral-200 bg-white/80 backdrop-blur-sm">
@@ -52,5 +54,6 @@ export default function ProtectedLayout({
         {children}
       </main>
     </div>
+    </ApiClientProvider>
   )
 }

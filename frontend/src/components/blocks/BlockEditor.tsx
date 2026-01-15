@@ -14,9 +14,10 @@ import {
 interface BlockEditorProps {
   block: Block
   onClose: () => void
+  isInline?: boolean
 }
 
-export function BlockEditor({ block, onClose }: BlockEditorProps) {
+export function BlockEditor({ block, onClose, isInline = false }: BlockEditorProps) {
   const { toggleBlockVisibility, removeBlock } = useEditorStore()
   const meta = BLOCK_TYPE_META[block.type]
 
@@ -46,6 +47,24 @@ export function BlockEditor({ block, onClose }: BlockEditorProps) {
     }
   }
 
+  // 인라인 모드: 헤더 없이 편집기만 표시
+  if (isInline) {
+    return (
+      <div className="p-4">
+        {renderEditor()}
+        {/* 숨김 상태 배너 */}
+        {!block.isVisible && (
+          <div className="mt-3 px-3 py-2 bg-yellow-50 border border-yellow-100 rounded-lg text-center">
+            <span className="text-sm text-yellow-700">
+              이 블록은 현재 숨김 상태입니다
+            </span>
+          </div>
+        )}
+      </div>
+    )
+  }
+
+  // 기존 전체 화면 모드
   return (
     <div className="flex flex-col h-full">
       {/* 헤더 */}

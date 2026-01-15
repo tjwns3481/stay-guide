@@ -1,16 +1,12 @@
 'use client'
 
 import { useEditorStore, BlockType, BLOCK_TYPE_META } from '@/stores/editor'
-import { Smartphone, Monitor } from 'lucide-react'
-import { useState, useMemo } from 'react'
+import { useMemo } from 'react'
 import { THEME_PRESETS, DEFAULT_THEME, ThemePreset } from '@/lib/theme'
 import type { ThemeSettings } from '@/contracts/types'
 
-type PreviewDevice = 'mobile' | 'desktop'
-
 export function PreviewPanel() {
   const { guide } = useEditorStore()
-  const [device, setDevice] = useState<PreviewDevice>('mobile')
 
   // 테마 스타일 계산 - 훅은 조건문 전에 호출되어야 함
   const themeStyle = useMemo(() => {
@@ -36,41 +32,11 @@ export function PreviewPanel() {
 
   return (
     <div className="flex flex-col items-center">
-      {/* 디바이스 토글 (PC에서만 표시) */}
-      <div className="hidden lg:flex items-center gap-2 mb-4">
-        <button
-          onClick={() => setDevice('mobile')}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm transition-colors ${
-            device === 'mobile'
-              ? 'bg-primary-100 text-primary-700'
-              : 'text-gray-600 hover:bg-gray-100'
-          }`}
-        >
-          <Smartphone className="w-4 h-4" />
-          모바일
-        </button>
-        <button
-          onClick={() => setDevice('desktop')}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm transition-colors ${
-            device === 'desktop'
-              ? 'bg-primary-100 text-primary-700'
-              : 'text-gray-600 hover:bg-gray-100'
-          }`}
-        >
-          <Monitor className="w-4 h-4" />
-          데스크탑
-        </button>
-      </div>
-
-      {/* 프리뷰 컨테이너 */}
+      {/* 모바일 전용 프리뷰 컨테이너 */}
       <div
-        className={`bg-white rounded-2xl shadow-lg overflow-hidden transition-all theme-root ${
-          device === 'mobile'
-            ? 'w-full max-w-[375px]'
-            : 'w-full max-w-[768px]'
-        }`}
+        className="bg-white rounded-2xl shadow-lg overflow-hidden transition-all theme-root w-[375px]"
         style={{
-          minHeight: device === 'mobile' ? '667px' : '500px',
+          minHeight: '667px',
           ...themeStyle,
         }}
       >
@@ -87,7 +53,7 @@ export function PreviewPanel() {
           {visibleBlocks.length === 0 ? (
             <div className="text-center py-12 text-gray-400">
               <p>블록이 없습니다</p>
-              <p className="text-sm mt-1">왼쪽에서 블록을 추가해보세요</p>
+              <p className="text-sm mt-1">오른쪽에서 블록을 추가해보세요</p>
             </div>
           ) : (
             visibleBlocks.map((block) => (
@@ -129,7 +95,7 @@ function BlockPreview({ type, content }: BlockPreviewProps) {
       const subtitle = getString(content.subtitle)
 
       return (
-        <div className="relative rounded-xl overflow-hidden bg-gray-100">
+        <div className="relative w-full rounded-xl overflow-hidden bg-gray-100">
           {imageUrl ? (
             <img
               src={imageUrl}

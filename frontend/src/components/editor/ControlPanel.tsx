@@ -17,7 +17,6 @@ import {
 } from 'lucide-react'
 import { useEditorStore, BlockType, BLOCK_TYPE_META } from '@/stores/editor'
 import { BlockList } from './BlockList'
-import { BlockEditor } from '@/components/blocks'
 import { ThemeCustomizer } from './ThemeCustomizer'
 import type { ThemeSettings } from '@/contracts/types'
 
@@ -39,13 +38,9 @@ export function ControlPanel() {
     setActivePanel,
     addBlock,
     updateGuide,
-    selectBlock,
-    getSelectedBlock,
   } = useEditorStore()
   const [expandedSection, setExpandedSection] = useState<PanelSection>('blocks')
   const [showAddBlockMenu, setShowAddBlockMenu] = useState(false)
-
-  const selectedBlock = getSelectedBlock()
 
   if (!guide) return null
 
@@ -57,16 +52,6 @@ export function ControlPanel() {
   const handleAddBlock = (type: BlockType) => {
     addBlock(type)
     setShowAddBlockMenu(false)
-  }
-
-  // 블록 에디터 모드
-  if (selectedBlock) {
-    return (
-      <BlockEditor
-        block={selectedBlock}
-        onClose={() => selectBlock(null)}
-      />
-    )
   }
 
   return (

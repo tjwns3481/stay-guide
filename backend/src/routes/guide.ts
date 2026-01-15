@@ -23,6 +23,14 @@ const createGuideSchema = z.object({
     .optional(),
 })
 
+const blockSchema = z.object({
+  id: z.string(),
+  type: z.string(),
+  order: z.number(),
+  content: z.record(z.unknown()),
+  isVisible: z.boolean(),
+})
+
 const updateGuideSchema = z.object({
   title: z.string().min(1).max(100).optional(),
   accommodationName: z.string().min(1).max(100).optional(),
@@ -34,6 +42,7 @@ const updateGuideSchema = z.object({
     .optional(),
   themeId: z.string().nullable().optional(),
   themeSettings: z.record(z.unknown()).nullable().optional(),
+  blocks: z.array(blockSchema).optional(),
 })
 
 const publishGuideSchema = z.object({
@@ -473,15 +482,40 @@ guideRoutes.patch('/:id', authMiddleware, zValidator('json', updateGuideSchema),
     updateData.themeSettings = data.themeSettings as Prisma.InputJsonValue
   }
 
-  // 안내서 업데이트
-  const updatedGuide = await prisma.guide.update({
-    where: { id },
-    data: updateData,
-    include: {
-      blocks: {
-        orderBy: { order: 'asc' },
+  // 트랜잭션으로 안내서와 블록 업데이트
+  const updatedGuide = await prisma.$transaction(async (tx) => {
+    // 블록 업데이트가 있는 경우
+    if (data.blocks) {
+      // 기존 블록 삭제
+      await tx.block.deleteMany({
+        where: { guideId: id },
+      })
+
+      // 새 블록 생성
+      if (data.blocks.length > 0) {
+        await tx.block.createMany({
+          data: data.blocks.map((block) => ({
+            id: block.id,
+            guideId: id,
+            type: block.type,
+            order: block.order,
+            content: block.content as Prisma.InputJsonValue,
+            isVisible: block.isVisible,
+          })),
+        })
+      }
+    }
+
+    // 안내서 업데이트
+    return tx.guide.update({
+      where: { id },
+      data: updateData,
+      include: {
+        blocks: {
+          orderBy: { order: 'asc' },
+        },
       },
-    },
+    })
   })
 
   return c.json({

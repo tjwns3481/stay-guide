@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { UserProfile } from '@/contracts/user.contract'
+import { api, ApiError } from '@/lib/api/client'
 
 interface AuthState {
   // 사용자 프로필 (API에서 가져온 데이터)
@@ -20,9 +21,6 @@ interface AuthState {
   syncUser: () => Promise<void>
   updateUserName: (name: string) => Promise<void>
 }
-
-// API Base URL
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8787'
 
 export const useAuthStore = create<AuthState>()(
   persist(
@@ -45,33 +43,22 @@ export const useAuthStore = create<AuthState>()(
         set({ isLoading: true, error: null })
 
         try {
-          const response = await fetch(`${API_BASE_URL}/api/users/me`, {
-            credentials: 'include',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          })
+          const response = await api.get<UserProfile>('/users/me')
 
-          if (!response.ok) {
-            if (response.status === 401) {
-              set({ user: null, isLoading: false })
-              return
-            }
-            throw new Error('Failed to fetch user')
-          }
-
-          const data = await response.json()
-
-          if (data.success && data.data) {
+          if (response.success && response.data) {
             set({
-              user: data.data,
+              user: response.data,
               isLoading: false,
               lastSyncedAt: Date.now(),
             })
           } else {
-            throw new Error(data.error?.message || 'Failed to fetch user')
+            throw new Error('Failed to fetch user')
           }
         } catch (error) {
+          if (error instanceof ApiError && error.status === 401) {
+            set({ user: null, isLoading: false })
+            return
+          }
           set({
             error: error instanceof Error ? error.message : 'Unknown error',
             isLoading: false,
@@ -87,28 +74,15 @@ export const useAuthStore = create<AuthState>()(
         set({ isLoading: true, error: null })
 
         try {
-          const response = await fetch(`${API_BASE_URL}/api/users/me`, {
-            method: 'PATCH',
-            credentials: 'include',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ name }),
-          })
+          const response = await api.patch<UserProfile>('/users/me', { name })
 
-          if (!response.ok) {
-            throw new Error('Failed to update user')
-          }
-
-          const data = await response.json()
-
-          if (data.success && data.data) {
+          if (response.success && response.data) {
             set({
-              user: { ...user, name: data.data.name },
+              user: { ...user, name: response.data.name },
               isLoading: false,
             })
           } else {
-            throw new Error(data.error?.message || 'Failed to update user')
+            throw new Error('Failed to update user')
           }
         } catch (error) {
           set({

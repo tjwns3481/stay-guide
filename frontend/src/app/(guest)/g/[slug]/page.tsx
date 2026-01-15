@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import { GuideRenderer } from '@/components/guest/GuideRenderer'
 import type { GuideDetail } from '@/contracts/guide.contract'
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8787'
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8787/api'
 
 interface PageProps {
   params: Promise<{
@@ -14,7 +14,7 @@ interface PageProps {
 // 슬러그로 안내서 가져오기 (서버 컴포넌트에서 직접 fetch)
 async function getGuideBySlug(slug: string): Promise<GuideDetail | null> {
   try {
-    const res = await fetch(`${API_BASE}/api/guides/slug/${slug}`, {
+    const res = await fetch(`${API_BASE}/guides/slug/${slug}`, {
       cache: 'no-store',
     })
 

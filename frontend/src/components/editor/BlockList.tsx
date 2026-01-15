@@ -32,8 +32,11 @@ import {
   MapPin,
   Heart,
   Bell,
+  ChevronDown,
+  ChevronRight,
 } from 'lucide-react'
 import { useEditorStore, BlockType, Block, BLOCK_TYPE_META } from '@/stores/editor'
+import { BlockEditor } from '@/components/blocks'
 
 // 블록 타입 아이콘 매핑
 const BLOCK_ICONS: Record<BlockType, React.ReactNode> = {
@@ -126,7 +129,8 @@ export function BlockList() {
               block={block}
               isSelected={selectedBlockId === block.id}
               isDragging={activeId === block.id}
-              onSelect={() => selectBlock(block.id)}
+              onSelect={() => selectBlock(selectedBlockId === block.id ? null : block.id)}
+              onClose={() => selectBlock(null)}
               onToggleVisibility={() => toggleBlockVisibility(block.id)}
               onDuplicate={() => duplicateBlock(block.id)}
               onDelete={() => removeBlock(block.id)}
@@ -154,6 +158,7 @@ interface SortableBlockItemProps {
   isSelected: boolean
   isDragging: boolean
   onSelect: () => void
+  onClose: () => void
   onToggleVisibility: () => void
   onDuplicate: () => void
   onDelete: () => void
@@ -164,6 +169,7 @@ function SortableBlockItem({
   isSelected,
   isDragging,
   onSelect,
+  onClose,
   onToggleVisibility,
   onDuplicate,
   onDelete,
@@ -191,11 +197,18 @@ function SortableBlockItem({
         block={block}
         isSelected={isSelected}
         onSelect={onSelect}
+        onClose={onClose}
         onToggleVisibility={onToggleVisibility}
         onDuplicate={onDuplicate}
         onDelete={onDelete}
         dragHandleProps={{ ...attributes, ...listeners }}
       />
+      {/* 인라인 블록 편집기 */}
+      {isSelected && (
+        <div className="mt-2 border border-primary-200 rounded-lg bg-white overflow-hidden">
+          <BlockEditor block={block} onClose={onClose} isInline />
+        </div>
+      )}
     </div>
   )
 }
@@ -205,6 +218,7 @@ interface BlockItemContentProps {
   isSelected: boolean
   isDragOverlay?: boolean
   onSelect?: () => void
+  onClose?: () => void
   onToggleVisibility?: () => void
   onDuplicate?: () => void
   onDelete?: () => void
@@ -216,6 +230,7 @@ function BlockItemContent({
   isSelected,
   isDragOverlay = false,
   onSelect,
+  onClose,
   onToggleVisibility,
   onDuplicate,
   onDelete,
@@ -274,45 +289,63 @@ function BlockItemContent({
         <p className="text-xs text-gray-400">{meta.label}</p>
       </div>
 
-      {/* 액션 버튼들 */}
+      {/* 확장/축소 아이콘 */}
       {!isDragOverlay && (
-        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="text-gray-400">
+          {isSelected ? (
+            <ChevronDown className="w-4 h-4" />
+          ) : (
+            <ChevronRight className="w-4 h-4" />
+          )}
+        </div>
+      )}
+
+      {/* 토글 스위치 - 항상 표시 */}
+      {!isDragOverlay && (
+        <div className="flex items-center gap-2">
+          {/* 토글 스위치 */}
           <button
             onClick={(e) => {
               e.stopPropagation()
               onToggleVisibility?.()
             }}
-            className="p-1.5 rounded hover:bg-gray-200 text-gray-500"
+            className={`relative w-10 h-5 rounded-full transition-colors ${
+              block.isVisible ? 'bg-primary-500' : 'bg-gray-300'
+            }`}
             title={block.isVisible ? '숨기기' : '보이기'}
           >
-            {block.isVisible ? (
-              <Eye className="w-4 h-4" />
-            ) : (
-              <EyeOff className="w-4 h-4" />
-            )}
+            <span
+              className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform ${
+                block.isVisible ? 'left-5' : 'left-0.5'
+              }`}
+            />
           </button>
-          <button
-            onClick={(e) => {
-              e.stopPropagation()
-              onDuplicate?.()
-            }}
-            className="p-1.5 rounded hover:bg-gray-200 text-gray-500"
-            title="복제"
-          >
-            <Copy className="w-4 h-4" />
-          </button>
-          <button
-            onClick={(e) => {
-              e.stopPropagation()
-              if (confirm('이 블록을 삭제하시겠습니까?')) {
-                onDelete?.()
-              }
-            }}
-            className="p-1.5 rounded hover:bg-red-100 text-gray-500 hover:text-red-600"
-            title="삭제"
-          >
-            <Trash2 className="w-4 h-4" />
-          </button>
+
+          {/* 액션 버튼들 - hover 시 표시 */}
+          <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                onDuplicate?.()
+              }}
+              className="p-1 rounded hover:bg-gray-200 text-gray-400"
+              title="복제"
+            >
+              <Copy className="w-3.5 h-3.5" />
+            </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                if (confirm('이 블록을 삭제하시겠습니까?')) {
+                  onDelete?.()
+                }
+              }}
+              className="p-1 rounded hover:bg-red-100 text-gray-400 hover:text-red-600"
+              title="삭제"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+            </button>
+          </div>
         </div>
       )}
     </div>

@@ -1,6 +1,6 @@
 import { currentUser } from '@clerk/nextjs/server'
 import Link from 'next/link'
-import { UserInfoCard } from '@/components/dashboard'
+import { UserInfoCard, GuidesList } from '@/components/dashboard'
 
 export default async function DashboardPage() {
   const user = await currentUser()
@@ -60,36 +60,7 @@ export default async function DashboardPage() {
           </h2>
         </div>
 
-        {/* Empty State */}
-        <div className="rounded-xl border border-neutral-200 bg-white p-12 text-center">
-          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-neutral-100">
-            <svg
-              className="h-8 w-8 text-neutral-400"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-              />
-            </svg>
-          </div>
-          <h3 className="text-heading-sm font-semibold text-text-primary">
-            아직 안내서가 없어요
-          </h3>
-          <p className="mt-2 text-body-sm text-text-secondary">
-            첫 번째 안내서를 만들고 게스트에게 공유해보세요
-          </p>
-          <Link
-            href="/editor/new"
-            className="mt-6 inline-flex items-center justify-center rounded-lg bg-primary-500 px-6 py-2.5 text-body-sm font-semibold text-white transition-colors hover:bg-primary-600"
-          >
-            안내서 만들기
-          </Link>
-        </div>
+        <GuidesList />
       </div>
     </div>
   )

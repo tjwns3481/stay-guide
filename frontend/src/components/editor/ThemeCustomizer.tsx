@@ -47,44 +47,78 @@ export function ThemeCustomizer({ themeSettings, onChange }: ThemeCustomizerProp
 
   return (
     <div className="space-y-4">
+      {/* 빠른 포인트 컬러 선택 */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          포인트 컬러
+        </label>
+        <div className="flex flex-wrap gap-2">
+          {['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899'].map((color) => (
+            <button
+              key={color}
+              onClick={() => handleCustomChange({ primaryColor: color })}
+              className={`w-8 h-8 rounded-lg border-2 transition-all hover:scale-110 ${
+                currentTheme.primaryColor === color
+                  ? 'border-gray-800 ring-2 ring-gray-300'
+                  : 'border-gray-200'
+              }`}
+              style={{ backgroundColor: color }}
+            />
+          ))}
+        </div>
+      </div>
+
       {/* 프리셋 선택 */}
       <ThemeSelector selectedPreset={currentPreset} onSelectPreset={handlePresetSelect} />
 
-      {/* 커스텀 색상 */}
-      <div className="pt-2 border-t border-gray-200">
-        <p className="text-xs text-gray-500 mb-3">커스텀 설정</p>
+      {/* 커스텀 색상 - 접이식 */}
+      <details className="group">
+        <summary className="flex items-center justify-between cursor-pointer py-2 border-t border-gray-200 text-sm font-medium text-gray-700">
+          <span>커스텀 설정</span>
+          <svg
+            className="w-4 h-4 text-gray-400 transition-transform group-open:rotate-180"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </summary>
 
-        <div className="space-y-3">
+        <div className="pt-3 space-y-3">
           <ColorPicker
             label="포인트 컬러"
             value={currentTheme.primaryColor}
             onChange={(color) => handleCustomChange({ primaryColor: color })}
+            showPalette={false}
           />
 
           <ColorPicker
             label="보조 컬러"
             value={currentTheme.secondaryColor}
             onChange={(color) => handleCustomChange({ secondaryColor: color })}
+            showPalette={false}
           />
 
           <ColorPicker
             label="배경색"
             value={currentTheme.backgroundColor}
             onChange={(color) => handleCustomChange({ backgroundColor: color })}
+            showPalette={false}
           />
 
           <FontSelector
             value={currentTheme.fontFamily}
             onChange={(fontFamily) => handleCustomChange({ fontFamily })}
           />
-        </div>
 
-        {currentPreset && (
-          <p className="mt-3 text-xs text-amber-600">
-            커스텀 값을 변경하면 프리셋이 해제됩니다
-          </p>
-        )}
-      </div>
+          {currentPreset && (
+            <p className="text-xs text-amber-600">
+              커스텀 값을 변경하면 프리셋이 해제됩니다
+            </p>
+          )}
+        </div>
+      </details>
     </div>
   )
 }

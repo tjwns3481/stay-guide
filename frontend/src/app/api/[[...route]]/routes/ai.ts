@@ -1,21 +1,68 @@
 import { Hono } from 'hono'
 import { streamSSE } from 'hono/streaming'
-import { embedGuideBlocks, streamChat } from '../services/ai'
+import {
+  embedGuideBlocks,
+  streamChat,
+  getLLMProvider,
+  BlockData,
+} from '../services/ai-free'
 import { prisma } from '@/lib/server/prisma'
 
 export const aiRoutes = new Hono()
+
+// GET /api/ai/status - AI Provider 상태 확인
+aiRoutes.get('/status', async (c) => {
+  const provider = getLLMProvider()
+
+  return c.json({
+    success: true,
+    data: {
+      provider,
+      status: 'configured',
+      stack: {
+        embedding: 'Google text-embedding-004 (768 dims, free tier)',
+        vectorDB: 'PostgreSQL + pgvector (Supabase)',
+        llm: 'Google Gemini 1.5 Flash (free tier)',
+      },
+      message: `무료 RAG 스택 사용 중`,
+    },
+  })
+})
 
 // POST /api/guides/:guideId/ai/embed - 임베딩 생성
 aiRoutes.post('/:guideId/ai/embed', async (c) => {
   const guideId = c.req.param('guideId')
 
   try {
-    const count = await embedGuideBlocks(guideId)
+    // 가이드의 블록들 조회
+    const guide = await prisma.guide.findUnique({
+      where: { id: guideId },
+      include: { blocks: { where: { isVisible: true }, orderBy: { order: 'asc' } } },
+    })
+
+    if (!guide) {
+      return c.json(
+        { success: false, error: { code: 'NOT_FOUND', message: '안내서를 찾을 수 없습니다' } },
+        404
+      )
+    }
+
+    // 블록 데이터 변환
+    const blocks: BlockData[] = guide.blocks.map((block) => ({
+      id: block.id,
+      type: block.type,
+      content: block.content as Record<string, unknown>,
+    }))
+
+    // ChromaDB에 임베딩 저장
+    const count = await embedGuideBlocks(guideId, blocks)
+
     return c.json({
       success: true,
       data: { message: '임베딩 생성 완료', embeddingsCount: count },
     })
   } catch (error) {
+    console.error('[Embed Error]', error)
     return c.json(
       { success: false, error: { code: 'EMBED_ERROR', message: (error as Error).message } },
       500
@@ -172,4 +219,77 @@ aiRoutes.get('/:guideId/ai/stats', async (c) => {
       topQuestions: [], // 추후 구현
     },
   })
+})
+
+// GET /api/guides/:guideId/ai/settings - AI 설정 조회
+aiRoutes.get('/:guideId/ai/settings', async (c) => {
+  const guideId = c.req.param('guideId')
+
+  const guide = await prisma.guide.findUnique({
+    where: { id: guideId },
+    select: {
+      id: true,
+      aiEnabled: true,
+      aiInstructions: true,
+    },
+  })
+
+  if (!guide) {
+    return c.json(
+      { success: false, error: { code: 'NOT_FOUND', message: '안내서를 찾을 수 없습니다' } },
+      404
+    )
+  }
+
+  return c.json({
+    success: true,
+    data: {
+      aiEnabled: guide.aiEnabled,
+      aiInstructions: guide.aiInstructions,
+    },
+  })
+})
+
+// PUT /api/guides/:guideId/ai/settings - AI 설정 업데이트
+aiRoutes.put('/:guideId/ai/settings', async (c) => {
+  const guideId = c.req.param('guideId')
+  const body = await c.req.json()
+  const { aiEnabled, aiInstructions } = body
+
+  // 지침 길이 제한 (5000자)
+  if (aiInstructions && aiInstructions.length > 5000) {
+    return c.json(
+      { success: false, error: { code: 'VALIDATION_ERROR', message: 'AI 지침은 5000자를 초과할 수 없습니다' } },
+      400
+    )
+  }
+
+  try {
+    const updatedGuide = await prisma.guide.update({
+      where: { id: guideId },
+      data: {
+        ...(typeof aiEnabled === 'boolean' && { aiEnabled }),
+        ...(aiInstructions !== undefined && { aiInstructions: aiInstructions || null }),
+      },
+      select: {
+        id: true,
+        aiEnabled: true,
+        aiInstructions: true,
+      },
+    })
+
+    return c.json({
+      success: true,
+      data: {
+        message: 'AI 설정이 업데이트되었습니다',
+        aiEnabled: updatedGuide.aiEnabled,
+        aiInstructions: updatedGuide.aiInstructions,
+      },
+    })
+  } catch (error) {
+    return c.json(
+      { success: false, error: { code: 'UPDATE_ERROR', message: (error as Error).message } },
+      500
+    )
+  }
 })

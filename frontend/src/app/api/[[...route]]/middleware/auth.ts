@@ -1,9 +1,5 @@
 import { Context, Next } from 'hono'
-import { createClerkClient, verifyToken } from '@clerk/backend'
-
-const clerk = createClerkClient({
-  secretKey: process.env.CLERK_SECRET_KEY || 'test_secret_key',
-})
+import { verifyToken } from '@clerk/backend'
 
 export interface AuthContext {
   userId: string

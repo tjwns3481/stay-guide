@@ -46,8 +46,8 @@ export function useAiChat({ guideId, onError }: UseAiChatOptions) {
     abortControllerRef.current = new AbortController()
 
     try {
-      const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8787'
-      const response = await fetch(`${API_BASE}/api/guides/${guideId}/ai/chat`, {
+      const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8787/api'
+      const response = await fetch(`${API_BASE}/guides/${guideId}/ai/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message, sessionId }),

@@ -1,7 +1,7 @@
 import { http, HttpResponse, delay } from 'msw'
 import { getGuideBySlug, getGuideById } from '../data'
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8787'
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8787/api'
 
 // Mock 대화 데이터
 const mockConversations: Record<
@@ -72,7 +72,7 @@ function generateAiResponse(message: string, guideId: string): string {
 
 export const aiHandlers = [
   // POST /api/guides/:guideId/ai/chat - AI 채팅 (SSE 스트리밍)
-  http.post(`${API_BASE}/api/guides/:guideId/ai/chat`, async ({ request, params }) => {
+  http.post(`${API_BASE}/guides/:guideId/ai/chat`, async ({ request, params }) => {
     const { guideId } = params
     const guide = getGuideById(guideId as string) || getGuideBySlug(guideId as string)
 

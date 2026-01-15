@@ -64,6 +64,7 @@ export function useAiChat({ guideId, onError }: UseAiChatOptions) {
       if (!reader) throw new Error('No reader')
 
       let buffer = ''
+      let currentEvent = ''
 
       while (true) {
         const { done, value } = await reader.read()
@@ -74,32 +75,43 @@ export function useAiChat({ guideId, onError }: UseAiChatOptions) {
         buffer = lines.pop() || ''
 
         for (const line of lines) {
-          if (line.startsWith('data: ')) {
-            const data = JSON.parse(line.slice(6))
+          // SSE 이벤트 타입 파싱
+          if (line.startsWith('event: ')) {
+            currentEvent = line.slice(7).trim()
+            continue
+          }
 
-            if (line.includes('event: message')) {
-              // 스트리밍 청크 추가
-              setMessages(prev => {
-                const updated = [...prev]
-                const lastMsg = updated[updated.length - 1]
-                if (lastMsg.role === 'assistant') {
-                  lastMsg.content += data.chunk
-                }
-                return updated
-              })
-            } else if (line.includes('event: done')) {
-              // 완료
-              setSessionId(data.sessionId)
-              setMessages(prev => {
-                const updated = [...prev]
-                const lastMsg = updated[updated.length - 1]
-                if (lastMsg.role === 'assistant') {
-                  lastMsg.referencedBlockIds = data.referencedBlockIds
-                }
-                return updated
-              })
-            } else if (line.includes('event: error')) {
-              onError?.(data.message)
+          // SSE 데이터 파싱
+          if (line.startsWith('data: ')) {
+            try {
+              const data = JSON.parse(line.slice(6))
+
+              if (currentEvent === 'message' && data.chunk) {
+                // 스트리밍 청크 추가
+                setMessages(prev => {
+                  const updated = [...prev]
+                  const lastMsg = updated[updated.length - 1]
+                  if (lastMsg.role === 'assistant') {
+                    lastMsg.content += data.chunk
+                  }
+                  return updated
+                })
+              } else if (currentEvent === 'done') {
+                // 완료
+                setSessionId(data.sessionId)
+                setMessages(prev => {
+                  const updated = [...prev]
+                  const lastMsg = updated[updated.length - 1]
+                  if (lastMsg.role === 'assistant') {
+                    lastMsg.referencedBlockIds = data.referencedBlockIds
+                  }
+                  return updated
+                })
+              } else if (currentEvent === 'error') {
+                onError?.(data.message)
+              }
+            } catch {
+              // JSON 파싱 실패 무시
             }
           }
         }

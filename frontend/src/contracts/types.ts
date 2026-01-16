@@ -140,12 +140,32 @@ export const BlockContentSchema = z.discriminatedUnion('type', [
 
 export const ThemePresetEnum = z.enum(['emotional', 'modern', 'natural'])
 
+// 시즌 이펙트 설정
+export const SeasonEnum = z.enum(['spring', 'summer', 'autumn', 'winter', 'none', 'auto'])
+export const SeasonIntensityEnum = z.enum(['light', 'normal', 'heavy'])
+
+export const SeasonEffectSettingsSchema = z.object({
+  enabled: z.boolean().default(true),
+  season: SeasonEnum.default('auto'),
+  intensity: SeasonIntensityEnum.default('normal'),
+})
+
+// 오프닝 애니메이션 설정
+export const OpeningAnimationSettingsSchema = z.object({
+  enabled: z.boolean().default(true),
+  skipEnabled: z.boolean().default(true), // 스킵 버튼 표시 여부
+})
+
 export const ThemeSettingsSchema = z.object({
+  // 기존 색상/폰트 설정
   preset: ThemePresetEnum.optional(),
   primaryColor: z.string().regex(/^#[0-9A-Fa-f]{6}$/).optional(),
   secondaryColor: z.string().regex(/^#[0-9A-Fa-f]{6}$/).optional(),
   backgroundColor: z.string().regex(/^#[0-9A-Fa-f]{6}$/).optional(),
   fontFamily: z.string().optional(),
+  // 효과 설정
+  seasonEffect: SeasonEffectSettingsSchema.optional(),
+  openingAnimation: OpeningAnimationSettingsSchema.optional(),
 })
 
 // ============================================
@@ -180,6 +200,10 @@ export type HostPickBlockContent = z.infer<typeof HostPickBlockContentSchema>
 export type NoticeBlockContent = z.infer<typeof NoticeBlockContentSchema>
 export type BlockContent = z.infer<typeof BlockContentSchema>
 export type ThemePreset = z.infer<typeof ThemePresetEnum>
+export type Season = z.infer<typeof SeasonEnum>
+export type SeasonIntensity = z.infer<typeof SeasonIntensityEnum>
+export type SeasonEffectSettings = z.infer<typeof SeasonEffectSettingsSchema>
+export type OpeningAnimationSettings = z.infer<typeof OpeningAnimationSettingsSchema>
 export type ThemeSettings = z.infer<typeof ThemeSettingsSchema>
 export type LicensePlan = z.infer<typeof LicensePlanEnum>
 export type LicenseStatus = z.infer<typeof LicenseStatusEnum>

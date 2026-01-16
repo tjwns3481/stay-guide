@@ -21,9 +21,6 @@ import {
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import {
-  GripVertical,
-  Copy,
-  Trash2,
   Image,
   Images,
   Clock,
@@ -31,8 +28,6 @@ import {
   MapPin,
   Heart,
   Bell,
-  ChevronDown,
-  ChevronRight,
 } from 'lucide-react'
 import { useEditorStore, BlockType, Block, BLOCK_TYPE_META } from '@/stores/editor'
 import { BlockEditor } from '@/components/blocks'
@@ -254,122 +249,100 @@ function BlockItemContent({
     }
   }
 
+  // 블록 타입별 색상
+  const getBlockColor = () => {
+    switch (block.type) {
+      case 'hero': return { bg: 'bg-primary-100', text: 'text-primary-600', initial: 'H' }
+      case 'quick_info': return { bg: 'bg-secondary-100', text: 'text-secondary-600', initial: 'Q' }
+      case 'amenities': return { bg: 'bg-blue-100', text: 'text-blue-600', initial: 'A' }
+      case 'gallery': return { bg: 'bg-purple-100', text: 'text-purple-600', initial: 'G' }
+      case 'host_pick': return { bg: 'bg-pink-100', text: 'text-pink-600', initial: 'P' }
+      case 'notice': return { bg: 'bg-amber-100', text: 'text-amber-600', initial: 'N' }
+      case 'map': return { bg: 'bg-green-100', text: 'text-green-600', initial: 'M' }
+      default: return { bg: 'bg-gray-100', text: 'text-gray-600', initial: '?' }
+    }
+  }
+
+  const color = getBlockColor()
+
   return (
     <div
       onClick={onSelect}
-      className={`group flex items-center gap-2 p-2 rounded-lg border cursor-pointer transition-all ${
+      className={`group flex items-center gap-3 p-4 rounded-xl border cursor-pointer transition-all ${
         isSelected
-          ? 'border-primary-500 bg-primary-50'
-          : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+          ? 'border-primary-300 bg-white shadow-sm'
+          : 'border-gray-200 bg-white hover:border-primary-300 hover:shadow-sm'
       } ${!block.isVisible ? 'opacity-50' : ''} ${
         isDragOverlay ? 'shadow-lg bg-white' : ''
       }`}
     >
+      {/* 블록 타입 배지 */}
+      <div className={`w-6 h-6 rounded ${color.bg} flex items-center justify-center ${color.text} text-xs font-bold flex-shrink-0`}>
+        {color.initial}
+      </div>
+
+      {/* 블록 정보 */}
+      <div className="flex-1 min-w-0">
+        <p className="font-medium text-gray-900 truncate">
+          {getBlockTitle()}
+        </p>
+        <p className="text-xs text-gray-400">{meta.description}</p>
+      </div>
+
+      {/* 액션 버튼들 - hover 시 표시 */}
+      {!isDragOverlay && (
+        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              onToggleVisibility?.()
+            }}
+            className="p-1.5 rounded-lg hover:bg-gray-100"
+            title={block.isVisible ? '숨기기' : '보이기'}
+          >
+            {block.isVisible ? (
+              <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+            ) : (
+              <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+              </svg>
+            )}
+          </button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              if (confirm('이 블록을 삭제하시겠습니까?')) {
+                onDelete?.()
+              }
+            }}
+            className="p-1.5 rounded-lg hover:bg-gray-100"
+            title="삭제"
+          >
+            <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+          </button>
+        </div>
+      )}
+
       {/* 드래그 핸들 */}
       <div
         {...dragHandleProps}
         onClick={(e) => e.stopPropagation()}
         onPointerDown={(e) => {
           e.stopPropagation()
-          // dragHandleProps의 onPointerDown 호출
           const onPointerDown = dragHandleProps?.onPointerDown as ((e: React.PointerEvent) => void) | undefined
           onPointerDown?.(e)
         }}
-        className="cursor-grab active:cursor-grabbing p-1 text-gray-400 hover:text-gray-600 touch-none"
+        className="cursor-grab active:cursor-grabbing text-gray-300 hover:text-gray-400 touch-none flex-shrink-0"
       >
-        <GripVertical className="w-4 h-4" />
+        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8h16M4 16h16" />
+        </svg>
       </div>
-
-      {/* 블록 아이콘 */}
-      <div
-        className={`p-2 rounded-lg ${
-          isSelected ? 'bg-primary-100 text-primary-600' : 'bg-gray-100 text-gray-500'
-        }`}
-      >
-        {BLOCK_ICONS[block.type]}
-      </div>
-
-      {/* 블록 정보 */}
-      <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium text-gray-900 truncate">
-          {getBlockTitle()}
-        </p>
-        <p className="text-xs text-gray-400">{meta.label}</p>
-      </div>
-
-      {/* 확장/축소 아이콘 */}
-      {!isDragOverlay && (
-        <div className="text-gray-400">
-          {isSelected ? (
-            <ChevronDown className="w-4 h-4" />
-          ) : (
-            <ChevronRight className="w-4 h-4" />
-          )}
-        </div>
-      )}
-
-      {/* 토글 스위치 - FeelCard 스타일 */}
-      {!isDragOverlay && (
-        <div className="flex items-center gap-2">
-          {/* FeelCard 스타일 토글 스위치 (dd_wrap) */}
-          <button
-            onClick={(e) => {
-              e.stopPropagation()
-              onToggleVisibility?.()
-            }}
-            className={`
-              relative flex-shrink-0 rounded-md transition-colors
-              ${block.isVisible
-                ? 'bg-[#FAE6D5]'
-                : 'bg-[#EAECEE]'
-              }
-            `}
-            style={{ width: '30px', height: '12px' }}
-            title={block.isVisible ? '숨기기' : '보이기'}
-          >
-            <span
-              className={`
-                absolute rounded-full shadow-sm transition-all duration-200
-                ${block.isVisible
-                  ? 'bg-[#F5CDAA] left-[14px]'
-                  : 'bg-[#F7F8F8] left-[-2px]'
-                }
-              `}
-              style={{
-                width: '18px',
-                height: '18px',
-                top: '-3px',
-              }}
-            />
-          </button>
-
-          {/* 액션 버튼들 - hover 시 표시 */}
-          <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
-            <button
-              onClick={(e) => {
-                e.stopPropagation()
-                onDuplicate?.()
-              }}
-              className="p-1 rounded hover:bg-gray-200 text-gray-400"
-              title="복제"
-            >
-              <Copy className="w-3.5 h-3.5" />
-            </button>
-            <button
-              onClick={(e) => {
-                e.stopPropagation()
-                if (confirm('이 블록을 삭제하시겠습니까?')) {
-                  onDelete?.()
-                }
-              }}
-              className="p-1 rounded hover:bg-red-100 text-gray-400 hover:text-red-600"
-              title="삭제"
-            >
-              <Trash2 className="w-3.5 h-3.5" />
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   )
 }

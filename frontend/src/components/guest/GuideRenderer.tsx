@@ -7,9 +7,9 @@ import { BlockRenderer } from './BlockRenderer'
 import { ThemeProvider } from './ThemeProvider'
 import { Watermark } from './Watermark'
 import { OpeningAnimation } from './OpeningAnimation'
-import type { ThemeSettings } from '@/contracts/types'
+import type { ThemeSettings, Season } from '@/contracts/types'
 import { AiFloatingButton, ChatInterface } from '@/components/ai'
-import { SeasonalEffects, getCurrentSeason } from './SeasonalEffects'
+import { SeasonalEffects, getCurrentSeason, type Season as SeasonType } from './SeasonalEffects'
 
 interface GuideRendererProps {
   guide: GuideDetail
@@ -17,70 +17,111 @@ interface GuideRendererProps {
 }
 
 export function GuideRenderer({ guide, showWatermark = true }: GuideRendererProps) {
+  const themeSettings = guide.themeSettings as ThemeSettings | null
+
+  // 효과 설정 추출
+  const seasonEffectSettings = themeSettings?.seasonEffect
+  const openingAnimationSettings = themeSettings?.openingAnimation
+
+  // 시즌 이펙트 활성화 여부 (기본값: true)
+  const isSeasonEffectEnabled = seasonEffectSettings?.enabled ?? true
+  // 오프닝 애니메이션 활성화 여부 (기본값: true)
+  const isOpeningEnabled = openingAnimationSettings?.enabled ?? true
+  const isSkipEnabled = openingAnimationSettings?.skipEnabled ?? true
+
+  // 시즌 결정: 'auto'이면 getCurrentSeason() 사용, 아니면 설정값 사용
+  const configuredSeason = seasonEffectSettings?.season ?? 'auto'
+  const effectiveSeason: SeasonType = useMemo(() => {
+    if (configuredSeason === 'auto') {
+      return getCurrentSeason()
+    }
+    return configuredSeason as SeasonType
+  }, [configuredSeason])
+
+  const seasonIntensity = seasonEffectSettings?.intensity ?? 'normal'
+
   const [isChatOpen, setIsChatOpen] = useState(false)
-  const [showOpening, setShowOpening] = useState(true)
-  const [currentSeason] = useState(() => getCurrentSeason())
+  const [showOpening, setShowOpening] = useState(isOpeningEnabled)
 
   // 보이는 블록만 필터링하고 order 순서로 정렬
   const visibleBlocks = guide.blocks
     .filter((block) => block.isVisible)
     .sort((a, b) => a.order - b.order)
 
+  // Hero 블록과 QuickInfo 블록 분리 (특별 레이아웃 처리)
+  const heroBlock = visibleBlocks.find((b) => b.type === 'hero')
+  const quickInfoBlock = visibleBlocks.find((b) => b.type === 'quickInfo')
+  const otherBlocks = visibleBlocks.filter((b) => b.type !== 'hero' && b.type !== 'quickInfo')
+
   // Hero 블록에서 이미지와 타이틀 추출
   const heroData = useMemo(() => {
-    const heroBlock = visibleBlocks.find((b) => b.type === 'hero')
     if (!heroBlock) return null
     return {
       imageUrl: heroBlock.content?.imageUrl as string | undefined,
       title: heroBlock.content?.title as string | undefined,
       subtitle: heroBlock.content?.subtitle as string | undefined,
     }
-  }, [visibleBlocks])
+  }, [heroBlock])
 
   return (
-    <ThemeProvider themeSettings={guide.themeSettings as ThemeSettings | null}>
-      {/* 시즌 이펙트 */}
-      <SeasonalEffects season={currentSeason} intensity="normal" />
+    <ThemeProvider themeSettings={themeSettings}>
+      {/* 시즌 이펙트 (설정에 따라 표시) */}
+      {isSeasonEffectEnabled && effectiveSeason !== 'none' && (
+        <SeasonalEffects season={effectiveSeason} intensity={seasonIntensity} />
+      )}
 
-      {/* 오프닝 애니메이션 */}
+      {/* 오프닝 애니메이션 (설정에 따라 표시) */}
       {showOpening && (
         <OpeningAnimation
           title={heroData?.title || guide.title}
           subtitle={guide.accommodationName}
           imageUrl={heroData?.imageUrl}
           onComplete={() => setShowOpening(false)}
+          skipEnabled={isSkipEnabled}
         />
       )}
 
-      <div className={`min-h-screen transition-opacity duration-500 ${showOpening ? 'opacity-0' : 'opacity-100'}`}>
-        {/* 안내서 헤더 (선택사항) */}
-        <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
-          <div className="max-w-2xl mx-auto px-4 py-3">
-            <h1 className="text-lg font-semibold text-gray-900">{guide.title}</h1>
-            <p className="text-sm text-gray-500">{guide.accommodationName}</p>
+      <div className={`min-h-screen bg-cream transition-opacity duration-500 ${showOpening ? 'opacity-0' : 'opacity-100'}`}>
+        {visibleBlocks.length === 0 ? (
+          <div className="text-center py-12 text-gray-400">
+            <p>아직 작성된 내용이 없습니다</p>
           </div>
-        </div>
-
-        {/* 블록 렌더링 */}
-        <div className="max-w-2xl mx-auto p-4 space-y-4">
-          {visibleBlocks.length === 0 ? (
-            <div className="text-center py-12 text-gray-400">
-              <p>아직 작성된 내용이 없습니다</p>
-            </div>
-          ) : (
-            visibleBlocks.map((block) => (
+        ) : (
+          <>
+            {/* Hero 블록 (전체 너비) */}
+            {heroBlock && (
               <BlockRenderer
-                key={block.id}
-                type={block.type as BlockType}
-                content={block.content}
+                type={heroBlock.type as BlockType}
+                content={heroBlock.content}
               />
-            ))
-          )}
-        </div>
+            )}
 
-        {/* 푸터 (선택사항) */}
-        <div className="max-w-2xl mx-auto px-4 py-6 text-center text-xs text-gray-400">
-          <p>Powered by Roomy</p>
+            {/* QuickInfo 블록 (Hero 아래 오버레이) */}
+            {quickInfoBlock && (
+              <div className="max-w-2xl mx-auto">
+                <BlockRenderer
+                  type={quickInfoBlock.type as BlockType}
+                  content={quickInfoBlock.content}
+                />
+              </div>
+            )}
+
+            {/* 나머지 블록 렌더링 */}
+            <div className="max-w-2xl mx-auto px-4 py-6 space-y-4">
+              {otherBlocks.map((block) => (
+                <BlockRenderer
+                  key={block.id}
+                  type={block.type as BlockType}
+                  content={block.content}
+                />
+              ))}
+            </div>
+          </>
+        )}
+
+        {/* 푸터 */}
+        <div className="max-w-2xl mx-auto px-4 py-8 text-center">
+          <p className="text-xs text-gray-400">Powered by Roomy</p>
         </div>
 
         {/* AI 플로팅 버튼 */}

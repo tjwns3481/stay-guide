@@ -1,6 +1,6 @@
 'use client'
 
-import { AlertCircle, Info } from 'lucide-react'
+import { Bell, Info } from 'lucide-react'
 
 interface NoticeBlockProps {
   content: Record<string, unknown>
@@ -12,7 +12,7 @@ const getString = (value: unknown): string | undefined => {
 
 export function NoticeBlock({ content }: NoticeBlockProps) {
   const noticeType = getString(content.type) || 'banner'
-  const title = getString(content.title) || '공지사항'
+  const title = getString(content.title) || '알려드립니다'
   const noticeContent = getString(content.content)
 
   if (!noticeContent && !title) {
@@ -23,31 +23,35 @@ export function NoticeBlock({ content }: NoticeBlockProps) {
 
   return (
     <div
-      className={`rounded-xl p-5 ${
+      className={`rounded-2xl p-5 ${
         isPopup
-          ? 'bg-primary-50 border-2 border-primary-200 shadow-md'
-          : 'bg-yellow-50 border-l-4 border-yellow-400'
+          ? 'bg-gradient-to-r from-primary-50 to-primary-100 border border-primary-200'
+          : 'bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-100'
       }`}
     >
       <div className="flex items-start gap-3">
-        {isPopup ? (
-          <Info className="w-5 h-5 text-primary-600 mt-0.5 flex-shrink-0" />
-        ) : (
-          <AlertCircle className="w-5 h-5 text-yellow-600 mt-0.5 flex-shrink-0" />
-        )}
+        <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
+          isPopup ? 'bg-primary-100' : 'bg-amber-100'
+        }`}>
+          {isPopup ? (
+            <Info className="w-4 h-4 text-primary-600" />
+          ) : (
+            <Bell className="w-4 h-4 text-amber-600" />
+          )}
+        </div>
 
         <div className="flex-1">
           <h4
             className={`font-semibold mb-1 ${
-              isPopup ? 'text-primary-900' : 'text-yellow-900'
+              isPopup ? 'text-primary-900' : 'text-amber-900'
             }`}
           >
             {title}
           </h4>
           {noticeContent && (
             <p
-              className={`text-sm whitespace-pre-wrap ${
-                isPopup ? 'text-primary-800' : 'text-yellow-800'
+              className={`text-sm leading-relaxed whitespace-pre-wrap ${
+                isPopup ? 'text-primary-800' : 'text-amber-800'
               }`}
             >
               {noticeContent}

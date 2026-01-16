@@ -8,6 +8,7 @@ interface OpeningAnimationProps {
   subtitle?: string
   imageUrl?: string
   onComplete: () => void
+  skipEnabled?: boolean // 스킵 버튼 표시 여부
 }
 
 export function OpeningAnimation({
@@ -15,6 +16,7 @@ export function OpeningAnimation({
   subtitle,
   imageUrl,
   onComplete,
+  skipEnabled = true,
 }: OpeningAnimationProps) {
   const [phase, setPhase] = useState<'initial' | 'reveal' | 'exit'>('initial')
 
@@ -51,7 +53,7 @@ export function OpeningAnimation({
       className={`fixed inset-0 z-50 flex flex-col items-center justify-center transition-opacity duration-700 ${
         phase === 'exit' ? 'opacity-0 pointer-events-none' : 'opacity-100'
       }`}
-      onClick={handleSkip}
+      onClick={skipEnabled ? handleSkip : undefined}
     >
       {/* 배경 이미지 */}
       {imageUrl && (
@@ -111,17 +113,19 @@ export function OpeningAnimation({
           }`}
         />
 
-        {/* 스크롤 힌트 */}
-        <div
-          className={`mt-16 transition-all duration-700 delay-1200 ${
-            phase === 'reveal' ? 'opacity-100' : 'opacity-0'
-          }`}
-        >
-          <p className="text-white/60 text-xs tracking-widest mb-2">
-            TAP TO ENTER
-          </p>
-          <ChevronDown className="w-5 h-5 text-white/60 mx-auto animate-bounce" />
-        </div>
+        {/* 스크롤 힌트 (스킵 가능할 때만 표시) */}
+        {skipEnabled && (
+          <div
+            className={`mt-16 transition-all duration-700 delay-1200 ${
+              phase === 'reveal' ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            <p className="text-white/60 text-xs tracking-widest mb-2">
+              TAP TO ENTER
+            </p>
+            <ChevronDown className="w-5 h-5 text-white/60 mx-auto animate-bounce" />
+          </div>
+        )}
       </div>
 
       {/* 하단 로고 */}

@@ -1,9 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useAuth } from '@clerk/nextjs'
 import { EditorLayout } from '@/components/editor'
+import { SlugInputModal } from '@/components/editor/SlugInputModal'
 import { api } from '@/lib/api/client'
 
 interface CreateGuideResponse {
@@ -20,36 +21,40 @@ export default function EditorPage() {
   const guideId = params.id as string
   const [isCreating, setIsCreating] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [showModal, setShowModal] = useState(true) // 새 안내서일 때 모달 표시
 
-  // "new" 케이스 처리: 새 안내서 생성 후 리다이렉트
-  useEffect(() => {
-    if (guideId === 'new' && !isCreating) {
-      setIsCreating(true)
+  // 안내서 생성 처리
+  const handleCreateGuide = async (slug: string, title: string, accommodationName: string) => {
+    setIsCreating(true)
+    setError(null)
 
-      const createNewGuide = async () => {
-        try {
-          // API 클라이언트에 토큰 getter 설정 (호출 직전에 설정)
-          api.setTokenGetter(getToken)
+    try {
+      // API 클라이언트에 토큰 getter 설정
+      api.setTokenGetter(getToken)
 
-          const response = await api.post<CreateGuideResponse>('/guides', {
-            title: '새 안내서',
-            accommodationName: '숙소 이름',
-          })
+      const response = await api.post<CreateGuideResponse>('/guides', {
+        slug,
+        title,
+        accommodationName,
+      })
 
-          if (response.data?.id) {
-            router.replace(`/editor/${response.data.id}`)
-          } else {
-            setError('안내서 생성에 실패했습니다')
-          }
-        } catch (err) {
-          console.error('Failed to create guide:', err)
-          setError(err instanceof Error ? err.message : '안내서 생성에 실패했습니다')
-        }
+      if (response.data?.id) {
+        router.replace(`/editor/${response.data.id}`)
+      } else {
+        setError('안내서 생성에 실패했습니다')
+        setIsCreating(false)
       }
-
-      createNewGuide()
+    } catch (err) {
+      console.error('Failed to create guide:', err)
+      setError(err instanceof Error ? err.message : '안내서 생성에 실패했습니다')
+      setIsCreating(false)
     }
-  }, [guideId, isCreating, router, getToken])
+  }
+
+  // 모달 취소 시 대시보드로 이동
+  const handleCancel = () => {
+    router.push('/dashboard')
+  }
 
   if (!guideId) {
     return (
@@ -59,34 +64,37 @@ export default function EditorPage() {
     )
   }
 
-  // "new" 케이스: 로딩 또는 에러 표시
+  // "new" 케이스: 모달 표시
   if (guideId === 'new') {
-    if (error) {
-      return (
-        <div className="flex h-screen items-center justify-center bg-gray-50">
-          <div className="text-center">
-            <div className="text-red-500 text-4xl mb-4">!</div>
-            <p className="text-gray-900 font-medium">{error}</p>
+    return (
+      <div className="min-h-screen bg-gray-100">
+        {/* 에러 메시지 */}
+        {error && (
+          <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-lg shadow-lg">
+            {error}
             <button
-              onClick={() => {
-                setError(null)
-                setIsCreating(false)
-              }}
-              className="mt-4 px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600"
+              onClick={() => setError(null)}
+              className="ml-4 text-red-500 hover:text-red-700"
             >
-              다시 시도
+              &times;
             </button>
           </div>
-        </div>
-      )
-    }
+        )}
 
-    return (
-      <div className="flex h-screen items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary-500 border-t-transparent mx-auto" />
-          <p className="mt-4 text-gray-600">새 안내서를 만드는 중...</p>
+        {/* 배경 컨텐츠 */}
+        <div className="flex h-screen items-center justify-center">
+          <div className="text-center text-gray-400">
+            <p>새 안내서 정보를 입력해주세요</p>
+          </div>
         </div>
+
+        {/* URL 입력 모달 */}
+        <SlugInputModal
+          isOpen={showModal}
+          onConfirm={handleCreateGuide}
+          onCancel={handleCancel}
+          isLoading={isCreating}
+        />
       </div>
     )
   }

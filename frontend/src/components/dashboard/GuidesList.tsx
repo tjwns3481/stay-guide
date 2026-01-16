@@ -112,60 +112,60 @@ export function GuidesList() {
     )
   }
 
+  // 상대적 시간 포맷
+  const getRelativeTime = (dateString: string) => {
+    const date = new Date(dateString)
+    const now = new Date()
+    const diffMs = now.getTime() - date.getTime()
+    const diffMins = Math.floor(diffMs / 60000)
+    const diffHours = Math.floor(diffMs / 3600000)
+    const diffDays = Math.floor(diffMs / 86400000)
+
+    if (diffMins < 60) return `${diffMins}분 전`
+    if (diffHours < 24) return `${diffHours}시간 전`
+    if (diffDays < 7) return `${diffDays}일 전`
+    return date.toLocaleDateString('ko-KR', { month: 'short', day: 'numeric' })
+  }
+
   return (
-    <div className="space-y-3">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {guides.map((guide) => (
         <Link
           key={guide.id}
           href={`/editor/${guide.id}`}
-          className="group flex items-center gap-4 rounded-xl border border-neutral-200 bg-white p-4 transition-all hover:border-primary-200 hover:shadow-sm"
+          className="group bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-lg hover:-translate-y-0.5 transition-all cursor-pointer"
         >
-          {/* 아이콘 */}
-          <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-primary-50 text-primary-500">
-            <FileText className="h-6 w-6" />
-          </div>
-
-          {/* 정보 */}
-          <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-2">
-              <h3 className="truncate text-heading-sm font-semibold text-text-primary">
-                {guide.title}
-              </h3>
-              {guide.isPublished ? (
-                <span className="flex-shrink-0 rounded-full bg-green-100 px-2 py-0.5 text-body-xs font-medium text-green-700">
-                  발행됨
-                </span>
-              ) : (
-                <span className="flex-shrink-0 rounded-full bg-neutral-100 px-2 py-0.5 text-body-xs font-medium text-neutral-600">
-                  임시저장
-                </span>
-              )}
+          {/* 썸네일 영역 */}
+          <div className="relative h-36 bg-gradient-to-br from-primary-100 to-secondary-100">
+            {/* 기본 아이콘 (이미지 없을 때) */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <FileText className="w-12 h-12 text-primary-300" />
             </div>
-            <p className="mt-0.5 text-body-sm text-text-secondary">
-              {guide.accommodationName}
-            </p>
+            {/* 발행 상태 배지 */}
+            <span className={`absolute top-3 right-3 px-2 py-1 text-xs rounded-full font-medium ${
+              guide.isPublished
+                ? 'bg-green-500 text-white'
+                : 'bg-gray-500 text-white'
+            }`}>
+              {guide.isPublished ? '발행됨' : '초안'}
+            </span>
           </div>
 
-          {/* 통계 */}
-          <div className="hidden items-center gap-4 sm:flex">
-            <div className="flex items-center gap-1.5 text-body-sm text-text-secondary">
-              <Eye className="h-4 w-4" />
-              <span>{guide.viewCount}</span>
+          {/* 정보 영역 */}
+          <div className="p-4">
+            <h3 className="font-semibold text-text-primary mb-1 truncate group-hover:text-primary-600 transition-colors">
+              {guide.title}
+            </h3>
+            <p className="text-sm text-gray-500 mb-3">{guide.accommodationName}</p>
+
+            <div className="flex items-center justify-between text-xs text-gray-400">
+              <span className="flex items-center gap-1">
+                <Eye className="w-3.5 h-3.5" />
+                {guide.viewCount.toLocaleString()}
+              </span>
+              <span>수정됨 {getRelativeTime(guide.updatedAt)}</span>
             </div>
           </div>
-
-          {/* 외부 링크 (발행된 경우) */}
-          {guide.isPublished && (
-            <a
-              href={`/g/${guide.slug}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={(e) => e.stopPropagation()}
-              className="flex-shrink-0 rounded-lg p-2 text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-primary-500"
-            >
-              <ExternalLink className="h-5 w-5" />
-            </a>
-          )}
         </Link>
       ))}
     </div>

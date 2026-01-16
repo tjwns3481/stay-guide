@@ -107,6 +107,44 @@ function formatGuideResponse(guide: {
 // Routes
 // ============================================
 
+// GET /api/guides/check-slug - 슬러그 사용 가능 여부 확인
+guideRoutes.get('/check-slug', async (c) => {
+  const slug = c.req.query('slug')
+
+  if (!slug) {
+    return c.json({
+      success: false,
+      error: {
+        code: 'MISSING_SLUG',
+        message: '슬러그를 입력해주세요',
+      },
+    }, 400)
+  }
+
+  // 슬러그 유효성 검사
+  if (!isValidSlug(slug)) {
+    return c.json({
+      success: true,
+      available: false,
+      reason: 'invalid',
+      message: '영문 소문자, 숫자, 하이픈만 사용 가능합니다 (3-50자)',
+    })
+  }
+
+  // 중복 확인
+  const existingGuide = await prisma.guide.findUnique({
+    where: { slug },
+    select: { id: true },
+  })
+
+  return c.json({
+    success: true,
+    available: !existingGuide,
+    reason: existingGuide ? 'taken' : null,
+    message: existingGuide ? '이미 사용 중인 URL입니다' : null,
+  })
+})
+
 // GET /api/guides - 내 안내서 목록 조회
 guideRoutes.get('/', authMiddleware, zValidator('query', paginationSchema), async (c) => {
   const auth = c.get('auth')

@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useMemo } from 'react'
 
-type Season = 'spring' | 'summer' | 'autumn' | 'winter' | 'none'
+export type Season = 'spring' | 'summer' | 'autumn' | 'winter' | 'none'
 
 interface SeasonalEffectsProps {
   season?: Season

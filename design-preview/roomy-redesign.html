@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roomy - Redesign Preview</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Pretendard', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            coral: {
+              50: '#FFF5F3',
+              100: '#FFE8E3',
+              200: '#FFD1C7',
+              300: '#FFB3A3',
+              400: '#F08E7A',
+              500: '#E07A5F',
+              600: '#C96A52',
+            },
+            sage: {
+              50: '#F4F9F6',
+              100: '#E8F3ED',
+              200: '#D1E7DB',
+              300: '#B3D6C3',
+              400: '#9AC7AD',
+              500: '#81B29A',
+              600: '#6A9A82',
+            },
+            sand: {
+              100: '#FAF8F3',
+              200: '#F5F0E6',
+              300: '#EDE4D3',
+              400: '#E3D5BD',
+              500: '#F2CC8F',
+            },
+            cream: '#FDFBF7',
+            charcoal: '#3D405B',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { font-family: 'Pretendard', system-ui, sans-serif; }
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* Smooth transitions */
+    .card-hover { transition: all 0.2s ease; }
+    .card-hover:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #f1f1f1; }
+    ::-webkit-scrollbar-thumb { background: #d4d4d4; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #a3a3a3; }
+
+    /* Glass effect */
+    .glass { backdrop-filter: blur(12px); background: rgba(255,255,255,0.9); }
+
+    /* Gradient text */
+    .gradient-text {
+      background: linear-gradient(135deg, #E07A5F 0%, #81B29A 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Floating animation */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    .float { animation: float 3s ease-in-out infinite; }
+
+    /* Pulse glow */
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(224, 122, 95, 0.3); }
+      50% { box-shadow: 0 0 30px rgba(224, 122, 95, 0.5); }
+    }
+    .pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+  </style>
+</head>
+<body class="bg-cream min-h-screen">
+  <!-- Navigation Tabs -->
+  <div class="fixed top-0 left-0 right-0 z-50 glass border-b border-gray-100">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="flex items-center gap-1 py-2">
+        <button onclick="showPage('guest')" id="tab-guest"
+          class="tab-btn px-4 py-2 rounded-lg text-sm font-medium transition-all bg-coral-500 text-white">
+          Guest Page
+        </button>
+        <button onclick="showPage('dashboard')" id="tab-dashboard"
+          class="tab-btn px-4 py-2 rounded-lg text-sm font-medium transition-all text-gray-600 hover:bg-gray-100">
+          Dashboard
+        </button>
+        <button onclick="showPage('editor')" id="tab-editor"
+          class="tab-btn px-4 py-2 rounded-lg text-sm font-medium transition-all text-gray-600 hover:bg-gray-100">
+          Editor
+        </button>
+        <span class="ml-auto text-xs text-gray-400">Roomy Redesign Preview</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== GUEST PAGE ==================== -->
+  <div id="page-guest" class="page active pt-14">
+    <!-- Hero Section - Full bleed with parallax feel -->
+    <div class="relative h-[420px] overflow-hidden">
+      <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200&q=80"
+           alt="숙소" class="w-full h-full object-cover">
+      <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+
+      <!-- Hero Content -->
+      <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+        <div class="max-w-2xl mx-auto">
+          <span class="inline-block px-3 py-1 bg-white/20 backdrop-blur rounded-full text-xs font-medium mb-3">
+            Premium Stay
+          </span>
+          <h1 class="text-3xl font-bold mb-2">오션뷰 프라이빗 스위트</h1>
+          <p class="text-white/80 text-sm">제주 서귀포시 중문관광로</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Info Pills -->
+    <div class="max-w-2xl mx-auto px-4 -mt-6 relative z-10">
+      <div class="bg-white rounded-2xl shadow-lg p-4 grid grid-cols-4 gap-3">
+        <div class="text-center">
+          <div class="w-10 h-10 mx-auto mb-1 rounded-xl bg-coral-50 flex items-center justify-center">
+            <svg class="w-5 h-5 text-coral-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <p class="text-xs text-gray-500">체크인</p>
+          <p class="font-semibold text-sm text-charcoal">15:00</p>
+        </div>
+        <div class="text-center">
+          <div class="w-10 h-10 mx-auto mb-1 rounded-xl bg-sage-50 flex items-center justify-center">
+            <svg class="w-5 h-5 text-sage-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
+          </div>
+          <p class="text-xs text-gray-500">체크아웃</p>
+          <p class="font-semibold text-sm text-charcoal">11:00</p>
+        </div>
+        <div class="text-center">
+          <div class="w-10 h-10 mx-auto mb-1 rounded-xl bg-sand-100 flex items-center justify-center">
+            <svg class="w-5 h-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          </div>
+          <p class="text-xs text-gray-500">최대인원</p>
+          <p class="font-semibold text-sm text-charcoal">4명</p>
+        </div>
+        <div class="text-center">
+          <div class="w-10 h-10 mx-auto mb-1 rounded-xl bg-blue-50 flex items-center justify-center">
+            <svg class="w-5 h-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.14 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" />
+            </svg>
+          </div>
+          <p class="text-xs text-gray-500">와이파이</p>
+          <p class="font-semibold text-sm text-charcoal">무료</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content Blocks -->
+    <div class="max-w-2xl mx-auto px-4 py-6 space-y-4">
+
+      <!-- Notice Block - Redesigned -->
+      <div class="bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl p-5 border border-amber-100">
+        <div class="flex items-start gap-3">
+          <div class="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center flex-shrink-0">
+            <svg class="w-4 h-4 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+            </svg>
+          </div>
+          <div>
+            <h4 class="font-semibold text-amber-900 mb-1">알려드립니다</h4>
+            <p class="text-sm text-amber-800 leading-relaxed">
+              체크인 당일 오후 3시 이후부터 입실 가능합니다. 조기 체크인을 원하시면 미리 문의해주세요.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Amenities Block - Card Grid Style -->
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="px-5 py-4 border-b border-gray-50">
+          <h3 class="font-bold text-charcoal flex items-center gap-2">
+            <span class="w-1.5 h-5 bg-coral-500 rounded-full"></span>
+            편의시설
+          </h3>
+        </div>
+
+        <!-- WiFi Highlight Card -->
+        <div class="m-4 p-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border border-blue-100">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center">
+                <svg class="w-6 h-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.14 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" />
+                </svg>
+              </div>
+              <div>
+                <p class="font-semibold text-charcoal">OceanView_5G</p>
+                <p class="text-sm text-gray-500">비밀번호: welcome2024</p>
+              </div>
+            </div>
+            <button class="px-3 py-1.5 bg-white rounded-lg text-sm text-blue-600 font-medium shadow-sm hover:shadow transition-all">
+              복사
+            </button>
+          </div>
+        </div>
+
+        <div class="px-4 pb-4 grid grid-cols-3 gap-2">
+          <div class="flex flex-col items-center p-3 bg-gray-50 rounded-xl">
+            <svg class="w-5 h-5 text-coral-500 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+            </svg>
+            <span class="text-xs text-gray-600 text-center">에어컨</span>
+          </div>
+          <div class="flex flex-col items-center p-3 bg-gray-50 rounded-xl">
+            <svg class="w-5 h-5 text-coral-500 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+            <span class="text-xs text-gray-600 text-center">스마트TV</span>
+          </div>
+          <div class="flex flex-col items-center p-3 bg-gray-50 rounded-xl">
+            <svg class="w-5 h-5 text-coral-500 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+            </svg>
+            <span class="text-xs text-gray-600 text-center">바베큐</span>
+          </div>
+          <div class="flex flex-col items-center p-3 bg-gray-50 rounded-xl">
+            <svg class="w-5 h-5 text-coral-500 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+            </svg>
+            <span class="text-xs text-gray-600 text-center">주차장</span>
+          </div>
+          <div class="flex flex-col items-center p-3 bg-gray-50 rounded-xl">
+            <svg class="w-5 h-5 text-coral-500 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+            </svg>
+            <span class="text-xs text-gray-600 text-center">세탁기</span>
+          </div>
+          <div class="flex flex-col items-center p-3 bg-gray-50 rounded-xl">
+            <svg class="w-5 h-5 text-coral-500 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span class="text-xs text-gray-600 text-center">조식제공</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Host Pick Block - Magazine Style -->
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="px-5 py-4 border-b border-gray-50">
+          <h3 class="font-bold text-charcoal flex items-center gap-2">
+            <span class="w-1.5 h-5 bg-sage-500 rounded-full"></span>
+            호스트 추천 맛집
+          </h3>
+        </div>
+        <div class="divide-y divide-gray-50">
+          <div class="p-4 hover:bg-gray-50 transition-colors cursor-pointer">
+            <div class="flex items-center gap-4">
+              <div class="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0">
+                <img src="https://images.unsplash.com/photo-1553621042-f6e147245754?w=200&q=80"
+                     alt="맛집" class="w-full h-full object-cover">
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1">
+                  <h4 class="font-semibold text-charcoal">해녀의 부엌</h4>
+                  <span class="px-2 py-0.5 bg-coral-100 text-coral-700 text-xs rounded-full">해산물</span>
+                </div>
+                <p class="text-sm text-gray-500 line-clamp-2 mb-1">
+                  신선한 해산물 요리와 함께 제주 바다의 맛을 느껴보세요
+                </p>
+                <p class="text-xs text-gray-400 flex items-center gap-1">
+                  <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  도보 5분
+                </p>
+              </div>
+              <svg class="w-5 h-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
+          </div>
+          <div class="p-4 hover:bg-gray-50 transition-colors cursor-pointer">
+            <div class="flex items-center gap-4">
+              <div class="w-20 h-20 rounded-xl overflow-hidden flex-shrink-0">
+                <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=200&q=80"
+                     alt="맛집" class="w-full h-full object-cover">
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1">
+                  <h4 class="font-semibold text-charcoal">카페 오션</h4>
+                  <span class="px-2 py-0.5 bg-sage-100 text-sage-700 text-xs rounded-full">카페</span>
+                </div>
+                <p class="text-sm text-gray-500 line-clamp-2 mb-1">
+                  바다가 보이는 루프탑에서 즐기는 수제 디저트
+                </p>
+                <p class="text-xs text-gray-400 flex items-center gap-1">
+                  <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  차로 3분
+                </p>
+              </div>
+              <svg class="w-5 h-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gallery Block - Masonry Style Preview -->
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="px-5 py-4 border-b border-gray-50">
+          <h3 class="font-bold text-charcoal flex items-center gap-2">
+            <span class="w-1.5 h-5 bg-coral-500 rounded-full"></span>
+            공간 둘러보기
+          </h3>
+        </div>
+        <div class="p-4">
+          <div class="grid grid-cols-3 gap-2">
+            <div class="col-span-2 row-span-2 relative rounded-xl overflow-hidden aspect-square">
+              <img src="https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=400&q=80"
+                   alt="Living" class="w-full h-full object-cover">
+            </div>
+            <div class="relative rounded-xl overflow-hidden aspect-square">
+              <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=200&q=80"
+                   alt="Bedroom" class="w-full h-full object-cover">
+            </div>
+            <div class="relative rounded-xl overflow-hidden aspect-square">
+              <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=200&q=80"
+                   alt="Bathroom" class="w-full h-full object-cover">
+              <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
+                <span class="text-white font-semibold text-sm">+12</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Address Block -->
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="px-5 py-4 border-b border-gray-50">
+          <h3 class="font-bold text-charcoal flex items-center gap-2">
+            <span class="w-1.5 h-5 bg-blue-500 rounded-full"></span>
+            위치
+          </h3>
+        </div>
+        <div class="p-4">
+          <div class="bg-gray-100 rounded-xl h-40 mb-3 flex items-center justify-center text-gray-400 text-sm">
+            [네이버 지도]
+          </div>
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <span class="text-sm text-gray-600">제주 서귀포시 중문관광로 123-45</span>
+            </div>
+            <button class="text-coral-500 text-sm font-medium">복사</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI Floating Button - Redesigned -->
+    <button class="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-br from-coral-500 to-coral-600 text-white rounded-2xl shadow-lg flex items-center justify-center pulse-glow z-40 hover:scale-105 transition-transform">
+      <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- ==================== DASHBOARD PAGE ==================== -->
+  <div id="page-dashboard" class="page pt-14">
+    <div class="max-w-6xl mx-auto px-4 py-8">
+      <!-- Welcome Section -->
+      <div class="mb-8">
+        <div class="flex items-center gap-3 mb-2">
+          <div class="w-12 h-12 rounded-full bg-gradient-to-br from-coral-400 to-coral-600 flex items-center justify-center text-white font-bold text-lg">
+            J
+          </div>
+          <div>
+            <h1 class="text-2xl font-bold text-charcoal">안녕하세요, 지민님</h1>
+            <p class="text-gray-500">오늘도 게스트에게 좋은 경험을 선물하세요</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        <div class="bg-white rounded-2xl p-5 border border-gray-100 card-hover">
+          <div class="flex items-center justify-between mb-3">
+            <div class="w-10 h-10 rounded-xl bg-coral-50 flex items-center justify-center">
+              <svg class="w-5 h-5 text-coral-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <span class="text-xs text-green-500 font-medium bg-green-50 px-2 py-1 rounded-full">+2</span>
+          </div>
+          <p class="text-2xl font-bold text-charcoal">12</p>
+          <p class="text-sm text-gray-500">총 안내서</p>
+        </div>
+        <div class="bg-white rounded-2xl p-5 border border-gray-100 card-hover">
+          <div class="flex items-center justify-between mb-3">
+            <div class="w-10 h-10 rounded-xl bg-sage-50 flex items-center justify-center">
+              <svg class="w-5 h-5 text-sage-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+            </div>
+            <span class="text-xs text-green-500 font-medium bg-green-50 px-2 py-1 rounded-full">+18%</span>
+          </div>
+          <p class="text-2xl font-bold text-charcoal">1,234</p>
+          <p class="text-sm text-gray-500">이번 달 조회수</p>
+        </div>
+        <div class="bg-white rounded-2xl p-5 border border-gray-100 card-hover">
+          <div class="flex items-center justify-between mb-3">
+            <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
+              <svg class="w-5 h-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+              </svg>
+            </div>
+          </div>
+          <p class="text-2xl font-bold text-charcoal">89</p>
+          <p class="text-sm text-gray-500">AI 대화 수</p>
+        </div>
+        <div class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-5 border border-amber-100 card-hover">
+          <div class="flex items-center justify-between mb-3">
+            <div class="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm">
+              <svg class="w-5 h-5 text-amber-500" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+              </svg>
+            </div>
+            <span class="px-2 py-1 bg-amber-100 text-amber-700 text-xs font-medium rounded-full">PRO</span>
+          </div>
+          <p class="text-lg font-bold text-amber-900">프리미엄</p>
+          <p class="text-sm text-amber-700">~2025.03.15</p>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="mb-8">
+        <h2 class="text-lg font-bold text-charcoal mb-4">빠른 작업</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <button class="flex flex-col items-center justify-center p-5 bg-white rounded-2xl border-2 border-dashed border-gray-200 hover:border-coral-300 hover:bg-coral-50 transition-all group">
+            <div class="w-12 h-12 rounded-xl bg-coral-100 group-hover:bg-coral-200 flex items-center justify-center mb-2 transition-colors">
+              <svg class="w-6 h-6 text-coral-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+              </svg>
+            </div>
+            <span class="font-medium text-charcoal">새 안내서</span>
+          </button>
+          <button class="flex flex-col items-center justify-center p-5 bg-white rounded-2xl border border-gray-100 hover:border-sage-300 hover:bg-sage-50 transition-all group">
+            <div class="w-12 h-12 rounded-xl bg-sage-100 group-hover:bg-sage-200 flex items-center justify-center mb-2 transition-colors">
+              <svg class="w-6 h-6 text-sage-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+              </svg>
+            </div>
+            <span class="font-medium text-charcoal">가져오기</span>
+          </button>
+          <button class="flex flex-col items-center justify-center p-5 bg-white rounded-2xl border border-gray-100 hover:border-blue-300 hover:bg-blue-50 transition-all group">
+            <div class="w-12 h-12 rounded-xl bg-blue-100 group-hover:bg-blue-200 flex items-center justify-center mb-2 transition-colors">
+              <svg class="w-6 h-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+            </div>
+            <span class="font-medium text-charcoal">통계 보기</span>
+          </button>
+          <button class="flex flex-col items-center justify-center p-5 bg-white rounded-2xl border border-gray-100 hover:border-purple-300 hover:bg-purple-50 transition-all group">
+            <div class="w-12 h-12 rounded-xl bg-purple-100 group-hover:bg-purple-200 flex items-center justify-center mb-2 transition-colors">
+              <svg class="w-6 h-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            </div>
+            <span class="font-medium text-charcoal">설정</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Guides List -->
+      <div>
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-lg font-bold text-charcoal">내 안내서</h2>
+          <select class="text-sm border border-gray-200 rounded-lg px-3 py-1.5 bg-white">
+            <option>최근 수정순</option>
+            <option>이름순</option>
+            <option>조회수순</option>
+          </select>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Guide Card 1 -->
+          <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden card-hover cursor-pointer">
+            <div class="relative h-36">
+              <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&q=80"
+                   alt="숙소" class="w-full h-full object-cover">
+              <span class="absolute top-3 right-3 px-2 py-1 bg-green-500 text-white text-xs rounded-full font-medium">발행됨</span>
+            </div>
+            <div class="p-4">
+              <h3 class="font-semibold text-charcoal mb-1">오션뷰 프라이빗 스위트</h3>
+              <p class="text-sm text-gray-500 mb-3">제주 서귀포시</p>
+              <div class="flex items-center justify-between text-xs text-gray-400">
+                <span class="flex items-center gap-1">
+                  <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                  1,234
+                </span>
+                <span>수정됨 2시간 전</span>
+              </div>
+            </div>
+          </div>
+          <!-- Guide Card 2 -->
+          <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden card-hover cursor-pointer">
+            <div class="relative h-36">
+              <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=400&q=80"
+                   alt="숙소" class="w-full h-full object-cover">
+              <span class="absolute top-3 right-3 px-2 py-1 bg-gray-500 text-white text-xs rounded-full font-medium">초안</span>
+            </div>
+            <div class="p-4">
+              <h3 class="font-semibold text-charcoal mb-1">한옥 스테이 담장</h3>
+              <p class="text-sm text-gray-500 mb-3">전주 한옥마을</p>
+              <div class="flex items-center justify-between text-xs text-gray-400">
+                <span class="flex items-center gap-1">
+                  <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                  --
+                </span>
+                <span>수정됨 1일 전</span>
+              </div>
+            </div>
+          </div>
+          <!-- Guide Card 3 -->
+          <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden card-hover cursor-pointer">
+            <div class="relative h-36">
+              <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&q=80"
+                   alt="숙소" class="w-full h-full object-cover">
+              <span class="absolute top-3 right-3 px-2 py-1 bg-green-500 text-white text-xs rounded-full font-medium">발행됨</span>
+            </div>
+            <div class="p-4">
+              <h3 class="font-semibold text-charcoal mb-1">강남 프리미엄 레지던스</h3>
+              <p class="text-sm text-gray-500 mb-3">서울 강남구</p>
+              <div class="flex items-center justify-between text-xs text-gray-400">
+                <span class="flex items-center gap-1">
+                  <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                  567
+                </span>
+                <span>수정됨 3일 전</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== EDITOR PAGE ==================== -->
+  <div id="page-editor" class="page pt-14">
+    <div class="flex h-[calc(100vh-56px)]">
+      <!-- Left: Preview Panel -->
+      <div class="w-1/2 bg-gray-100 p-8 flex items-center justify-center overflow-auto">
+        <!-- Phone Mockup -->
+        <div class="relative">
+          <div class="w-[320px] h-[640px] bg-black rounded-[40px] p-3 shadow-2xl">
+            <div class="w-full h-full bg-white rounded-[32px] overflow-hidden">
+              <!-- Phone Screen Content -->
+              <div class="h-full overflow-y-auto">
+                <div class="relative h-48">
+                  <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&q=80"
+                       alt="숙소" class="w-full h-full object-cover">
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                  <div class="absolute bottom-4 left-4 text-white">
+                    <h2 class="font-bold">오션뷰 프라이빗 스위트</h2>
+                    <p class="text-xs opacity-80">제주 서귀포시</p>
+                  </div>
+                </div>
+                <div class="p-4 space-y-3">
+                  <div class="bg-gray-50 rounded-xl p-3">
+                    <div class="grid grid-cols-4 gap-2 text-center text-xs">
+                      <div>
+                        <p class="text-gray-400">체크인</p>
+                        <p class="font-medium">15:00</p>
+                      </div>
+                      <div>
+                        <p class="text-gray-400">체크아웃</p>
+                        <p class="font-medium">11:00</p>
+                      </div>
+                      <div>
+                        <p class="text-gray-400">인원</p>
+                        <p class="font-medium">4명</p>
+                      </div>
+                      <div>
+                        <p class="text-gray-400">WiFi</p>
+                        <p class="font-medium">무료</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="bg-amber-50 rounded-xl p-3 border border-amber-100">
+                    <p class="text-xs text-amber-800"><strong>알려드립니다</strong></p>
+                    <p class="text-xs text-amber-700 mt-1">체크인 당일 오후 3시 이후부터 입실 가능합니다.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Phone notch -->
+          <div class="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-black rounded-b-2xl"></div>
+        </div>
+      </div>
+
+      <!-- Right: Control Panel -->
+      <div class="w-1/2 bg-white border-l border-gray-200 flex flex-col">
+        <!-- Editor Header -->
+        <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gray-50">
+          <div class="flex items-center gap-3">
+            <button class="p-2 hover:bg-gray-200 rounded-lg transition-colors">
+              <svg class="w-5 h-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <div>
+              <h2 class="font-semibold text-charcoal">오션뷰 프라이빗 스위트</h2>
+              <p class="text-xs text-gray-500">초안 · 저장됨</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <button class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg text-sm font-medium transition-colors">
+              미리보기
+            </button>
+            <button class="px-4 py-2 bg-coral-500 hover:bg-coral-600 text-white rounded-lg text-sm font-medium transition-colors">
+              발행하기
+            </button>
+          </div>
+        </div>
+
+        <!-- Editor Content -->
+        <div class="flex-1 overflow-y-auto p-6 space-y-6">
+          <!-- Basic Info Section -->
+          <div class="bg-gray-50 rounded-2xl p-5">
+            <h3 class="font-semibold text-charcoal mb-4 flex items-center gap-2">
+              <span class="w-6 h-6 rounded-lg bg-coral-100 flex items-center justify-center">
+                <svg class="w-4 h-4 text-coral-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </span>
+              기본 정보
+            </h3>
+            <div class="space-y-4">
+              <div>
+                <label class="block text-sm text-gray-600 mb-1.5">숙소 이름</label>
+                <input type="text" value="오션뷰 프라이빗 스위트"
+                  class="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-coral-200 focus:border-coral-500 transition-all">
+              </div>
+              <div>
+                <label class="block text-sm text-gray-600 mb-1.5">안내서 제목</label>
+                <input type="text" value="오션뷰 프라이빗 스위트"
+                  class="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-coral-200 focus:border-coral-500 transition-all">
+              </div>
+            </div>
+          </div>
+
+          <!-- Blocks Section -->
+          <div>
+            <h3 class="font-semibold text-charcoal mb-4 flex items-center gap-2">
+              <span class="w-6 h-6 rounded-lg bg-sage-100 flex items-center justify-center">
+                <svg class="w-4 h-4 text-sage-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                </svg>
+              </span>
+              블록
+            </h3>
+            <div class="space-y-2">
+              <!-- Block Item -->
+              <div class="flex items-center gap-3 p-4 bg-white border border-gray-200 rounded-xl hover:border-coral-300 hover:shadow-sm transition-all cursor-pointer group">
+                <div class="w-6 h-6 rounded bg-coral-100 flex items-center justify-center text-coral-600 text-xs font-bold">H</div>
+                <div class="flex-1">
+                  <p class="font-medium text-charcoal">히어로</p>
+                  <p class="text-xs text-gray-400">이미지와 제목</p>
+                </div>
+                <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <button class="p-1.5 hover:bg-gray-100 rounded-lg">
+                    <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                  </button>
+                  <button class="p-1.5 hover:bg-gray-100 rounded-lg">
+                    <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                  </button>
+                </div>
+                <svg class="w-4 h-4 text-gray-300 cursor-grab" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" />
+                </svg>
+              </div>
+              <div class="flex items-center gap-3 p-4 bg-white border border-gray-200 rounded-xl hover:border-coral-300 hover:shadow-sm transition-all cursor-pointer group">
+                <div class="w-6 h-6 rounded bg-sage-100 flex items-center justify-center text-sage-600 text-xs font-bold">Q</div>
+                <div class="flex-1">
+                  <p class="font-medium text-charcoal">빠른 정보</p>
+                  <p class="text-xs text-gray-400">체크인/아웃, 인원, 주차</p>
+                </div>
+                <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <button class="p-1.5 hover:bg-gray-100 rounded-lg">
+                    <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                  </button>
+                  <button class="p-1.5 hover:bg-gray-100 rounded-lg">
+                    <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                  </button>
+                </div>
+                <svg class="w-4 h-4 text-gray-300 cursor-grab" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" />
+                </svg>
+              </div>
+              <div class="flex items-center gap-3 p-4 bg-white border border-gray-200 rounded-xl hover:border-coral-300 hover:shadow-sm transition-all cursor-pointer group">
+                <div class="w-6 h-6 rounded bg-amber-100 flex items-center justify-center text-amber-600 text-xs font-bold">N</div>
+                <div class="flex-1">
+                  <p class="font-medium text-charcoal">공지사항</p>
+                  <p class="text-xs text-gray-400">배너 형식</p>
+                </div>
+                <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <button class="p-1.5 hover:bg-gray-100 rounded-lg">
+                    <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                  </button>
+                  <button class="p-1.5 hover:bg-gray-100 rounded-lg">
+                    <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                  </button>
+                </div>
+                <svg class="w-4 h-4 text-gray-300 cursor-grab" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" />
+                </svg>
+              </div>
+
+              <!-- Add Block Button -->
+              <button class="w-full flex items-center justify-center gap-2 p-4 border-2 border-dashed border-gray-200 rounded-xl text-gray-500 hover:border-coral-300 hover:text-coral-500 hover:bg-coral-50 transition-all">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                블록 추가
+              </button>
+            </div>
+          </div>
+
+          <!-- Theme Section -->
+          <div class="bg-gray-50 rounded-2xl p-5">
+            <h3 class="font-semibold text-charcoal mb-4 flex items-center gap-2">
+              <span class="w-6 h-6 rounded-lg bg-purple-100 flex items-center justify-center">
+                <svg class="w-4 h-4 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+                </svg>
+              </span>
+              테마
+            </h3>
+            <div class="grid grid-cols-3 gap-3">
+              <button class="p-3 rounded-xl border-2 border-coral-500 bg-white text-center">
+                <div class="w-full h-8 rounded-lg bg-gradient-to-r from-coral-400 to-sage-400 mb-2"></div>
+                <span class="text-xs font-medium">Emotional</span>
+              </button>
+              <button class="p-3 rounded-xl border border-gray-200 bg-white text-center hover:border-gray-300 transition-colors">
+                <div class="w-full h-8 rounded-lg bg-gradient-to-r from-gray-800 to-blue-400 mb-2"></div>
+                <span class="text-xs font-medium">Modern</span>
+              </button>
+              <button class="p-3 rounded-xl border border-gray-200 bg-white text-center hover:border-gray-300 transition-colors">
+                <div class="w-full h-8 rounded-lg bg-gradient-to-r from-green-500 to-amber-400 mb-2"></div>
+                <span class="text-xs font-medium">Natural</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showPage(page) {
+      // Hide all pages
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      // Show selected page
+      document.getElementById('page-' + page).classList.add('active');
+
+      // Update tab styles
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('bg-coral-500', 'text-white');
+        btn.classList.add('text-gray-600', 'hover:bg-gray-100');
+      });
+      const activeTab = document.getElementById('tab-' + page);
+      activeTab.classList.remove('text-gray-600', 'hover:bg-gray-100');
+      activeTab.classList.add('bg-coral-500', 'text-white');
+    }
+  </script>
+</body>
+</html>

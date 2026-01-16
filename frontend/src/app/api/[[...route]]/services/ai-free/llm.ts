@@ -246,6 +246,7 @@ export async function* streamLLMResponse(
   const chat = geminiModel.startChat({
     history,
     systemInstruction: {
+      role: 'user',
       parts: [{ text: systemPrompt }],
     },
   })

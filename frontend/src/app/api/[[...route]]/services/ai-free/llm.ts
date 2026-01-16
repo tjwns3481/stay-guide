@@ -242,9 +242,12 @@ export async function* streamLLMResponse(
   const history = convertToGeminiHistory(chatHistory)
 
   // 채팅 세션 시작
+  // Gemini API는 systemInstruction을 Content 객체 형식으로 요구함
   const chat = geminiModel.startChat({
     history,
-    systemInstruction: systemPrompt,
+    systemInstruction: {
+      parts: [{ text: systemPrompt }],
+    },
   })
 
   console.log(
@@ -262,7 +265,13 @@ export async function* streamLLMResponse(
       }
     }
   } catch (error) {
-    console.error('[LLM] Streaming error:', error)
+    // 상세 에러 로깅
+    console.error('[LLM] Streaming error details:', {
+      name: (error as Error).name,
+      message: (error as Error).message,
+      stack: (error as Error).stack,
+      error: JSON.stringify(error, null, 2),
+    })
     throw error
   }
 }
@@ -279,9 +288,12 @@ export async function generateLLMResponse(
 
   const history = convertToGeminiHistory(chatHistory)
 
+  // Gemini API는 systemInstruction을 Content 객체 형식으로 요구함
   const chat = geminiModel.startChat({
     history,
-    systemInstruction: systemPrompt,
+    systemInstruction: {
+      parts: [{ text: systemPrompt }],
+    },
   })
 
   try {

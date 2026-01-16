@@ -163,14 +163,13 @@ export function useAiChat({ guideId, onError }: UseAiChatOptions) {
           abortControllerRef.current!.signal,
           // onChunk: 스트리밍 청크 추가
           (chunk) => {
-            setMessages((prev) => {
-              const updated = [...prev]
-              const lastMsg = updated[updated.length - 1]
-              if (lastMsg.role === 'assistant') {
-                lastMsg.content += chunk
-              }
-              return updated
-            })
+            setMessages((prev) =>
+              prev.map((msg, idx) =>
+                idx === prev.length - 1 && msg.role === 'assistant'
+                  ? { ...msg, content: msg.content + chunk }
+                  : msg
+              )
+            )
           },
           // onDone: 완료
           (data) => {

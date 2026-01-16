@@ -1,4 +1,5 @@
 export { GuideRenderer } from './GuideRenderer'
 export { BlockRenderer } from './BlockRenderer'
 export { OpeningAnimation } from './OpeningAnimation'
+export { SeasonalEffects, getCurrentSeason } from './SeasonalEffects'
 export * from './blocks'

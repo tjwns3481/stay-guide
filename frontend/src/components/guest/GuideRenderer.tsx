@@ -8,6 +8,7 @@ import { Watermark } from './Watermark'
 import { OpeningAnimation } from './OpeningAnimation'
 import type { ThemeSettings } from '@/contracts/types'
 import { AiFloatingButton, ChatInterface } from '@/components/ai'
+import { SeasonalEffects, getCurrentSeason } from './SeasonalEffects'
 
 interface GuideRendererProps {
   guide: GuideDetail
@@ -17,6 +18,7 @@ interface GuideRendererProps {
 export function GuideRenderer({ guide, showWatermark = true }: GuideRendererProps) {
   const [isChatOpen, setIsChatOpen] = useState(false)
   const [showOpening, setShowOpening] = useState(true)
+  const [currentSeason] = useState(() => getCurrentSeason())
 
   // 보이는 블록만 필터링하고 order 순서로 정렬
   const visibleBlocks = guide.blocks
@@ -36,6 +38,9 @@ export function GuideRenderer({ guide, showWatermark = true }: GuideRendererProp
 
   return (
     <ThemeProvider themeSettings={guide.themeSettings as ThemeSettings | null}>
+      {/* 시즌 이펙트 */}
+      <SeasonalEffects season={currentSeason} intensity="normal" />
+
       {/* 오프닝 애니메이션 */}
       {showOpening && (
         <OpeningAnimation

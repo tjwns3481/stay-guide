@@ -63,12 +63,12 @@ export function BlockList() {
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
-        distance: 8, // 8px 이동 후 드래그 시작
+        distance: 5, // 5px 이동 후 드래그 시작 (더 민감하게)
       },
     }),
     useSensor(TouchSensor, {
       activationConstraint: {
-        delay: 200, // 200ms 터치 후 드래그 시작
+        delay: 150, // 150ms 터치 후 드래그 시작 (더 빠르게)
         tolerance: 5,
       },
     }),
@@ -265,6 +265,13 @@ function BlockItemContent({
       {/* 드래그 핸들 */}
       <div
         {...dragHandleProps}
+        onClick={(e) => e.stopPropagation()}
+        onPointerDown={(e) => {
+          e.stopPropagation()
+          // dragHandleProps의 onPointerDown 호출
+          const onPointerDown = dragHandleProps?.onPointerDown as ((e: React.PointerEvent) => void) | undefined
+          onPointerDown?.(e)
+        }}
         className="cursor-grab active:cursor-grabbing p-1 text-gray-400 hover:text-gray-600 touch-none"
       >
         <GripVertical className="w-4 h-4" />

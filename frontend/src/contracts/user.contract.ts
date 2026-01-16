@@ -34,6 +34,7 @@ export const UserProfileSchema = UserSchema.extend({
   stats: z.object({
     guidesCount: z.number().int().nonnegative(),
     totalViews: z.number().int().nonnegative(),
+    aiChatsCount: z.number().int().nonnegative().optional(),
   }),
 })
 

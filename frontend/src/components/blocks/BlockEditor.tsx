@@ -9,6 +9,7 @@ import {
   MapEditor,
   HostPickEditor,
   NoticeEditor,
+  GalleryEditor,
 } from './editors'
 
 interface BlockEditorProps {
@@ -42,6 +43,8 @@ export function BlockEditor({ block, onClose, isInline = false }: BlockEditorPro
         return <HostPickEditor block={block} />
       case 'notice':
         return <NoticeEditor block={block} />
+      case 'gallery':
+        return <GalleryEditor block={block} />
       default:
         return null
     }

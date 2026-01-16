@@ -4,7 +4,7 @@ import { create } from 'zustand'
 import { subscribeWithSelector } from 'zustand/middleware'
 
 // 블록 타입 정의
-export type BlockType = 'hero' | 'quick_info' | 'amenities' | 'map' | 'host_pick' | 'notice'
+export type BlockType = 'hero' | 'quick_info' | 'amenities' | 'map' | 'host_pick' | 'notice' | 'gallery'
 
 export interface Block {
   id: string
@@ -132,6 +132,11 @@ const getDefaultBlockContent = (type: BlockType): Record<string, unknown> => {
         title: '',
         content: '',
         isActive: true,
+      }
+    case 'gallery':
+      return {
+        title: '갤러리',
+        images: [],
       }
     default:
       return {}
@@ -386,5 +391,10 @@ export const BLOCK_TYPE_META: Record<
     label: '공지사항',
     icon: 'Bell',
     description: '팝업 또는 배너 공지',
+  },
+  gallery: {
+    label: '갤러리',
+    icon: 'Images',
+    description: '스와이프 가능한 이미지 갤러리',
   },
 }

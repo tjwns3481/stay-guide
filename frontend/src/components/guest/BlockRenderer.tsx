@@ -8,6 +8,7 @@ import {
   MapBlock,
   HostPickBlock,
   NoticeBlock,
+  GalleryBlock,
 } from './blocks'
 
 interface BlockRendererProps {
@@ -29,6 +30,8 @@ export function BlockRenderer({ type, content }: BlockRendererProps) {
       return <HostPickBlock content={content} />
     case 'notice':
       return <NoticeBlock content={content} />
+    case 'gallery':
+      return <GalleryBlock content={content} />
     default:
       return null
   }

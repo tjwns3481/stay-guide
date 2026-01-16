@@ -25,6 +25,7 @@ import {
   Copy,
   Trash2,
   Image,
+  Images,
   Clock,
   Wifi,
   MapPin,
@@ -44,6 +45,7 @@ const BLOCK_ICONS: Record<BlockType, React.ReactNode> = {
   map: <MapPin className="w-4 h-4" />,
   host_pick: <Heart className="w-4 h-4" />,
   notice: <Bell className="w-4 h-4" />,
+  gallery: <Images className="w-4 h-4" />,
 }
 
 export function BlockList() {

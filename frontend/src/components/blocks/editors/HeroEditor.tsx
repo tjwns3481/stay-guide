@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react'
 import Image from 'next/image'
+import { useAuth } from '@clerk/nextjs'
 import { Upload, X, Image as ImageIcon } from 'lucide-react'
 import { useEditorStore, Block } from '@/stores/editor'
 
@@ -17,6 +18,7 @@ interface HeroEditorProps {
 }
 
 export function HeroEditor({ block }: HeroEditorProps) {
+  const { getToken } = useAuth()
   const { updateBlock } = useEditorStore()
   const content = block.content as unknown as HeroContent
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -43,6 +45,12 @@ export function HeroEditor({ block }: HeroEditorProps) {
     setIsUploading(true)
 
     try {
+      // 인증 토큰 가져오기
+      const token = await getToken()
+      if (!token) {
+        throw new Error('인증이 필요합니다. 다시 로그인해주세요.')
+      }
+
       // FormData 생성
       const formData = new FormData()
       formData.append('file', file)
@@ -50,6 +58,9 @@ export function HeroEditor({ block }: HeroEditorProps) {
       // 이미지 업로드 API 호출
       const response = await fetch('/api/upload', {
         method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
         body: formData,
       })
 

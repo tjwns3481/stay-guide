@@ -1,10 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import type { GuideDetail } from '@/contracts/guide.contract'
 import { BlockRenderer } from './BlockRenderer'
 import { ThemeProvider } from './ThemeProvider'
 import { Watermark } from './Watermark'
+import { OpeningAnimation } from './OpeningAnimation'
 import type { ThemeSettings } from '@/contracts/types'
 import { AiFloatingButton, ChatInterface } from '@/components/ai'
 
@@ -15,15 +16,37 @@ interface GuideRendererProps {
 
 export function GuideRenderer({ guide, showWatermark = true }: GuideRendererProps) {
   const [isChatOpen, setIsChatOpen] = useState(false)
+  const [showOpening, setShowOpening] = useState(true)
 
   // 보이는 블록만 필터링하고 order 순서로 정렬
   const visibleBlocks = guide.blocks
     .filter((block) => block.isVisible)
     .sort((a, b) => a.order - b.order)
 
+  // Hero 블록에서 이미지와 타이틀 추출
+  const heroData = useMemo(() => {
+    const heroBlock = visibleBlocks.find((b) => b.type === 'hero')
+    if (!heroBlock) return null
+    return {
+      imageUrl: heroBlock.content?.imageUrl as string | undefined,
+      title: heroBlock.content?.title as string | undefined,
+      subtitle: heroBlock.content?.subtitle as string | undefined,
+    }
+  }, [visibleBlocks])
+
   return (
     <ThemeProvider themeSettings={guide.themeSettings as ThemeSettings | null}>
-      <div className="min-h-screen">
+      {/* 오프닝 애니메이션 */}
+      {showOpening && (
+        <OpeningAnimation
+          title={heroData?.title || guide.title}
+          subtitle={guide.accommodationName}
+          imageUrl={heroData?.imageUrl}
+          onComplete={() => setShowOpening(false)}
+        />
+      )}
+
+      <div className={`min-h-screen transition-opacity duration-500 ${showOpening ? 'opacity-0' : 'opacity-100'}`}>
         {/* 안내서 헤더 (선택사항) */}
         <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
           <div className="max-w-2xl mx-auto px-4 py-3">

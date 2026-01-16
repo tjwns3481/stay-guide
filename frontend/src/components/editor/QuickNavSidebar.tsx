@@ -214,6 +214,13 @@ function SortableNavItem({
         />
       </button>
 
+      {/* 활성 상태 인디케이터 */}
+      <span
+        className={`w-2 h-2 rounded-full flex-shrink-0 ${
+          block.isVisible ? 'bg-orange-400' : 'bg-gray-300'
+        }`}
+      />
+
       {/* 블록 아이콘 & 이름 */}
       <div className="flex items-center gap-2 flex-1 min-w-0">
         <span className={`flex-shrink-0 ${isSelected ? 'text-primary-600' : 'text-gray-400'}`}>

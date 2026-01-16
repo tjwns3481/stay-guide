@@ -9,7 +9,9 @@ interface MapContent {
   longitude: number | null
   naverMapUrl: string
   kakaoMapUrl: string
+  tmapUrl?: string
   description?: string
+  showNaviButtons?: boolean
 }
 
 interface MapEditorProps {
@@ -34,6 +36,7 @@ export function MapEditor({ block }: MapEditorProps) {
     updateContent({
       naverMapUrl: `https://map.naver.com/v5/search/${encodedAddress}`,
       kakaoMapUrl: `https://map.kakao.com/?q=${encodedAddress}`,
+      tmapUrl: `https://apis.openapi.sk.com/tmap/app/routes?appKey=&name=${encodedAddress}&lon=&lat=`,
     })
   }
 
@@ -141,6 +144,57 @@ export function MapEditor({ block }: MapEditorProps) {
               링크 확인
             </a>
           )}
+        </div>
+
+        {/* T맵 */}
+        <div className="p-3 bg-blue-50 rounded-lg border border-blue-100">
+          <div className="flex items-center gap-2 mb-2">
+            <div className="w-6 h-6 bg-blue-500 rounded flex items-center justify-center">
+              <span className="text-white text-xs font-bold">T</span>
+            </div>
+            <span className="font-medium text-blue-800">T맵</span>
+          </div>
+          <input
+            type="url"
+            value={content.tmapUrl || ''}
+            onChange={(e) => updateContent({ tmapUrl: e.target.value })}
+            placeholder="https://tmap.life/..."
+            className="w-full px-3 py-2 border border-blue-200 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+          />
+          {content.tmapUrl && (
+            <a
+              href={content.tmapUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 mt-2 text-xs text-blue-600 hover:text-blue-700"
+            >
+              <ExternalLink className="w-3 h-3" />
+              링크 확인
+            </a>
+          )}
+        </div>
+      </div>
+
+      {/* 네비게이션 앱 바로가기 버튼 설정 */}
+      <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-sm font-medium text-gray-700">길안내 앱 바로가기</p>
+            <p className="text-xs text-gray-400">게스트 화면에 카카오내비, T맵, 네이버지도 버튼 표시</p>
+          </div>
+          <button
+            type="button"
+            onClick={() => updateContent({ showNaviButtons: !content.showNaviButtons })}
+            className={`relative w-11 h-6 rounded-full transition-colors ${
+              content.showNaviButtons !== false ? 'bg-primary-500' : 'bg-gray-300'
+            }`}
+          >
+            <span
+              className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${
+                content.showNaviButtons !== false ? 'left-5' : 'left-0.5'
+              }`}
+            />
+          </button>
         </div>
       </div>
 

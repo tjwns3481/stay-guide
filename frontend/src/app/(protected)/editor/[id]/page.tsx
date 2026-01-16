@@ -21,7 +21,7 @@ export default function EditorPage() {
   const guideId = params.id as string
   const [isCreating, setIsCreating] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [showModal, setShowModal] = useState(true) // 새 안내서일 때 모달 표시
+  const [showModal] = useState(true) // 새 안내서일 때 모달 표시
 
   // 안내서 생성 처리
   const handleCreateGuide = async (slug: string, title: string, accommodationName: string) => {

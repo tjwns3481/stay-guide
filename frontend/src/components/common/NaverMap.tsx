@@ -9,6 +9,7 @@ declare global {
   }
 }
 
+/* eslint-disable @typescript-eslint/no-namespace */
 declare namespace naver {
   namespace maps {
     class Map {

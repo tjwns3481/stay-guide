@@ -7,7 +7,7 @@ import { BlockRenderer } from './BlockRenderer'
 import { ThemeProvider } from './ThemeProvider'
 import { Watermark } from './Watermark'
 import { OpeningAnimation } from './OpeningAnimation'
-import type { ThemeSettings, Season } from '@/contracts/types'
+import type { ThemeSettings } from '@/contracts/types'
 import { AiFloatingButton, ChatInterface } from '@/components/ai'
 import { SeasonalEffects, getCurrentSeason, type Season as SeasonType } from './SeasonalEffects'
 

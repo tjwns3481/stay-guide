@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { FileText, Eye, ExternalLink } from 'lucide-react'
+import { FileText, Eye } from 'lucide-react'
 import { useAuth } from '@clerk/nextjs'
 import { api } from '@/lib/api/client'
 

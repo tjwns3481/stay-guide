@@ -32,8 +32,8 @@ import {
 import { useEditorStore, BlockType, Block, BLOCK_TYPE_META } from '@/stores/editor'
 import { BlockEditor } from '@/components/blocks'
 
-// 블록 타입 아이콘 매핑
-const BLOCK_ICONS: Record<BlockType, React.ReactNode> = {
+// 블록 타입 아이콘 매핑 (현재 미사용이지만 향후 블록 추가 메뉴 UI에서 사용 예정)
+const _BLOCK_ICONS: Record<BlockType, React.ReactNode> = {
   hero: <Image className="w-4 h-4" />,
   quick_info: <Clock className="w-4 h-4" />,
   amenities: <Wifi className="w-4 h-4" />,
@@ -42,6 +42,7 @@ const BLOCK_ICONS: Record<BlockType, React.ReactNode> = {
   notice: <Bell className="w-4 h-4" />,
   gallery: <Images className="w-4 h-4" />,
 }
+void _BLOCK_ICONS // suppress unused variable warning
 
 export function BlockList() {
   const {
@@ -228,7 +229,7 @@ function BlockItemContent({
   onSelect,
   onClose: _onClose,
   onToggleVisibility,
-  onDuplicate,
+  onDuplicate: _onDuplicate,
   onDelete,
   dragHandleProps,
 }: BlockItemContentProps) {

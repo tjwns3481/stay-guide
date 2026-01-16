@@ -115,7 +115,7 @@ describe('useEditorStore', () => {
 
     it('updateBlock으로 블록을 업데이트할 수 있다', () => {
       useEditorStore.getState().addBlock('hero')
-      const blockId = useEditorStore.getState().guide?.blocks[0].id!
+      const blockId = useEditorStore.getState().guide?.blocks[0]?.id ?? ''
 
       useEditorStore.getState().updateBlock(blockId, {
         content: { title: '수정된 제목', subtitle: '부제목' },
@@ -131,7 +131,7 @@ describe('useEditorStore', () => {
     it('removeBlock으로 블록을 삭제할 수 있다', () => {
       useEditorStore.getState().addBlock('hero')
       useEditorStore.getState().addBlock('quick_info')
-      const blockId = useEditorStore.getState().guide?.blocks[0].id!
+      const blockId = useEditorStore.getState().guide?.blocks[0]?.id ?? ''
 
       useEditorStore.getState().removeBlock(blockId)
 
@@ -145,7 +145,7 @@ describe('useEditorStore', () => {
       useEditorStore.getState().addBlock('quick_info')
       useEditorStore.getState().addBlock('amenities')
 
-      const secondBlockId = useEditorStore.getState().guide?.blocks[1].id!
+      const secondBlockId = useEditorStore.getState().guide?.blocks[1]?.id ?? ''
       useEditorStore.getState().removeBlock(secondBlockId)
 
       const state = useEditorStore.getState()
@@ -168,7 +168,7 @@ describe('useEditorStore', () => {
 
     it('toggleBlockVisibility로 블록 가시성을 토글할 수 있다', () => {
       useEditorStore.getState().addBlock('hero')
-      const blockId = useEditorStore.getState().guide?.blocks[0].id!
+      const blockId = useEditorStore.getState().guide?.blocks[0]?.id ?? ''
 
       useEditorStore.getState().toggleBlockVisibility(blockId)
       expect(useEditorStore.getState().guide?.blocks[0].isVisible).toBe(false)
@@ -179,7 +179,7 @@ describe('useEditorStore', () => {
 
     it('duplicateBlock으로 블록을 복제할 수 있다', () => {
       useEditorStore.getState().addBlock('hero')
-      const blockId = useEditorStore.getState().guide?.blocks[0].id!
+      const blockId = useEditorStore.getState().guide?.blocks[0]?.id ?? ''
       useEditorStore.getState().updateBlock(blockId, {
         content: { title: '원본 제목' },
       })

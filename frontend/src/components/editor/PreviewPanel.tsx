@@ -3,8 +3,8 @@
 import { useEditorStore, BlockType, BLOCK_TYPE_META } from '@/stores/editor'
 import { useMemo } from 'react'
 import { THEME_PRESETS, DEFAULT_THEME, ThemePreset } from '@/lib/theme'
-import type { ThemeSettings, Season, SeasonIntensity } from '@/contracts/types'
-import { Snowflake, Flower2, Sun, Leaf, Sparkles, Play } from 'lucide-react'
+import type { ThemeSettings } from '@/contracts/types'
+import { Play } from 'lucide-react'
 
 // 시즌 이모지 매핑
 const SEASON_EMOJI: Record<string, string> = {

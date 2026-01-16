@@ -1,6 +1,6 @@
 'use client'
 
-import { Wifi, Check, Copy, Snowflake, Tv, Flame, Home, Box, Coffee } from 'lucide-react'
+import { Wifi, Check, Snowflake, Tv, Flame, Home, Box, Coffee } from 'lucide-react'
 import { useState } from 'react'
 
 interface AmenitiesBlockProps {

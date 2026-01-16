@@ -2,8 +2,6 @@
 
 import { useState } from 'react'
 import {
-  ChevronDown,
-  ChevronRight,
   Plus,
   Settings,
   Palette,
@@ -46,10 +44,11 @@ export function ControlPanel() {
 
   if (!guide) return null
 
-  const toggleSection = (section: PanelSection) => {
+  const _toggleSection = (section: PanelSection) => {
     setExpandedSection(expandedSection === section ? 'blocks' : section)
     setActivePanel(section)
   }
+  void _toggleSection // 향후 섹션 접기/펼치기 UI에서 사용 예정
 
   const handleAddBlock = (type: BlockType) => {
     addBlock(type)

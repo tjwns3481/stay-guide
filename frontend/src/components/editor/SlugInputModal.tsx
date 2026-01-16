@@ -68,7 +68,7 @@ export function SlugInputModal({
         setSlugStatus('taken')
         setErrorMessage('이미 사용 중인 URL입니다')
       }
-    } catch (error) {
+    } catch (_error) {
       setSlugStatus('invalid')
       setErrorMessage('확인 중 오류가 발생했습니다')
     } finally {

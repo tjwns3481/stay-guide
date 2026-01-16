@@ -5,13 +5,32 @@ const nextConfig = {
   },
   images: {
     remotePatterns: [
+      // Supabase Storage
       {
         protocol: 'https',
         hostname: '*.supabase.co',
       },
+      // Clerk 프로필 이미지
       {
         protocol: 'https',
         hostname: 'img.clerk.com',
+      },
+      // 일반적인 이미지 호스팅 (사용자 직접 입력 URL 대응)
+      {
+        protocol: 'https',
+        hostname: '**.amazonaws.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.cloudinary.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.imgix.net',
       },
     ],
   },

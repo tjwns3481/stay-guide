@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef } from 'react'
+import Image from 'next/image'
 import { Upload, X, Image as ImageIcon } from 'lucide-react'
 import { useEditorStore, Block } from '@/stores/editor'
 
@@ -93,15 +94,17 @@ export function HeroEditor({ block }: HeroEditorProps) {
         </label>
 
         {content.imageUrl ? (
-          <div className="relative rounded-lg overflow-hidden">
-            <img
+          <div className="relative rounded-lg overflow-hidden h-32">
+            <Image
               src={content.imageUrl}
-              alt="Hero"
-              className="w-full h-32 object-cover"
+              alt="Hero 미리보기"
+              fill
+              sizes="400px"
+              className="object-cover"
             />
             <button
               onClick={() => updateContent({ imageUrl: '' })}
-              className="absolute top-2 right-2 p-1.5 bg-black/50 hover:bg-black/70 text-white rounded-full transition-colors"
+              className="absolute top-2 right-2 p-1.5 bg-black/50 hover:bg-black/70 text-white rounded-full transition-colors z-10"
             >
               <X className="w-4 h-4" />
             </button>

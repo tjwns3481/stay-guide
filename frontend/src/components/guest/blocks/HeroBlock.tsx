@@ -1,5 +1,7 @@
 'use client'
 
+import Image from 'next/image'
+
 interface HeroBlockProps {
   content: Record<string, unknown>
 }
@@ -16,11 +18,16 @@ export function HeroBlock({ content }: HeroBlockProps) {
   return (
     <div className="relative rounded-xl overflow-hidden bg-gray-100 -mx-4 sm:mx-0">
       {imageUrl ? (
-        <img
-          src={imageUrl}
-          alt="Hero"
-          className="w-full h-64 sm:h-80 object-cover"
-        />
+        <div className="relative w-full h-64 sm:h-80">
+          <Image
+            src={imageUrl}
+            alt={title}
+            fill
+            sizes="(max-width: 640px) 100vw, 672px"
+            className="object-cover"
+            priority
+          />
+        </div>
       ) : (
         <div className="w-full h-64 sm:h-80 theme-primary-bg opacity-90" />
       )}

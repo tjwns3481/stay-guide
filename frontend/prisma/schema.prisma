@@ -41,6 +41,9 @@ model Guide {
   viewCount         Int      @default(0) @map("view_count")
   themeId           String?  @map("theme_id")
   themeSettings     Json?    @map("theme_settings") @db.JsonB
+  // AI 챗봇 설정
+  aiEnabled         Boolean  @default(true) @map("ai_enabled")
+  aiInstructions    String?  @map("ai_instructions") @db.Text  // 호스트가 작성한 AI 지침
   createdAt         DateTime @default(now()) @map("created_at")
   updatedAt         DateTime @updatedAt @map("updated_at")
 
@@ -96,12 +99,13 @@ model License {
 }
 
 // AI 컨시어지용 임베딩 (pgvector)
+// 주의: nomic-embed-text=768, text-embedding-3-small=1536
 model GuideEmbedding {
   id        String                   @id @default(cuid())
   guideId   String                   @map("guide_id")
   blockId   String?                  @map("block_id")
   content   String
-  embedding Unsupported("vector(1536)")
+  embedding Unsupported("vector(768)")  // Ollama nomic-embed-text
   metadata  Json?                    @db.JsonB
   createdAt DateTime                 @default(now()) @map("created_at")
 

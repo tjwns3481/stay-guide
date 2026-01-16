@@ -1,11 +1,6 @@
 import { Hono } from 'hono'
 import { streamSSE } from 'hono/streaming'
-import {
-  embedGuideBlocks,
-  streamChat,
-  getLLMProvider,
-  BlockData,
-} from '../services/ai-free'
+import { streamChat, getLLMProvider } from '../services/ai-free'
 import { prisma } from '@/lib/server/prisma'
 
 export const aiRoutes = new Hono()
@@ -20,54 +15,12 @@ aiRoutes.get('/status', async (c) => {
       provider,
       status: 'configured',
       stack: {
-        embedding: 'Google text-embedding-004 (768 dims, free tier)',
-        vectorDB: 'PostgreSQL + pgvector (Supabase)',
-        llm: 'Google Gemini 1.5 Flash (free tier)',
+        llm: 'Google Gemini 2.0 Flash (Long Context)',
+        method: 'Direct context injection (no RAG)',
       },
-      message: `무료 RAG 스택 사용 중`,
+      message: `Long Context 방식 사용 중 (RAG 제거됨)`,
     },
   })
-})
-
-// POST /api/guides/:guideId/ai/embed - 임베딩 생성
-aiRoutes.post('/:guideId/ai/embed', async (c) => {
-  const guideId = c.req.param('guideId')
-
-  try {
-    // 가이드의 블록들 조회
-    const guide = await prisma.guide.findUnique({
-      where: { id: guideId },
-      include: { blocks: { where: { isVisible: true }, orderBy: { order: 'asc' } } },
-    })
-
-    if (!guide) {
-      return c.json(
-        { success: false, error: { code: 'NOT_FOUND', message: '안내서를 찾을 수 없습니다' } },
-        404
-      )
-    }
-
-    // 블록 데이터 변환
-    const blocks: BlockData[] = guide.blocks.map((block) => ({
-      id: block.id,
-      type: block.type,
-      content: block.content as Record<string, unknown>,
-    }))
-
-    // ChromaDB에 임베딩 저장
-    const count = await embedGuideBlocks(guideId, blocks)
-
-    return c.json({
-      success: true,
-      data: { message: '임베딩 생성 완료', embeddingsCount: count },
-    })
-  } catch (error) {
-    console.error('[Embed Error]', error)
-    return c.json(
-      { success: false, error: { code: 'EMBED_ERROR', message: (error as Error).message } },
-      500
-    )
-  }
 })
 
 // POST /api/guides/:guideId/ai/chat - 채팅 (SSE)

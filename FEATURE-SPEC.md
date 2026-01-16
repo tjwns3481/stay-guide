@@ -603,75 +603,62 @@ interface Block {
 
 ### 4.3 AI 컨시어지 시스템
 
-#### 4.3.1 RAG (Retrieval-Augmented Generation) 아키텍처
+#### 4.3.1 Long Context 아키텍처
+
+Gemini 2.0 Flash의 Long Context Window(1M tokens)를 활용하여, 숙소의 모든 블록 데이터를 프롬프트에 직접 주입하는 방식입니다.
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                    1. 임베딩 생성 (호스트 저장 시)        │
-│  블록 내용 → HuggingFace API → 768차원 벡터 → pgvector  │
-└─────────────────────────────────────────────────────────┘
-                              ↓
-┌─────────────────────────────────────────────────────────┐
-│                    2. 질의 처리 (게스트 질문 시)          │
+│                    질의 처리 (게스트 질문 시)             │
 │                                                          │
-│  질문 → 동의어 확장 → 임베딩 변환                        │
+│  1. Prisma로 Guide + 모든 Block 조회 (단순 DB 조회)      │
 │            ↓                                             │
-│  하이브리드 검색 (키워드 + 벡터 유사도)                  │
+│  2. 블록 데이터를 마크다운 텍스트로 변환                 │
 │            ↓                                             │
-│  관련 블록 Top-K 추출                                    │
+│  3. 시스템 프롬프트에 숙소 전체 정보 주입                │
 │            ↓                                             │
-│  컨텍스트 구성 (시스템 프롬프트 + 블록 정보 + 대화 기록)  │
+│  4. 이전 대화 기록 조회 (최근 10개)                      │
 │            ↓                                             │
-│  LLM 응답 생성 (Gemini 2.0 Flash)                       │
+│  5. Gemini 2.0 Flash로 응답 생성                        │
 │            ↓                                             │
-│  SSE 스트리밍으로 실시간 전송                           │
+│  6. SSE 스트리밍으로 실시간 전송                        │
 └─────────────────────────────────────────────────────────┘
 ```
 
-#### 4.3.2 임베딩 모델
+**장점**:
+- 임베딩 생성 비용 없음 (API 호출 절감)
+- pgvector 의존성 불필요
+- 코드 복잡도 감소
+- 모든 숙소 정보에 대해 정확한 답변 가능
 
-**제공자**: HuggingFace Inference API
-**모델**: `sentence-transformers/all-mpnet-base-v2`
-**차원**: 768
-
-**파일**: `frontend/src/app/api/[[...route]]/services/ai-free/embeddings.ts`
-
-#### 4.3.3 하이브리드 검색
-
-**파일**: `frontend/src/app/api/[[...route]]/services/ai-free/vectorstore.ts`
-
-**검색 전략**:
-1. **키워드 매칭**: 질문에서 키워드 추출 → 블록 content에서 검색
-2. **동의어 확장**:
-   - "체크인" → ["입실", "체크인", "check-in"]
-   - "와이파이" → ["wi-fi", "wifi", "무선인터넷"]
-3. **벡터 유사도**: 질문 임베딩 ↔ 블록 임베딩 코사인 유사도
-4. **스코어 결합**: 키워드 점수 + 벡터 점수 가중 합산
-
-#### 4.3.4 LLM 응답 생성
+#### 4.3.2 LLM 응답 생성
 
 **제공자**: Google Generative AI
-**모델**: `gemini-2.0-flash` (무료 티어)
-**프레임워크**: LangChain
+**모델**: `gemini-2.0-flash`
+**SDK**: `@google/generative-ai` (직접 사용)
 
 **파일**: `frontend/src/app/api/[[...route]]/services/ai-free/llm.ts`
 
 **시스템 프롬프트 구성**:
 ```
-당신은 "{숙소명}"의 AI 컨시어지입니다.
-게스트의 질문에 친절하고 정확하게 답변해주세요.
+당신은 "{숙소명}" 숙소의 AI 컨시어지입니다.
 
-[숙소 정보]
-{검색된 블록 내용들}
+## 역할
+게스트의 질문에 친절하고 정확하게 답변하는 것이 당신의 역할입니다.
 
-[호스트 지침] (선택적)
+## 숙소 정보
+{블록 데이터를 마크다운으로 변환한 전체 숙소 정보}
+
+## 답변 원칙
+1. 위의 숙소 정보에 있는 내용만 답변하세요.
+2. 정보가 없는 경우 호스트에게 문의하라고 안내하세요.
+3. 간결하고 명확하게 답변하세요.
+
+## 호스트 추가 지침 (선택적)
 {aiInstructions}
-
-[대화 기록]
-{최근 10개 메시지}
 ```
 
-#### 4.3.5 스트리밍 응답 (SSE)
+#### 4.3.3 스트리밍 응답 (SSE)
 
 **프로토콜**: Server-Sent Events
 
@@ -861,14 +848,9 @@ CSS 변수로 테마 값 주입:
 
 | 카테고리 | 기술/라이브러리 | 버전 | 용도 |
 |----------|-----------------|------|------|
-| **LLM** | Google Generative AI | 0.24.1 | Gemini 2.0 Flash |
-| | OpenAI | 4.104.0 | GPT-4 (대체) |
-| **임베딩** | HuggingFace Inference | 4.13.9 | 텍스트 임베딩 |
-| | @xenova/transformers | 2.17.2 | 브라우저 ML |
-| **프레임워크** | LangChain | 1.2.10 | RAG 구현 |
-| | @langchain/google-genai | 2.1.10 | Gemini 연동 |
-| **벡터 DB** | pgvector | PostgreSQL 확장 | 벡터 검색 |
-| | ChromaDB | 3.2.1 | 벡터 DB (대체) |
+| **LLM** | @google/generative-ai | 0.24.1 | Gemini 2.0 Flash (Long Context) |
+
+> **Note**: RAG/임베딩 방식에서 Long Context 방식으로 전환하여 LangChain, HuggingFace, pgvector 등의 의존성이 제거되었습니다.
 
 ### 5.4 인프라
 
@@ -878,7 +860,6 @@ CSS 변수로 테마 값 주입:
 | **데이터베이스** | Supabase | PostgreSQL + 스토리지 |
 | **인증** | Clerk | 사용자 관리 |
 | **AI** | Google AI Studio | Gemini API |
-| | HuggingFace | 임베딩 API |
 
 ---
 
@@ -958,11 +939,12 @@ Authorization: Bearer {clerk_session_token}
 | 엔드포인트 | 메서드 | 인증 | 설명 |
 |------------|--------|------|------|
 | `/api/ai/status` | GET | X | AI 서비스 상태 확인 |
-| `/api/guides/:id/ai/embed` | POST | X | 블록 임베딩 생성 |
 | `/api/guides/:id/ai/chat` | POST | X | AI 채팅 (SSE) |
 | `/api/guides/:id/ai/conversations` | GET | X | 대화 기록 조회 |
 | `/api/guides/:id/ai/settings` | GET | X | AI 설정 조회 |
 | `/api/guides/:id/ai/settings` | PUT | X | AI 설정 수정 |
+
+> **Note**: `/api/guides/:id/ai/embed` 엔드포인트는 Long Context 방식 전환으로 제거되었습니다.
 
 #### 라이선스 API
 

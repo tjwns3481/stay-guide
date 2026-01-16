@@ -1,12 +1,17 @@
 /**
- * AI 채팅 서비스 - 대화 컨텍스트 활용
+ * AI 채팅 서비스 - Long Context Window 활용
+ *
+ * 변경 이력:
+ * - RAG/벡터 검색 방식 제거
+ * - 숙소 전체 데이터를 직접 조회하여 프롬프트에 주입
+ * - Gemini 2.0 Flash의 Long Context Window 활용
  */
 
 import { prisma } from '@/lib/server/prisma'
-import { searchSimilarBlocks } from './vectorstore'
 import {
   streamLLMResponse,
   buildSystemPrompt,
+  formatBlocksForContext,
   getLLMProvider,
   type ChatMessage,
 } from './llm'
@@ -17,7 +22,6 @@ export interface ChatEvent {
     chunk?: string
     messageId?: string
     sessionId?: string
-    referencedBlockIds?: string[]
     code?: string
     message?: string
   }
@@ -31,7 +35,11 @@ function generateSessionId(): string {
 }
 
 /**
- * 스트리밍 채팅 (대화 컨텍스트 활용)
+ * 스트리밍 채팅 (Long Context 방식)
+ *
+ * 1. 가이드 정보와 모든 블록을 DB에서 조회
+ * 2. 블록 데이터를 텍스트로 변환하여 시스템 프롬프트에 포함
+ * 3. Gemini 2.0 Flash로 응답 생성
  */
 export async function* streamChat(
   guideId: string,
@@ -41,10 +49,12 @@ export async function* streamChat(
   const actualSessionId = sessionId || generateSessionId()
   const provider = getLLMProvider()
 
-  console.log(`[Chat] Provider: ${provider}, Guide: ${guideId}, Session: ${actualSessionId}`)
+  console.log(
+    `[Chat] Provider: ${provider}, Guide: ${guideId}, Session: ${actualSessionId}`
+  )
 
   try {
-    // 1. 가이드 정보 조회
+    // 1. 가이드 정보와 블록 조회 (단순 DB 조회, 벡터 검색 아님)
     const guide = await prisma.guide.findUnique({
       where: { id: guideId },
       select: {
@@ -52,6 +62,16 @@ export async function* streamChat(
         accommodationName: true,
         aiEnabled: true,
         aiInstructions: true,
+        blocks: {
+          where: { isVisible: true },
+          orderBy: { order: 'asc' },
+          select: {
+            id: true,
+            type: true,
+            content: true,
+            isVisible: true,
+          },
+        },
       },
     })
 
@@ -66,20 +86,23 @@ export async function* streamChat(
     if (!guide.aiEnabled) {
       yield {
         type: 'error',
-        data: { code: 'AI_DISABLED', message: 'AI 컨시어지가 비활성화되어 있습니다.' },
+        data: {
+          code: 'AI_DISABLED',
+          message: 'AI 컨시어지가 비활성화되어 있습니다.',
+        },
       }
       return
     }
 
-    // 2. 유사 블록 검색 (하이브리드)
-    console.log('[Chat] Searching similar blocks...')
-    const similarBlocks = await searchSimilarBlocks(guideId, message, 5)
-    const context = similarBlocks.map((b) => b.content).join('\n\n')
-    const referencedBlockIds = similarBlocks
-      .filter((b) => b.blockId)
-      .map((b) => b.blockId as string)
-
-    console.log(`[Chat] Found ${similarBlocks.length} relevant blocks`)
+    // 2. 블록 데이터를 텍스트로 변환
+    console.log(`[Chat] Formatting ${guide.blocks.length} blocks for context`)
+    const blocksContext = formatBlocksForContext(
+      guide.blocks.map((block) => ({
+        type: block.type,
+        content: block.content as Record<string, unknown>,
+        isVisible: block.isVisible,
+      }))
+    )
 
     // 3. 이전 대화 기록 조회 (최근 10개)
     const previousMessages = await prisma.aiConversation.findMany({
@@ -93,12 +116,10 @@ export async function* streamChat(
     })
 
     // 시간순으로 정렬 (오래된 것부터)
-    const chatHistory: ChatMessage[] = previousMessages
-      .reverse()
-      .map((m) => ({
-        role: m.role as 'user' | 'assistant',
-        content: m.content,
-      }))
+    const chatHistory: ChatMessage[] = previousMessages.reverse().map((m) => ({
+      role: m.role as 'user' | 'assistant',
+      content: m.content,
+    }))
 
     console.log(`[Chat] Using ${chatHistory.length} previous messages for context`)
 
@@ -112,27 +133,30 @@ export async function* streamChat(
       },
     })
 
-    // 5. 시스템 프롬프트 구성
-    const systemPrompt = buildSystemPrompt(guide.aiInstructions)
+    // 5. 시스템 프롬프트 구성 (숙소 전체 정보 포함)
+    const systemPrompt = buildSystemPrompt(
+      guide.accommodationName,
+      blocksContext,
+      guide.aiInstructions
+    )
 
-    // 6. LLM 스트리밍 응답 (대화 히스토리 포함)
+    // 6. LLM 스트리밍 응답
     let fullResponse = ''
 
-    console.log('[Chat] Generating response with LangChain...')
+    console.log('[Chat] Generating response with Gemini 2.0 Flash...')
 
     try {
       for await (const chunk of streamLLMResponse(
         systemPrompt,
-        context,
         message,
-        guide.accommodationName,
         chatHistory
       )) {
         fullResponse += chunk
         yield { type: 'message', data: { chunk } }
       }
     } catch (llmError) {
-      const errorMessage = llmError instanceof Error ? llmError.message : 'Unknown LLM error'
+      const errorMessage =
+        llmError instanceof Error ? llmError.message : 'Unknown LLM error'
 
       // Rate Limit 에러 감지
       const isRateLimit =
@@ -174,7 +198,6 @@ export async function* streamChat(
         sessionId: actualSessionId,
         role: 'assistant',
         content: fullResponse,
-        metadata: { referencedBlockIds },
       },
     })
 
@@ -184,7 +207,6 @@ export async function* streamChat(
       data: {
         messageId: savedMessage.id,
         sessionId: actualSessionId,
-        referencedBlockIds,
       },
     }
 

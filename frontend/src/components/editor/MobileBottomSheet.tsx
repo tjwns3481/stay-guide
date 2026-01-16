@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import { X, Image, Clock, Wifi, MapPin, Heart, Bell } from 'lucide-react'
+import { X, Image, Clock, Wifi, MapPin, Heart, Bell, Images } from 'lucide-react'
 import { useEditorStore, BlockType, BLOCK_TYPE_META } from '@/stores/editor'
 
 // 블록 타입 아이콘 매핑
@@ -12,6 +12,7 @@ const BLOCK_ICONS: Record<BlockType, React.ReactNode> = {
   map: <MapPin className="w-5 h-5" />,
   host_pick: <Heart className="w-5 h-5" />,
   notice: <Bell className="w-5 h-5" />,
+  gallery: <Images className="w-5 h-5" />,
 }
 
 export function MobileBottomSheet() {

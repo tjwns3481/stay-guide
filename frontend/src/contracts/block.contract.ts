@@ -8,6 +8,7 @@ import {
   MapBlockContentSchema,
   HostPickBlockContentSchema,
   NoticeBlockContentSchema,
+  GalleryBlockContentSchema,
 } from './types'
 
 // ============================================
@@ -34,6 +35,7 @@ export const BlockContentByTypeSchema = {
   map: MapBlockContentSchema,
   host_pick: HostPickBlockContentSchema,
   notice: NoticeBlockContentSchema,
+  gallery: GalleryBlockContentSchema,
 } as const
 
 // ============================================

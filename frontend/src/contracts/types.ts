@@ -54,6 +54,7 @@ export const BlockTypeEnum = z.enum([
   'map',
   'host_pick',
   'notice',
+  'gallery',
 ])
 
 // Hero 블록 콘텐츠
@@ -124,6 +125,17 @@ export const NoticeBlockContentSchema = z.object({
   endDate: z.string().datetime().optional(),
 })
 
+// Gallery 블록 콘텐츠
+export const GalleryImageSchema = z.object({
+  url: z.string().url(),
+  caption: z.string().optional(),
+})
+
+export const GalleryBlockContentSchema = z.object({
+  title: z.string().default('갤러리'),
+  images: z.array(GalleryImageSchema).default([]),
+})
+
 // 블록 콘텐츠 유니온
 export const BlockContentSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('hero'), data: HeroBlockContentSchema }),
@@ -132,6 +144,7 @@ export const BlockContentSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('map'), data: MapBlockContentSchema }),
   z.object({ type: z.literal('host_pick'), data: HostPickBlockContentSchema }),
   z.object({ type: z.literal('notice'), data: NoticeBlockContentSchema }),
+  z.object({ type: z.literal('gallery'), data: GalleryBlockContentSchema }),
 ])
 
 // ============================================
@@ -198,6 +211,8 @@ export type MapBlockContent = z.infer<typeof MapBlockContentSchema>
 export type HostPickItem = z.infer<typeof HostPickItemSchema>
 export type HostPickBlockContent = z.infer<typeof HostPickBlockContentSchema>
 export type NoticeBlockContent = z.infer<typeof NoticeBlockContentSchema>
+export type GalleryImage = z.infer<typeof GalleryImageSchema>
+export type GalleryBlockContent = z.infer<typeof GalleryBlockContentSchema>
 export type BlockContent = z.infer<typeof BlockContentSchema>
 export type ThemePreset = z.infer<typeof ThemePresetEnum>
 export type Season = z.infer<typeof SeasonEnum>

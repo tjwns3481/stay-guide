@@ -1,6 +1,7 @@
 'use client'
 
 import { MapPin, ExternalLink, Navigation } from 'lucide-react'
+import { NaverMap } from '@/components/common/NaverMap'
 
 interface MapBlockProps {
   content: Record<string, unknown>
@@ -8,6 +9,10 @@ interface MapBlockProps {
 
 const getString = (value: unknown): string | undefined => {
   return typeof value === 'string' ? value : undefined
+}
+
+const getNumber = (value: unknown): number | null => {
+  return typeof value === 'number' ? value : null
 }
 
 const getBoolean = (value: unknown, defaultValue: boolean = true): boolean => {
@@ -20,6 +25,8 @@ export function MapBlock({ content }: MapBlockProps) {
   const naverMapUrl = getString(content.naverMapUrl)
   const kakaoMapUrl = getString(content.kakaoMapUrl)
   const tmapUrl = getString(content.tmapUrl)
+  const latitude = getNumber(content.latitude)
+  const longitude = getNumber(content.longitude)
   const showNaviButtons = getBoolean(content.showNaviButtons, true)
 
   if (!address && !naverMapUrl && !kakaoMapUrl) {
@@ -33,12 +40,15 @@ export function MapBlock({ content }: MapBlockProps) {
         위치
       </h3>
 
-      {/* 지도 플레이스홀더 */}
-      <div className="bg-gray-100 rounded-lg h-48 mb-4 flex items-center justify-center">
-        <div className="text-center text-gray-400">
-          <MapPin className="w-8 h-8 mx-auto mb-2" />
-          <p className="text-sm">지도 미리보기</p>
-        </div>
+      {/* 네이버 지도 */}
+      <div className="mb-4">
+        <NaverMap
+          address={address}
+          latitude={latitude}
+          longitude={longitude}
+          height="200px"
+          className="rounded-lg overflow-hidden"
+        />
       </div>
 
       {/* 주소 */}

@@ -189,6 +189,7 @@ function SortableBlockItem({
     <div
       ref={setNodeRef}
       style={style}
+      data-block-id={block.id}
       className={isDragging ? 'opacity-50' : ''}
     >
       <BlockItemContent

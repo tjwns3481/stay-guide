@@ -161,10 +161,10 @@ export function GalleryBlock({ content }: GalleryBlockProps) {
                   goToPrev()
                 }}
                 disabled={currentIndex === 0}
-                className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 hover:bg-white flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity disabled:opacity-0"
+                className="absolute left-2 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/80 hover:bg-white flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity disabled:opacity-0"
                 aria-label="이전 이미지"
               >
-                <ChevronLeft className="w-5 h-5 text-gray-700" />
+                <ChevronLeft className="w-6 h-6 text-gray-700" />
               </button>
               <button
                 onClick={(e) => {
@@ -172,17 +172,17 @@ export function GalleryBlock({ content }: GalleryBlockProps) {
                   goToNext()
                 }}
                 disabled={currentIndex === images.length - 1}
-                className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 hover:bg-white flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity disabled:opacity-0"
+                className="absolute right-2 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/80 hover:bg-white flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity disabled:opacity-0"
                 aria-label="다음 이미지"
               >
-                <ChevronRight className="w-5 h-5 text-gray-700" />
+                <ChevronRight className="w-6 h-6 text-gray-700" />
               </button>
             </>
           )}
 
-          {/* Dots Indicator */}
+          {/* Dots Indicator - 터치 영역 확대 */}
           {images.length > 1 && (
-            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex">
               {images.map((_, index) => (
                 <button
                   key={index}
@@ -190,13 +190,17 @@ export function GalleryBlock({ content }: GalleryBlockProps) {
                     e.stopPropagation()
                     goToSlide(index)
                   }}
-                  className={`w-2 h-2 rounded-full transition-all ${
-                    index === currentIndex
-                      ? 'bg-white w-4'
-                      : 'bg-white/50 hover:bg-white/70'
-                  }`}
+                  className="p-2"
                   aria-label={`이미지 ${index + 1}로 이동`}
-                />
+                >
+                  <span
+                    className={`block rounded-full transition-all ${
+                      index === currentIndex
+                        ? 'bg-white w-4 h-2'
+                        : 'bg-white/50 hover:bg-white/70 w-2 h-2'
+                    }`}
+                  />
+                </button>
               ))}
             </div>
           )}

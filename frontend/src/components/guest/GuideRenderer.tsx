@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import type { GuideDetail } from '@/contracts/guide.contract'
+import type { BlockType } from '@/stores/editor'
 import { BlockRenderer } from './BlockRenderer'
 import { ThemeProvider } from './ThemeProvider'
 import { Watermark } from './Watermark'
@@ -70,7 +71,7 @@ export function GuideRenderer({ guide, showWatermark = true }: GuideRendererProp
             visibleBlocks.map((block) => (
               <BlockRenderer
                 key={block.id}
-                type={block.type as any}
+                type={block.type as BlockType}
                 content={block.content}
               />
             ))

@@ -35,13 +35,14 @@ license.post('/activate', authMiddleware, async (c) => {
 
     const activatedLicense = await licenseService.activateLicense(auth.userId, licenseKey)
     return c.json({ success: true, license: activatedLicense })
-  } catch (error: any) {
+  } catch (error) {
     console.error('Activate license error:', error)
 
-    if (error.message === 'INVALID_KEY_FORMAT') {
+    const errorMessage = error instanceof Error ? error.message : ''
+    if (errorMessage === 'INVALID_KEY_FORMAT') {
       return c.json({ error: 'Invalid license key format' }, 400)
     }
-    if (error.message === 'KEY_ALREADY_USED') {
+    if (errorMessage === 'KEY_ALREADY_USED') {
       return c.json({ error: 'License key already in use' }, 409)
     }
     return c.json({ error: 'Failed to activate license' }, 500)

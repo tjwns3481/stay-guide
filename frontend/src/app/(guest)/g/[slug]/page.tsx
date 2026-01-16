@@ -19,10 +19,11 @@ interface PageProps {
 }
 
 // 슬러그로 안내서 가져오기 (서버 컴포넌트에서 직접 fetch)
+// ISR: 60초마다 재검증, 정적 페이지처럼 캐싱
 async function getGuideBySlug(slug: string): Promise<GuideDetail | null> {
   try {
     const res = await fetch(`${API_BASE}/guides/slug/${slug}`, {
-      cache: 'no-store',
+      next: { revalidate: 60 }, // 60초 ISR 캐싱
     })
 
     if (!res.ok) {

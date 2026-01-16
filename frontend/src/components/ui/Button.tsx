@@ -35,10 +35,11 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         'text-primary-500 bg-transparent hover:underline focus:ring-primary-500',
     }
 
+    // 모바일 터치 영역 최소 44px 보장
     const sizes = {
       lg: 'h-12 px-6 text-base rounded-xl',
-      md: 'h-10 px-4 text-sm rounded-lg',
-      sm: 'h-8 px-3 text-xs rounded-md',
+      md: 'h-11 px-4 text-sm rounded-lg', // 44px
+      sm: 'h-11 px-3 text-xs rounded-md', // 44px (모바일 터치 친화적)
     }
 
     return (

@@ -1,6 +1,7 @@
 import { Hono } from 'hono'
 import { zValidator } from '@hono/zod-validator'
 import { z } from 'zod'
+import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/server/prisma'
 import { Prisma } from '@prisma/client'
 import { authMiddleware } from '../middleware/auth'
@@ -168,7 +169,7 @@ guideRoutes.get('/', authMiddleware, zValidator('query', paginationSchema), asyn
   return c.json({
     success: true,
     data: {
-      items: guides.map((guide: any) => ({
+      items: guides.map((guide) => ({
         id: guide.id,
         slug: guide.slug,
         title: guide.title,
@@ -529,6 +530,9 @@ guideRoutes.patch('/:id', authMiddleware, zValidator('json', updateGuideSchema),
       })
     })
 
+    // ISR 캐시 무효화
+    revalidatePath(`/g/${updatedGuide.slug}`)
+
     return c.json({
       success: true,
       data: formatGuideResponse(updatedGuide),
@@ -545,6 +549,9 @@ guideRoutes.patch('/:id', authMiddleware, zValidator('json', updateGuideSchema),
       },
     },
   })
+
+  // ISR 캐시 무효화
+  revalidatePath(`/g/${updatedGuide.slug}`)
 
   return c.json({
     success: true,
@@ -680,6 +687,9 @@ guideRoutes.post('/:id/publish', authMiddleware, zValidator('json', publishGuide
     data: { isPublished },
   })
 
+  // ISR 캐시 무효화
+  revalidatePath(`/g/${updatedGuide.slug}`)
+
   // 공개 URL 생성
   const baseUrl = process.env.FRONTEND_URL || 'http://localhost:3000'
   const publicUrl = `${baseUrl}/g/${updatedGuide.slug}`
@@ -768,7 +778,7 @@ guideRoutes.post('/:id/duplicate', authMiddleware, async (c) => {
       themeId: originalGuide.themeId,
       themeSettings: originalGuide.themeSettings as Prisma.InputJsonValue,
       blocks: {
-        create: originalGuide.blocks.map((block: any) => ({
+        create: originalGuide.blocks.map((block) => ({
           type: block.type,
           order: block.order,
           content: block.content as Prisma.InputJsonValue,

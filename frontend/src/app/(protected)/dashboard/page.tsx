@@ -1,9 +1,32 @@
 import { currentUser } from '@clerk/nextjs/server'
 import Link from 'next/link'
 import { UserInfoCard, GuidesList } from '@/components/dashboard'
+import { UpgradeBanner } from '@/components/license/UpgradeBanner'
+import { cookies } from 'next/headers'
+
+async function getUserProfile() {
+  try {
+    const cookieStore = await cookies()
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api'}/users/me`, {
+      headers: {
+        Cookie: cookieStore.toString(),
+      },
+      cache: 'no-store',
+    })
+    if (!res.ok) return null
+    const data = await res.json()
+    return data.success ? data.data : null
+  } catch {
+    return null
+  }
+}
 
 export default async function DashboardPage() {
   const user = await currentUser()
+  const profile = await getUserProfile()
+
+  // 무료 플랜 사용자인지 확인
+  const isFreePlan = !profile?.license || profile.license.plan === 'free' || profile.license.status !== 'active'
 
   return (
     <div>
@@ -16,6 +39,13 @@ export default async function DashboardPage() {
           오늘도 게스트에게 좋은 경험을 선물하세요
         </p>
       </div>
+
+      {/* Upgrade Banner for Free Users */}
+      {isFreePlan && (
+        <div className="mb-8">
+          <UpgradeBanner />
+        </div>
+      )}
 
       {/* User Info Card */}
       <div className="mb-8">

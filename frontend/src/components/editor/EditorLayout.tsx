@@ -106,22 +106,25 @@ export function EditorLayout({ guideId }: EditorLayoutProps) {
 
       {/* 메인 컨텐츠 */}
       <div className="flex-1 flex overflow-hidden">
-        {/* PC: 3-column 레이아웃 */}
+        {/* PC: 3-column 레이아웃 (FeelCard 스타일) */}
         <div className="hidden lg:flex flex-1">
-          {/* 왼쪽: 미리보기 */}
-          <div className="flex-1 min-w-[400px] bg-gray-100 overflow-y-auto flex items-start justify-center py-8 px-6">
+          {/* 왼쪽: 미리보기 (card_preview 스타일) */}
+          <div className="flex-1 min-w-[380px] bg-gray-100 overflow-y-auto flex items-start justify-center py-8 px-6">
             <PreviewPanel />
           </div>
 
-          {/* 가운데: 컨트롤 패널 */}
-          <div className="w-[400px] flex-shrink-0 border-l border-gray-200 bg-white overflow-y-auto">
+          {/* 가운데: 컨트롤 패널 (content_write 스타일 - 566px) */}
+          <div className="w-[566px] flex-shrink-0 border-l border-gray-200 bg-white overflow-y-auto">
             <ControlPanel />
           </div>
 
-          {/* 오른쪽: 빠른 네비게이션 사이드바 */}
-          <div className="w-[200px] flex-shrink-0 overflow-y-auto">
-            <QuickNavSidebar />
-          </div>
+          {/* 오른쪽 사이드바 영역 확보 (fixed 사이드바를 위한 공간) */}
+          <div className="w-[280px] flex-shrink-0" />
+        </div>
+
+        {/* 오른쪽: 빠른 네비게이션 사이드바 (slide_menu 스타일 - fixed) */}
+        <div className="hidden lg:block fixed right-0 top-[57px] bottom-0 w-[280px] overflow-y-auto z-10">
+          <QuickNavSidebar />
         </div>
 
         {/* 모바일/태블릿: 전체 화면 */}

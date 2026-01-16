@@ -306,24 +306,38 @@ function BlockItemContent({
         </div>
       )}
 
-      {/* 토글 스위치 - 항상 표시 */}
+      {/* 토글 스위치 - FeelCard 스타일 */}
       {!isDragOverlay && (
         <div className="flex items-center gap-2">
-          {/* 토글 스위치 */}
+          {/* FeelCard 스타일 토글 스위치 (dd_wrap) */}
           <button
             onClick={(e) => {
               e.stopPropagation()
               onToggleVisibility?.()
             }}
-            className={`relative w-10 h-5 rounded-full transition-colors ${
-              block.isVisible ? 'bg-primary-500' : 'bg-gray-300'
-            }`}
+            className={`
+              relative flex-shrink-0 rounded-md transition-colors
+              ${block.isVisible
+                ? 'bg-[#FAE6D5]'
+                : 'bg-[#EAECEE]'
+              }
+            `}
+            style={{ width: '30px', height: '12px' }}
             title={block.isVisible ? '숨기기' : '보이기'}
           >
             <span
-              className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform ${
-                block.isVisible ? 'left-5' : 'left-0.5'
-              }`}
+              className={`
+                absolute rounded-full shadow-sm transition-all duration-200
+                ${block.isVisible
+                  ? 'bg-[#F5CDAA] left-[14px]'
+                  : 'bg-[#F7F8F8] left-[-2px]'
+                }
+              `}
+              style={{
+                width: '18px',
+                height: '18px',
+                top: '-3px',
+              }}
             />
           </button>
 

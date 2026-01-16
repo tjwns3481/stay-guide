@@ -3,7 +3,14 @@ import { notFound } from 'next/navigation'
 import { GuideRenderer } from '@/components/guest/GuideRenderer'
 import type { GuideDetail } from '@/contracts/guide.contract'
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8787/api'
+function getApiBaseUrl(): string {
+  const envUrl = process.env.NEXT_PUBLIC_API_URL
+  if (!envUrl) return 'http://localhost:3000/api'
+  if (envUrl.startsWith('http')) return envUrl
+  // 상대 경로인 경우 절대 경로로 변환 (SSR 대응)
+  return `http://localhost:3000${envUrl}`
+}
+const API_BASE = getApiBaseUrl()
 
 interface PageProps {
   params: Promise<{

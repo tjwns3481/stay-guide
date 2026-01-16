@@ -826,7 +826,7 @@ CSS 변수로 테마 값 주입:
 | | Lucide React | 0.460.0 | 아이콘 |
 | | Framer Motion | 11.11.0 | 애니메이션 |
 | **상태관리** | Zustand | 5.0.0 | 전역 상태 |
-| | React Query | 5.60.0 | 서버 상태 (미사용) |
+| | React Query | 5.60.0 | 서버 상태, AI 채팅 |
 | **인증** | Clerk | 5.7.0 | 소셜 로그인 |
 | **드래그앤드롭** | @dnd-kit | 6.3.1 | 블록 정렬 |
 | **테스트** | Vitest | 2.1.0 | 단위 테스트 |
@@ -840,7 +840,7 @@ CSS 변수로 테마 값 주입:
 | **프레임워크** | Hono | 4.6.0 | 경량 API 프레임워크 |
 | **검증** | Zod | 3.25.76 | 스키마 검증 |
 | **ORM** | Prisma | 6.0.0 | 데이터베이스 ORM |
-| **데이터베이스** | Supabase | 2.45.0 | PostgreSQL + pgvector |
+| **데이터베이스** | Supabase | 2.45.0 | PostgreSQL |
 | **인증** | Clerk Backend | 1.15.0 | JWT 검증 |
 | **웹훅** | Svix | 1.84.1 | 서명 검증 |
 
@@ -1130,7 +1130,7 @@ npm run db:studio    # Prisma Studio
 
 ```
 roomy/
-├── frontend/
+├── frontend/                       # Next.js 풀스택 앱
 │   ├── src/
 │   │   ├── app/                    # Next.js App Router
 │   │   │   ├── (auth)/             # 인증 페이지
@@ -1150,7 +1150,6 @@ roomy/
 │   │   └── types/                  # TypeScript 타입
 │   ├── prisma/                     # Prisma 스키마
 │   └── e2e/                        # E2E 테스트
-├── backend/                        # 독립 백엔드 (일부)
 ├── docs/planning/                  # 기획 문서
 └── FEATURE-SPEC.md                 # 이 문서
 ```

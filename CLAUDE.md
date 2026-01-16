@@ -10,40 +10,36 @@ Roomy는 숙박업소용 모바일 웹 안내서 & AI 챗봇 서비스입니다.
 
 | 영역 | 기술 |
 |------|------|
-| 백엔드 | Hono + Bun |
-| 프론트엔드 | Next.js 14 (App Router) |
-| 데이터베이스 | Supabase (PostgreSQL + pgvector) |
+| 프레임워크 | Next.js 14 (App Router) |
+| API | Hono (Next.js API Routes 위에서 실행) |
+| 데이터베이스 | Supabase (PostgreSQL) |
 | ORM | Prisma |
 | 인증 | Clerk (Google/Kakao 소셜 로그인) |
-| 상태관리 | Zustand |
+| 상태관리 | Zustand + React Query |
 | CSS | TailwindCSS |
-| AI | OpenAI GPT-4 + RAG |
+| AI | Gemini 2.0 Flash (Long Context) |
 
 ## 디렉토리 구조
 
 ```
 roomy/
-├── backend/           # Hono + Bun API 서버
-│   ├── src/
-│   │   ├── routes/    # API 라우트
-│   │   ├── services/  # 비즈니스 로직
-│   │   ├── schemas/   # Zod 스키마
-│   │   ├── middleware/# 미들웨어
-│   │   └── lib/       # 유틸리티
-│   ├── tests/         # 백엔드 테스트
-│   └── prisma/        # Prisma 스키마
-├── frontend/          # Next.js 프론트엔드
+├── frontend/              # Next.js 풀스택 앱
 │   └── src/
-│       ├── app/       # App Router 페이지
-│       ├── components/# React 컴포넌트
-│       ├── hooks/     # 커스텀 훅
-│       ├── lib/       # API 클라이언트, 유틸리티
-│       ├── stores/    # Zustand 스토어
-│       └── types/     # TypeScript 타입
-├── docs/planning/     # 기획 문서
-└── .claude/           # AI 에이전트 설정
-    ├── agents/        # 전문가 에이전트
-    └── commands/      # 커맨드
+│       ├── app/           # App Router
+│       │   ├── (auth)/    # 인증 페이지
+│       │   ├── (protected)/ # 호스트 페이지
+│       │   ├── (guest)/   # 게스트 페이지
+│       │   └── api/[[...route]]/ # Hono API
+│       ├── components/    # React 컴포넌트
+│       ├── hooks/         # 커스텀 훅
+│       ├── lib/           # 유틸리티
+│       ├── stores/        # Zustand 스토어
+│       └── types/         # TypeScript 타입
+│   └── prisma/            # Prisma 스키마
+├── docs/planning/         # 기획 문서
+└── .claude/               # AI 에이전트 설정
+    ├── agents/            # 전문가 에이전트
+    └── commands/          # 커맨드
 ```
 
 ## 에이전트 팀
@@ -82,19 +78,18 @@ git worktree remove ../roomy-phase1-auth
 ## 주요 명령어
 
 ```bash
-# 백엔드
-cd backend
-bun install
-bun run dev          # 개발 서버
-bun test             # 테스트
-bun run db:migrate   # DB 마이그레이션
-
-# 프론트엔드
 cd frontend
-npm install
-npm run dev          # 개발 서버
-npm test             # 테스트
-npm run build        # 빌드
+npm install          # 의존성 설치
+npm run dev          # 개발 서버 (API + 프론트엔드)
+npm test             # 단위 테스트
+npm run e2e          # E2E 테스트
+npm run build        # 프로덕션 빌드
+
+# 데이터베이스
+npm run db:generate  # Prisma 클라이언트 생성
+npm run db:push      # 스키마 동기화
+npm run db:migrate   # 마이그레이션
+npm run db:studio    # Prisma Studio
 ```
 
 ## 기획 문서 참조
@@ -115,4 +110,6 @@ npm run build        # 빌드
 
 ## 변경 이력
 
+- 2026-01-16: backend 폴더 제거, Next.js 풀스택 통합
+- 2026-01-16: AI 챗봇 RAG → Long Context 방식 전환
 - 2026-01-14: 프로젝트 초기 셋업

@@ -4,6 +4,9 @@ import { useEffect } from 'react'
 import { AlertCircle, RefreshCw, Home } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 
+// Sentry 설치 후 주석 해제
+// import * as Sentry from '@sentry/nextjs'
+
 interface ErrorBoundaryProps {
   error: Error & { digest?: string }
   reset: () => void
@@ -12,9 +15,20 @@ interface ErrorBoundaryProps {
 
 export function ErrorFallback({ error, reset, variant = 'page' }: ErrorBoundaryProps) {
   useEffect(() => {
-    // 에러 로깅 (프로덕션에서는 Sentry 등으로 전송)
+    // 에러 로깅
     console.error('Error:', error)
-  }, [error])
+
+    // Sentry 설치 후 주석 해제
+    // Sentry.captureException(error, {
+    //   tags: {
+    //     component: 'ErrorBoundary',
+    //     variant,
+    //   },
+    //   extra: {
+    //     digest: error.digest,
+    //   },
+    // })
+  }, [error, variant])
 
   if (variant === 'inline') {
     return (

@@ -5,6 +5,7 @@ import { useMemo } from 'react'
 import { THEME_PRESETS, DEFAULT_THEME, ThemePreset } from '@/lib/theme'
 import type { ThemeSettings } from '@/contracts/types'
 import { Play } from 'lucide-react'
+import Image from 'next/image'
 
 // 시즌 이모지 매핑
 const SEASON_EMOJI: Record<string, string> = {
@@ -173,10 +174,12 @@ function BlockPreview({ type, content }: BlockPreviewProps) {
       return (
         <div className="relative h-48">
           {imageUrl ? (
-            <img
+            <Image
               src={imageUrl}
               alt="Hero"
-              className="w-full h-full object-cover"
+              fill
+              sizes="294px"
+              className="object-cover"
             />
           ) : (
             <div className="w-full h-full bg-gradient-to-br from-primary-400 to-primary-600" />
@@ -328,8 +331,14 @@ function BlockPreview({ type, content }: BlockPreviewProps) {
             {images.length > 0 ? (
               <div className="grid grid-cols-3 gap-1">
                 {images.slice(0, 3).map((image, idx) => (
-                  <div key={idx} className="aspect-square rounded-lg overflow-hidden bg-gray-200">
-                    <img src={image.url} alt={`이미지 ${idx + 1}`} className="w-full h-full object-cover" />
+                  <div key={idx} className="aspect-square rounded-lg overflow-hidden bg-gray-200 relative">
+                    <Image
+                      src={image.url}
+                      alt={`이미지 ${idx + 1}`}
+                      fill
+                      sizes="80px"
+                      className="object-cover"
+                    />
                   </div>
                 ))}
               </div>

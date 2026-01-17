@@ -370,10 +370,17 @@ guideRoutes.get('/slug/:slug', async (c) => {
       console.error('Failed to increment view count:', error)
     })
 
-  return c.json({
-    success: true,
-    data: formatGuideResponse(guide),
-  })
+  // Cache-Control 헤더 설정: 60초 서버 캐시, 300초 stale-while-revalidate
+  return c.json(
+    {
+      success: true,
+      data: formatGuideResponse(guide),
+    },
+    200,
+    {
+      'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
+    }
+  )
 })
 
 // GET /api/guides/:id - 안내서 상세 조회 (호스트용)

@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { ChevronLeft, ChevronRight, X } from 'lucide-react'
+import Image from 'next/image'
 
 interface GalleryBlockProps {
   content: Record<string, unknown>
@@ -132,26 +133,32 @@ export function GalleryBlock({ content }: GalleryBlockProps) {
             >
               {/* 큰 이미지 (2x2) */}
               <div className="col-span-2 row-span-2 relative rounded-xl overflow-hidden aspect-square">
-                <img
+                <Image
                   src={images[0].url}
                   alt={images[0].caption || '이미지 1'}
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                  fill
+                  sizes="(max-width: 640px) 66vw, 400px"
+                  className="object-cover hover:scale-105 transition-transform duration-300"
                 />
               </div>
               {/* 작은 이미지 1 */}
               <div className="relative rounded-xl overflow-hidden aspect-square">
-                <img
+                <Image
                   src={images[1].url}
                   alt={images[1].caption || '이미지 2'}
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                  fill
+                  sizes="(max-width: 640px) 33vw, 200px"
+                  className="object-cover hover:scale-105 transition-transform duration-300"
                 />
               </div>
               {/* 작은 이미지 2 (더보기 오버레이) */}
               <div className="relative rounded-xl overflow-hidden aspect-square">
-                <img
+                <Image
                   src={images[2].url}
                   alt={images[2].caption || '이미지 3'}
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="(max-width: 640px) 33vw, 200px"
+                  className="object-cover"
                 />
                 {images.length > 3 && (
                   <div className="absolute inset-0 bg-black/40 flex items-center justify-center hover:bg-black/50 transition-colors">
@@ -178,11 +185,13 @@ export function GalleryBlock({ content }: GalleryBlockProps) {
                     onClick={() => setIsFullscreen(true)}
                   >
                     <div className="aspect-[4/3] relative rounded-xl overflow-hidden">
-                      <img
+                      <Image
                         src={image.url}
                         alt={image.caption || `이미지 ${index + 1}`}
-                        className="w-full h-full object-cover"
-                        loading="lazy"
+                        fill
+                        sizes="(max-width: 640px) 100vw, 600px"
+                        className="object-cover"
+                        priority={index === 0}
                       />
                       {/* Caption overlay */}
                       {image.caption && (
@@ -274,13 +283,16 @@ export function GalleryBlock({ content }: GalleryBlockProps) {
 
           {/* Fullscreen Image */}
           <div
-            className="w-full h-full flex items-center justify-center p-4"
+            className="w-full h-full flex items-center justify-center p-4 relative"
             onClick={(e) => e.stopPropagation()}
           >
-            <img
+            <Image
               src={images[currentIndex].url}
               alt={images[currentIndex].caption || `이미지 ${currentIndex + 1}`}
-              className="max-w-full max-h-full object-contain"
+              fill
+              sizes="100vw"
+              className="object-contain"
+              priority
             />
           </div>
 

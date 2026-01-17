@@ -1,11 +1,21 @@
 'use client'
 
 import { useState } from 'react'
+import dynamic from 'next/dynamic'
 import { useParams, useRouter } from 'next/navigation'
 import { useAuth } from '@clerk/nextjs'
-import { EditorLayout } from '@/components/editor'
 import { SlugInputModal } from '@/components/editor/SlugInputModal'
+import { EditorSkeleton } from '@/components/ui/Skeleton'
 import { api } from '@/lib/api/client'
+
+// 동적 import: 에디터 레이아웃 (큰 번들이므로 코드 스플리팅)
+const EditorLayout = dynamic(
+  () => import('@/components/editor/EditorLayout').then((mod) => ({ default: mod.EditorLayout })),
+  {
+    loading: () => <EditorSkeleton />,
+    ssr: false,
+  }
+)
 
 interface CreateGuideResponse {
   id: string

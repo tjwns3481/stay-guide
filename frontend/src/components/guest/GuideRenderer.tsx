@@ -1,15 +1,33 @@
 'use client'
 
 import { useState, useMemo } from 'react'
+import dynamic from 'next/dynamic'
 import type { GuideDetail } from '@/contracts/guide.contract'
 import type { BlockType } from '@/stores/editor'
 import { BlockRenderer } from './BlockRenderer'
 import { ThemeProvider } from './ThemeProvider'
 import { Watermark } from './Watermark'
-import { OpeningAnimation } from './OpeningAnimation'
 import type { ThemeSettings } from '@/contracts/types'
-import { AiFloatingButton, ChatInterface } from '@/components/ai'
-import { SeasonalEffects, getCurrentSeason, type Season as SeasonType } from './SeasonalEffects'
+import { AiFloatingButton } from '@/components/ai'
+import { getCurrentSeason, type Season as SeasonType } from './SeasonalEffects'
+
+// 동적 import: AI 채팅 인터페이스 (모달로 열리므로 지연 로딩)
+const ChatInterface = dynamic(
+  () => import('@/components/ai/ChatInterface').then((mod) => ({ default: mod.ChatInterface })),
+  { ssr: false }
+)
+
+// 동적 import: 시즌 이펙트 (조건부 렌더링, 애니메이션 무거움)
+const SeasonalEffects = dynamic(
+  () => import('./SeasonalEffects').then((mod) => ({ default: mod.SeasonalEffects })),
+  { ssr: false }
+)
+
+// 동적 import: 오프닝 애니메이션 (조건부 렌더링)
+const OpeningAnimation = dynamic(
+  () => import('./OpeningAnimation').then((mod) => ({ default: mod.OpeningAnimation })),
+  { ssr: false }
+)
 
 interface GuideRendererProps {
   guide: GuideDetail

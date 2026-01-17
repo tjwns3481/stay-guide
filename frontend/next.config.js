@@ -36,4 +36,18 @@ const nextConfig = {
   },
 }
 
-module.exports = nextConfig
+// Bundle analyzer 조건부 활성화
+let exportedConfig = nextConfig
+
+if (process.env.ANALYZE === 'true') {
+  try {
+    const withBundleAnalyzer = require('@next/bundle-analyzer')({
+      enabled: true,
+    })
+    exportedConfig = withBundleAnalyzer(nextConfig)
+  } catch (e) {
+    console.warn('@next/bundle-analyzer not installed, skipping bundle analysis')
+  }
+}
+
+module.exports = exportedConfig

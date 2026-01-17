@@ -3,6 +3,21 @@ import { notFound } from 'next/navigation'
 import { GuideRenderer } from '@/components/guest/GuideRenderer'
 import type { GuideDetail } from '@/contracts/guide.contract'
 
+// ISR 설정: 60초마다 백그라운드 재검증
+export const revalidate = 60
+
+// 동적 라우트 설정
+export const dynamic = 'force-static'
+export const dynamicParams = true
+
+// 자주 접근하는 슬러그를 미리 생성 (선택적)
+// 실제 운영 시에는 DB에서 인기 안내서를 조회하여 반환 가능
+export async function generateStaticParams(): Promise<{ slug: string }[]> {
+  // 빌드 시 모든 페이지를 미리 생성하지 않고,
+  // 첫 요청 시 생성 후 캐싱하는 방식 사용
+  return []
+}
+
 function getApiBaseUrl(): string {
   const envUrl = process.env.NEXT_PUBLIC_API_URL
   if (!envUrl) return 'http://localhost:3000/api'

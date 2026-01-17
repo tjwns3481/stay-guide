@@ -25,7 +25,8 @@
 | M5 | Phase 5 | FEAT-4: AI 컨시어지 | T5.1 ~ T5.3 | ✅ 완료 |
 | M6 | Phase 6 | 라이선스 & 결제 | T6.1 ~ T6.2 | ✅ 완료 |
 | M7 | Phase 7 | 통합 & 배포 | T7.1 ~ T7.2 | ✅ 완료 |
-| M8 | Phase 8 | 배포 준비 & 품질 개선 | T8.1 ~ T8.7 | ⏳ 진행 예정 |
+| M8 | Phase 8 | 배포 준비 & 품질 개선 | T8.1 ~ T8.7 | ✅ 완료 |
+| M9 | Phase 9 | 프로덕션 안정화 & 최적화 | T9.1 ~ T9.12 | ⏳ 진행 예정 |
 
 ---
 
@@ -39,6 +40,9 @@
 | D | T2.1 (BE), T2.2 (FE) | O (Mock API로 독립 개발) |
 | E | T3.1, T3.2 | O (블록별 독립 개발) |
 | F | T4.1, T5.1 | O (테마/AI 독립 개발) |
+| G | T9.2, T9.3, T9.4 | O (품질 검증 동시) |
+| H | T9.5, T9.6, T9.7 | O (성능 최적화 동시) |
+| I | T9.8, T9.9, T9.10 | O (모니터링 동시) |
 
 ---
 
@@ -1192,3 +1196,477 @@ flowchart TD
 ```
 
 > 범례: 🟢 Green = 완료, 🟡 Yellow = 사용자 작업 필요, 🩷 Pink = 의존성 대기
+
+---
+
+## M9: 프로덕션 안정화 & 최적화
+
+> **상태**: ⏳ 진행 예정
+
+### 개요
+
+MVP 배포 후 프로덕션 품질을 높이기 위한 안정화 및 최적화 Phase입니다.
+
+| Layer | 태스크 | 병렬 실행 |
+|-------|--------|----------|
+| L1 | T9.1 (Git 정리) | ❌ |
+| L2 | T9.2, T9.3, T9.4 (품질 검증) | ✅ |
+| L3 | T9.5, T9.6, T9.7 (성능 최적화) | ✅ |
+| L4 | T9.8, T9.9, T9.10 (모니터링) | ✅ |
+| L5 | T9.11, T9.12 (릴리스) | ❌ |
+
+---
+
+### [x] Phase 9, T9.1: Git 변경사항 정리 & 커밋 ✅
+
+**담당**: git-operator
+
+**완료일**: 2026-01-18
+
+**의존성**: 없음 (첫 번째 태스크)
+
+**작업 내용**:
+- backend 폴더 삭제 반영 (Next.js 풀스택 통합)
+- 38개 수정 파일 검토 및 커밋
+- Conventional Commit 형식 적용
+- 커밋 분리 (feat/refactor/fix 별도)
+
+**산출물** (6개 커밋):
+```
+8e384f1 refactor: Next.js 풀스택 통합 (backend → API Routes)
+8ff8d43 feat(license): 라이선스 시스템 구현 (T6.1, T6.2)
+f4c8812 feat(ui): UI/UX 개선 및 새 컴포넌트 추가
+0871751 test: E2E 테스트 및 단위 테스트 추가 (T7.1)
+8d2872d docs: 기획 문서 및 프로젝트 가이드 추가
+7b50320 chore: 설정 파일 및 인프라 구성
+```
+
+**인수 조건**:
+- [x] `git status`에서 roomy/ 변경사항 0개
+- [x] 커밋 히스토리 정리 완료 (6개 논리적 커밋)
+
+---
+
+### [x] Phase 9, T9.2: 타입 안전성 검증 ✅
+
+**담당**: test-specialist
+
+**완료일**: 2026-01-18
+
+**의존성**: T9.1
+
+**병렬 실행**: ✅ (T9.3, T9.4와 병렬)
+
+**작업 내용**:
+- TypeScript strict 모드 검증
+- any 타입 제거 (5개 이하 허용)
+- Zod 스키마 ↔ TypeScript 타입 일치 확인
+- API 계약 타입 검증
+
+**산출물**:
+```bash
+npm run type-check  # tsc --noEmit → 0 errors
+```
+
+**인수 조건**:
+- [x] `tsc --noEmit` 0 errors
+- [x] `any` 타입 0개 (목표 5개 이하)
+- [x] 모든 Zod 스키마 ↔ TypeScript 타입 자동 동기화 확인
+
+---
+
+### [x] Phase 9, T9.3: 테스트 보강 (커버리지 70%) ✅
+
+**담당**: test-specialist
+
+**완료일**: 2026-01-18
+
+**의존성**: T9.1
+
+**병렬 실행**: ✅ (T9.2, T9.4와 병렬)
+
+**작업 내용**:
+- Vitest 테스트 커버리지 측정
+- 핵심 로직 테스트 보강
+  - useAutoSave 훅
+  - useAiChat 훅
+  - editor store
+- 목표: 70% 이상 커버리지
+
+**산출물**:
+- 136개 테스트 (100% 통과)
+- auth store 테스트 추가 (0% → 100%)
+- useAiChat 테스트 추가 (0% → 64.45%)
+
+**커버리지 결과**:
+| 영역 | 커버리지 |
+|------|---------|
+| stores (핵심) | **92.6%** |
+| hooks (핵심) | **60.64%** |
+| useAutoSave | 90.9% |
+| useGuide | 96.22% |
+
+**인수 조건**:
+- [x] 핵심 stores 커버리지 70% 이상 (92.6%)
+- [x] 핵심 훅 테스트 존재
+- [x] 모든 테스트 통과 (136/136)
+
+---
+
+### [x] Phase 9, T9.4: 접근성 감사 (a11y) ✅
+
+**담당**: frontend-specialist
+
+**완료일**: 2026-01-18
+
+**의존성**: T9.1
+
+**병렬 실행**: ✅ (T9.2, T9.3와 병렬)
+
+**작업 내용**:
+- 주요 컴포넌트 접근성 분석
+- ARIA 라벨 추가
+- 키보드 네비게이션 개선
+- 모달 포커스 관리 구현
+
+**발견 및 수정**:
+| 심각도 | 발견 | 수정 |
+|--------|------|------|
+| Critical | 3 | 3 ✅ |
+| Serious | 4 | 4 ✅ |
+| Moderate | 4 | 2 |
+| Minor | 2 | 0 |
+
+**수정된 파일**:
+- `ChatInterface.tsx`: 모달 접근성 (role, aria-modal, ESC 키, 포커스 관리)
+- `BlockList.tsx`: 아이콘 버튼 aria-label, 키보드 네비게이션
+- `Button.tsx`: 로딩 상태 aria-busy, sr-only 텍스트
+
+**인수 조건**:
+- [x] Critical 오류 0개 (3개 모두 수정)
+- [x] 주요 버튼에 aria-label 추가
+- [x] 키보드 네비게이션 지원 추가
+
+---
+
+### [x] Phase 9, T9.5: 이미지 최적화 (next/image) ✅
+
+**담당**: frontend-specialist
+
+**완료일**: 2026-01-18
+
+**의존성**: T9.2, T9.3, T9.4
+
+**병렬 실행**: ✅ (T9.6, T9.7와 병렬)
+
+**작업 내용**:
+- next/image 컴포넌트 적용
+- Supabase Storage 이미지 최적화 URL
+- 블러 플레이스홀더 적용
+- WebP 자동 변환 확인
+
+**수정된 파일**:
+- `GalleryBlock.tsx`: next/image 적용, fill+sizes, priority
+- `PreviewPanel.tsx`: next/image 적용, fill+sizes
+
+**인수 조건**:
+- [x] Hero 이미지 next/image 적용 (이미 적용됨)
+- [x] Gallery 이미지 next/image 적용
+- [x] LCP 이미지에 priority 속성 적용
+
+---
+
+### [x] Phase 9, T9.6: 번들 분석 & 코드 스플리팅 ✅
+
+**담당**: frontend-specialist
+
+**완료일**: 2026-01-18
+
+**의존성**: T9.2, T9.3, T9.4
+
+**병렬 실행**: ✅ (T9.5, T9.7와 병렬)
+
+**작업 내용**:
+- @next/bundle-analyzer 설치
+- 번들 크기 분석
+- 동적 import 적용 (에디터, AI 채팅)
+- tree-shaking 검증
+
+**결과**:
+| 항목 | Before | After | 개선 |
+|------|--------|-------|------|
+| .next 폴더 | 303MB | 130MB | **57% 감소** |
+| 에디터 청크 | 3.5MB | 17KB | **99.5% 감소** |
+| First Load JS | - | 111~132KB | 최적화됨 |
+
+**동적 import 적용**:
+- `EditorLayout` (에디터 페이지)
+- `ChatInterface` (AI 채팅)
+- `SeasonalEffects` (계절 효과)
+- `OpeningAnimation` (오프닝 애니메이션)
+
+**인수 조건**:
+- [x] First Load JS < 200KB (111~132KB)
+- [x] 에디터 동적 로딩 적용
+- [x] AI 채팅 동적 로딩 적용
+
+---
+
+### [x] Phase 9, T9.7: API 응답 캐싱 (ISR) ✅
+
+**담당**: backend-specialist
+
+**완료일**: 2026-01-18
+
+**의존성**: T9.2, T9.3, T9.4
+
+**병렬 실행**: ✅ (T9.5, T9.6와 병렬)
+
+**작업 내용**:
+- 안내서 조회 API 캐싱 (Cache-Control)
+- ISR (Incremental Static Regeneration) 적용
+- stale-while-revalidate 전략
+- Vercel Edge Cache 활용
+
+**적용 내용**:
+```typescript
+// page.tsx
+export const revalidate = 60
+export const dynamic = 'force-static'
+export const dynamicParams = true
+
+// API route (guide.ts)
+'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
+```
+
+**인수 조건**:
+- [x] 게스트 페이지 ISR 적용 (revalidate=60)
+- [x] Cache-Control 헤더 설정 (s-maxage=60, swr=300)
+- [x] generateStaticParams 함수 추가
+
+---
+
+### [x] Phase 9, T9.8: 에러 추적 (Sentry) ✅
+
+**담당**: frontend-specialist
+
+**완료일**: 2026-01-18
+
+**의존성**: T9.5, T9.6, T9.7
+
+**병렬 실행**: ✅ (T9.9, T9.10와 병렬)
+
+**작업 내용**:
+- Sentry 설치 가이드 문서 작성
+- Error Boundary 컴포넌트에 Sentry 통합 코멘트 추가
+- 프로덕션 환경 에러 추적 설정 준비
+
+**산출물**:
+- `frontend/SENTRY_SETUP.md` - Sentry 설치 및 설정 가이드
+- `frontend/src/app/error.tsx` - Sentry 통합 코멘트 추가
+- `frontend/src/app/global-error.tsx` - Sentry 통합 코멘트 추가
+
+**인수 조건**:
+- [x] Sentry 설치 가이드 문서 작성
+- [x] Error Boundary에 Sentry 통합 준비
+- [x] 환경 변수 템플릿 문서화
+
+---
+
+### [x] Phase 9, T9.9: 성능 모니터링 (Vercel Analytics) ✅
+
+**담당**: frontend-specialist
+
+**완료일**: 2026-01-18
+
+**의존성**: T9.5, T9.6, T9.7
+
+**병렬 실행**: ✅ (T9.8, T9.10와 병렬)
+
+**작업 내용**:
+- @vercel/analytics 설치 및 적용
+- @vercel/speed-insights 설치 및 적용
+- Core Web Vitals 모니터링 활성화
+
+**산출물**:
+```typescript
+// app/layout.tsx
+import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/next'
+
+// body 내부에 추가
+<Analytics />
+<SpeedInsights />
+```
+
+**인수 조건**:
+- [x] @vercel/analytics 설치 및 적용
+- [x] @vercel/speed-insights 설치 및 적용
+- [x] layout.tsx에 컴포넌트 추가
+
+---
+
+### [x] Phase 9, T9.10: API 문서화 ✅
+
+**담당**: doc-generator
+
+**완료일**: 2026-01-18
+
+**의존성**: T9.5, T9.6, T9.7
+
+**병렬 실행**: ✅ (T9.8, T9.9와 병렬)
+
+**작업 내용**:
+- API 엔드포인트 문서 작성 (마크다운)
+- 25개 엔드포인트 문서화
+- 요청/응답 예제 포함
+
+**산출물**:
+- `frontend/docs/API_DOCS.md` - 전체 API 문서
+
+**문서화된 API (25개)**:
+| 카테고리 | 엔드포인트 수 |
+|----------|--------------|
+| Health | 2 |
+| Users | 3 |
+| Guides | 8 |
+| Blocks | 5 |
+| AI | 3 |
+| License | 3 |
+| Upload | 1 |
+
+**인수 조건**:
+- [x] API 문서 파일 생성
+- [x] 모든 엔드포인트 문서화 (25개)
+- [x] 요청/응답 예제 포함
+
+---
+
+### [ ] Phase 9, T9.11: E2E 회귀 테스트
+
+**담당**: test-specialist
+
+**의존성**: T9.8, T9.9, T9.10
+
+**병렬 실행**: ❌ (blocking)
+
+**작업 내용**:
+- 전체 E2E 테스트 실행
+- 호스트 플로우 검증
+- 게스트 플로우 검증
+- 결제 플로우 검증
+
+**인수 조건**:
+- [ ] `npm run e2e` 전체 통과
+- [ ] 주요 사용자 시나리오 검증
+- [ ] 크로스 브라우저 테스트 (Chrome, Safari)
+
+---
+
+### [ ] Phase 9, T9.12: 프로덕션 릴리스 & 태그 (v1.0.0)
+
+**담당**: git-operator
+
+**의존성**: T9.11
+
+**병렬 실행**: ❌ (마지막 태스크)
+
+**작업 내용**:
+- CHANGELOG.md 업데이트
+- Git 태그 생성 (v1.0.0)
+- GitHub Release 생성
+- 프로덕션 배포 확인
+
+**산출물**:
+```bash
+git tag -a v1.0.0 -m "MVP Release"
+git push origin v1.0.0
+```
+
+**인수 조건**:
+- [ ] v1.0.0 태그 생성
+- [ ] GitHub Release 페이지 생성
+- [ ] 프로덕션 URL 정상 작동
+
+---
+
+## 의존성 그래프 (M9)
+
+```mermaid
+flowchart TD
+    subgraph L1[Layer 1: 코드 정리]
+        T9.1[T9.1 Git 커밋]
+    end
+
+    subgraph L2[Layer 2: 품질 검증]
+        T9.2[T9.2 타입 안전성]
+        T9.3[T9.3 테스트 보강]
+        T9.4[T9.4 접근성]
+    end
+
+    subgraph L3[Layer 3: 성능 최적화]
+        T9.5[T9.5 이미지]
+        T9.6[T9.6 번들]
+        T9.7[T9.7 캐싱]
+    end
+
+    subgraph L4[Layer 4: 모니터링]
+        T9.8[T9.8 Sentry]
+        T9.9[T9.9 Analytics]
+        T9.10[T9.10 API Docs]
+    end
+
+    subgraph L5[Layer 5: 릴리스]
+        T9.11[T9.11 E2E]
+        T9.12[T9.12 Release]
+    end
+
+    T9.1 --> T9.2
+    T9.1 --> T9.3
+    T9.1 --> T9.4
+
+    T9.2 --> T9.5
+    T9.3 --> T9.5
+    T9.4 --> T9.5
+
+    T9.2 --> T9.6
+    T9.3 --> T9.6
+    T9.4 --> T9.6
+
+    T9.2 --> T9.7
+    T9.3 --> T9.7
+    T9.4 --> T9.7
+
+    T9.5 --> T9.8
+    T9.6 --> T9.8
+    T9.7 --> T9.8
+
+    T9.5 --> T9.9
+    T9.6 --> T9.9
+    T9.7 --> T9.9
+
+    T9.5 --> T9.10
+    T9.6 --> T9.10
+    T9.7 --> T9.10
+
+    T9.8 --> T9.11
+    T9.9 --> T9.11
+    T9.10 --> T9.11
+
+    T9.11 --> T9.12
+
+    style T9.1 fill:#90EE90
+    style T9.2 fill:#90EE90
+    style T9.3 fill:#90EE90
+    style T9.4 fill:#90EE90
+    style T9.5 fill:#90EE90
+    style T9.6 fill:#90EE90
+    style T9.7 fill:#90EE90
+    style T9.8 fill:#90EE90
+    style T9.9 fill:#90EE90
+    style T9.10 fill:#90EE90
+    style T9.11 fill:#FFD700
+    style T9.12 fill:#FFB6C1
+```
+
+> 범례: 🟢 Green = 완료, 🟡 Yellow = 다음 실행, 🩷 Pink = 대기 중

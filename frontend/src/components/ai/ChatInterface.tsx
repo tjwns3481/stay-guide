@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useCallback } from 'react'
 import { X, Trash2, Sparkles } from 'lucide-react'
 import { useAiChat } from '@/hooks/useAiChat'
 import { ChatMessage } from './ChatMessage'
@@ -26,6 +26,38 @@ export function ChatInterface({
     })
 
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const dialogRef = useRef<HTMLDivElement>(null)
+  const previousFocusRef = useRef<HTMLElement | null>(null)
+
+  // ESC 키로 닫기
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      onClose()
+    }
+  }, [onClose])
+
+  // 모달 열릴 때 포커스 관리
+  useEffect(() => {
+    if (isOpen) {
+      // 이전 포커스 저장
+      previousFocusRef.current = document.activeElement as HTMLElement
+      // 모달에 포커스
+      dialogRef.current?.focus()
+      // ESC 키 리스너
+      document.addEventListener('keydown', handleKeyDown)
+      // body 스크롤 방지
+      document.body.style.overflow = 'hidden'
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+      document.body.style.overflow = ''
+      // 이전 포커스 복원
+      if (previousFocusRef.current && !isOpen) {
+        previousFocusRef.current.focus()
+      }
+    }
+  }, [isOpen, handleKeyDown])
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -39,10 +71,17 @@ export function ChatInterface({
       <div
         className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
         onClick={onClose}
+        aria-hidden="true"
       />
 
       {/* 채팅 패널 */}
-      <div className="fixed inset-0 lg:inset-auto lg:bottom-24 lg:right-6 lg:w-[400px] lg:h-[620px] bg-white lg:rounded-3xl lg:shadow-2xl z-50 flex flex-col overflow-hidden">
+      <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="chat-dialog-title"
+        tabIndex={-1}
+        className="fixed inset-0 lg:inset-auto lg:bottom-24 lg:right-6 lg:w-[400px] lg:h-[620px] bg-white lg:rounded-3xl lg:shadow-2xl z-50 flex flex-col overflow-hidden focus:outline-none">
         {/* 헤더 */}
         <div className="flex items-center justify-between px-5 py-4 bg-gradient-to-r from-primary-500 to-primary-600 text-white lg:rounded-t-3xl">
           <div className="flex items-center gap-3">
@@ -50,7 +89,7 @@ export function ChatInterface({
               <Sparkles className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="font-semibold">AI 컨시어지</h3>
+              <h3 id="chat-dialog-title" className="font-semibold">AI 컨시어지</h3>
               <p className="text-sm text-white/80">{accommodationName}</p>
             </div>
           </div>

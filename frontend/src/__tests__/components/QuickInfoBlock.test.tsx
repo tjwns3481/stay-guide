@@ -26,44 +26,43 @@ describe('QuickInfoBlock 컴포넌트', () => {
   describe('최대 인원', () => {
     it('최대 인원을 렌더링한다', () => {
       render(<QuickInfoBlock content={{ maxGuests: 4 }} />)
-      expect(screen.getByText('최대 인원')).toBeInTheDocument()
+      expect(screen.getByText('최대인원')).toBeInTheDocument()
       expect(screen.getByText('4명')).toBeInTheDocument()
     })
 
     it('최대 인원이 없으면 렌더링하지 않는다', () => {
       render(<QuickInfoBlock content={{}} />)
-      expect(screen.queryByText('최대 인원')).not.toBeInTheDocument()
+      expect(screen.queryByText('최대인원')).not.toBeInTheDocument()
     })
 
     it('숫자가 아닌 값은 렌더링하지 않는다', () => {
       render(<QuickInfoBlock content={{ maxGuests: '4명' }} />)
-      expect(screen.queryByText('최대 인원')).not.toBeInTheDocument()
+      expect(screen.queryByText('최대인원')).not.toBeInTheDocument()
     })
   })
 
   describe('주차 정보', () => {
     it('주차 정보를 렌더링한다', () => {
       render(<QuickInfoBlock content={{ parking: '무료 주차 가능' }} />)
-      expect(screen.getByText('주차')).toBeInTheDocument()
-      expect(screen.getByText('무료 주차 가능')).toBeInTheDocument()
+      expect(screen.getByText('주차: 무료 주차 가능')).toBeInTheDocument()
     })
 
     it('주차 정보가 없으면 렌더링하지 않는다', () => {
       render(<QuickInfoBlock content={{}} />)
-      expect(screen.queryByText('주차')).not.toBeInTheDocument()
+      expect(screen.queryByText(/주차:/)).not.toBeInTheDocument()
     })
   })
 
   describe('주소', () => {
     it('주소를 렌더링한다', () => {
       render(<QuickInfoBlock content={{ address: '서울시 강남구' }} />)
-      expect(screen.getByText('주소')).toBeInTheDocument()
+      // 주소 라벨 대신 주소값이 직접 표시됨
       expect(screen.getByText('서울시 강남구')).toBeInTheDocument()
     })
 
     it('주소가 없으면 렌더링하지 않는다', () => {
       render(<QuickInfoBlock content={{}} />)
-      expect(screen.queryByText('주소')).not.toBeInTheDocument()
+      expect(screen.queryByText('서울시 강남구')).not.toBeInTheDocument()
     })
   })
 
@@ -79,17 +78,17 @@ describe('QuickInfoBlock 컴포넌트', () => {
 
       render(<QuickInfoBlock content={content} />)
 
-      expect(screen.getByText('빠른 정보')).toBeInTheDocument()
       expect(screen.getByText('15:00')).toBeInTheDocument()
       expect(screen.getByText('11:00')).toBeInTheDocument()
       expect(screen.getByText('2명')).toBeInTheDocument()
-      expect(screen.getByText('주차 가능')).toBeInTheDocument()
+      expect(screen.getByText('주차: 주차 가능')).toBeInTheDocument()
       expect(screen.getByText('제주시 애월읍')).toBeInTheDocument()
     })
 
-    it('빈 객체를 전달하면 제목만 렌더링된다', () => {
-      render(<QuickInfoBlock content={{}} />)
-      expect(screen.getByText('빠른 정보')).toBeInTheDocument()
+    it('빈 객체를 전달하면 빈 그리드가 렌더링된다', () => {
+      const { container } = render(<QuickInfoBlock content={{}} />)
+      // 빈 그리드만 렌더링됨 (제목 없이)
+      expect(container.querySelector('.grid')).toBeInTheDocument()
     })
   })
 

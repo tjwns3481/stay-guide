@@ -269,13 +269,23 @@ function BlockItemContent({
   return (
     <div
       onClick={onSelect}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          onSelect?.()
+        }
+      }}
+      role="button"
+      tabIndex={isDragOverlay ? -1 : 0}
+      aria-pressed={isSelected}
+      aria-label={`${meta.label} 블록 ${isSelected ? '선택됨' : '선택하려면 Enter'}`}
       className={`group flex items-center gap-3 p-4 rounded-xl border cursor-pointer transition-all ${
         isSelected
           ? 'border-primary-300 bg-white shadow-sm'
           : 'border-gray-200 bg-white hover:border-primary-300 hover:shadow-sm'
       } ${!block.isVisible ? 'opacity-50' : ''} ${
         isDragOverlay ? 'shadow-lg bg-white' : ''
-      }`}
+      } focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1`}
     >
       {/* 블록 타입 배지 */}
       <div className={`w-6 h-6 rounded ${color.bg} flex items-center justify-center ${color.text} text-xs font-bold flex-shrink-0`}>
@@ -300,6 +310,7 @@ function BlockItemContent({
             }}
             className="p-1.5 rounded-lg hover:bg-gray-100"
             title={block.isVisible ? '숨기기' : '보이기'}
+            aria-label={block.isVisible ? '블록 숨기기' : '블록 보이기'}
           >
             {block.isVisible ? (
               <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -321,6 +332,7 @@ function BlockItemContent({
             }}
             className="p-1.5 rounded-lg hover:bg-gray-100"
             title="삭제"
+            aria-label="블록 삭제"
           >
             <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -339,6 +351,9 @@ function BlockItemContent({
           onPointerDown?.(e)
         }}
         className="cursor-grab active:cursor-grabbing text-gray-300 hover:text-gray-400 touch-none flex-shrink-0"
+        role="button"
+        aria-label="드래그하여 블록 순서 변경"
+        aria-roledescription="드래그 핸들"
       >
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8h16M4 16h16" />

@@ -13,6 +13,7 @@ export const mockGuides: GuideDetail[] = [
       preset: 'emotional',
       primaryColor: '#E07A5F',
     },
+    aiEnabled: true,
     createdAt: '2024-01-10T00:00:00Z',
     updatedAt: '2024-01-15T00:00:00Z',
     blocks: [
@@ -111,6 +112,7 @@ export const mockGuides: GuideDetail[] = [
     themeSettings: {
       preset: 'natural',
     },
+    aiEnabled: true,
     createdAt: '2024-01-12T00:00:00Z',
     updatedAt: '2024-01-14T00:00:00Z',
     blocks: [

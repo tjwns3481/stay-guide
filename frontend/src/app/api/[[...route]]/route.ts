@@ -23,14 +23,26 @@ app.use('*', secureHeaders())
 app.use(
   '*',
   cors({
-    origin: [
-      'http://localhost:3000',
-      'http://localhost:5173',
-      'https://roomy-app.vercel.app',
-      'https://roomy-v2xbzxfab-tjwns3481s-projects.vercel.app',
-      // Vercel Preview URLs
-      /^https:\/\/roomy-.*\.vercel\.app$/,
-    ],
+    origin: (origin) => {
+      const allowedOrigins = [
+        'http://localhost:3000',
+        'http://localhost:5173',
+        'https://roomy-app.vercel.app',
+      ]
+      // 정확히 일치하는 origin 허용
+      if (allowedOrigins.includes(origin)) {
+        return origin
+      }
+      // Vercel Preview URLs 패턴 허용 (roomy-*.vercel.app)
+      if (origin && /^https:\/\/roomy-.*\.vercel\.app$/.test(origin)) {
+        return origin
+      }
+      // Vercel 프로젝트 Preview URLs 패턴 허용
+      if (origin && /^https:\/\/frontend-.*-tjwns3481s-projects\.vercel\.app$/.test(origin)) {
+        return origin
+      }
+      return allowedOrigins[0]
+    },
     allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowHeaders: ['Content-Type', 'Authorization'],
     credentials: true,

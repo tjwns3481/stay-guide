@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import { headers } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { GuideRenderer } from '@/components/guest/GuideRenderer'
 import type { GuideDetail } from '@/contracts/guide.contract'
@@ -6,30 +7,13 @@ import type { GuideDetail } from '@/contracts/guide.contract'
 // 동적 라우트 설정: 요청 시 페이지 생성
 export const dynamic = 'force-dynamic'
 
-// 자주 접근하는 슬러그를 미리 생성 (선택적)
-// 실제 운영 시에는 DB에서 인기 안내서를 조회하여 반환 가능
-export async function generateStaticParams(): Promise<{ slug: string }[]> {
-  // 빌드 시 모든 페이지를 미리 생성하지 않고,
-  // 첫 요청 시 생성 후 캐싱하는 방식 사용
-  return []
+// 요청 헤더에서 API base URL 동적 생성
+async function getApiBaseUrl(): Promise<string> {
+  const headersList = await headers()
+  const host = headersList.get('host') || 'localhost:3000'
+  const protocol = headersList.get('x-forwarded-proto') || 'http'
+  return `${protocol}://${host}/api`
 }
-
-function getApiBaseUrl(): string {
-  // Vercel 배포 환경에서는 VERCEL_URL 사용
-  if (process.env.VERCEL_URL) {
-    return `https://${process.env.VERCEL_URL}/api`
-  }
-  // 프로덕션 도메인 명시
-  if (process.env.NEXT_PUBLIC_SITE_URL) {
-    return `${process.env.NEXT_PUBLIC_SITE_URL}/api`
-  }
-  // 환경변수 우선
-  const envUrl = process.env.NEXT_PUBLIC_API_URL
-  if (envUrl && envUrl.startsWith('http')) return envUrl
-  // 개발 환경 기본값
-  return 'http://localhost:3000/api'
-}
-const API_BASE = getApiBaseUrl()
 
 interface PageProps {
   params: Promise<{
@@ -40,7 +24,8 @@ interface PageProps {
 // 슬러그로 안내서 가져오기 (서버 컴포넌트에서 직접 fetch)
 async function getGuideBySlug(slug: string): Promise<GuideDetail | null> {
   try {
-    const res = await fetch(`${API_BASE}/guides/slug/${slug}`, {
+    const apiBase = await getApiBaseUrl()
+    const res = await fetch(`${apiBase}/guides/slug/${slug}`, {
       cache: 'no-store', // 항상 최신 데이터 fetch
     })
 

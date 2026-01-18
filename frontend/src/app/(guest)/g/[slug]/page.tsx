@@ -3,12 +3,8 @@ import { notFound } from 'next/navigation'
 import { GuideRenderer } from '@/components/guest/GuideRenderer'
 import type { GuideDetail } from '@/contracts/guide.contract'
 
-// ISR 설정: 60초마다 백그라운드 재검증
-export const revalidate = 60
-
-// 동적 라우트 설정
-export const dynamic = 'force-static'
-export const dynamicParams = true
+// 동적 라우트 설정: 요청 시 페이지 생성
+export const dynamic = 'force-dynamic'
 
 // 자주 접근하는 슬러그를 미리 생성 (선택적)
 // 실제 운영 시에는 DB에서 인기 안내서를 조회하여 반환 가능
@@ -42,11 +38,10 @@ interface PageProps {
 }
 
 // 슬러그로 안내서 가져오기 (서버 컴포넌트에서 직접 fetch)
-// ISR: 60초마다 재검증, 정적 페이지처럼 캐싱
 async function getGuideBySlug(slug: string): Promise<GuideDetail | null> {
   try {
     const res = await fetch(`${API_BASE}/guides/slug/${slug}`, {
-      next: { revalidate: 60 }, // 60초 ISR 캐싱
+      cache: 'no-store', // 항상 최신 데이터 fetch
     })
 
     if (!res.ok) {

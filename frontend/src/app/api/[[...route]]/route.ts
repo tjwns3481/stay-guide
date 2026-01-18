@@ -23,7 +23,14 @@ app.use('*', secureHeaders())
 app.use(
   '*',
   cors({
-    origin: ['http://localhost:3000', 'http://localhost:5173'],
+    origin: [
+      'http://localhost:3000',
+      'http://localhost:5173',
+      'https://roomy-app.vercel.app',
+      'https://roomy-v2xbzxfab-tjwns3481s-projects.vercel.app',
+      // Vercel Preview URLs
+      /^https:\/\/roomy-.*\.vercel\.app$/,
+    ],
     allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowHeaders: ['Content-Type', 'Authorization'],
     credentials: true,

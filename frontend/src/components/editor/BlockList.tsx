@@ -1,3 +1,5 @@
+// @TASK T3 - 블록 에디터 리스트 (드래그앤드롭)
+// @SPEC docs/planning/03-user-flow.md#블록-순서-변경
 'use client'
 
 import { useState } from 'react'
@@ -32,8 +34,11 @@ import {
 import { useEditorStore, BlockType, Block, BLOCK_TYPE_META } from '@/stores/editor'
 import { BlockEditor } from '@/components/blocks'
 
-// 블록 타입 아이콘 매핑 (현재 미사용이지만 향후 블록 추가 메뉴 UI에서 사용 예정)
-const _BLOCK_ICONS: Record<BlockType, React.ReactNode> = {
+/**
+ * 블록 타입 아이콘 매핑
+ * @description 향후 블록 추가 메뉴 UI에서 사용 예정
+ */
+export const BLOCK_ICONS: Record<BlockType, React.ReactNode> = {
   hero: <Image className="w-4 h-4" />,
   quick_info: <Clock className="w-4 h-4" />,
   amenities: <Wifi className="w-4 h-4" />,
@@ -42,7 +47,6 @@ const _BLOCK_ICONS: Record<BlockType, React.ReactNode> = {
   notice: <Bell className="w-4 h-4" />,
   gallery: <Images className="w-4 h-4" />,
 }
-void _BLOCK_ICONS // suppress unused variable warning
 
 export function BlockList() {
   const {
@@ -323,10 +327,12 @@ function BlockItemContent({
               </svg>
             )}
           </button>
+          {/* TODO: confirm() 대신 커스텀 확인 모달 사용 권장 */}
           <button
             onClick={(e) => {
               e.stopPropagation()
-              if (confirm('이 블록을 삭제하시겠습니까?')) {
+              // 브라우저 기본 confirm 사용 (향후 커스텀 모달로 교체 예정)
+              if (window.confirm('이 블록을 삭제하시겠습니까?')) {
                 onDelete?.()
               }
             }}

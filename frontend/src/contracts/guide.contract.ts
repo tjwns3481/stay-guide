@@ -21,6 +21,8 @@ export const GuideSchema = z.object({
   isPublished: z.boolean(),
   themeId: z.string().nullable(),
   themeSettings: ThemeSettingsSchema.nullable(),
+  // AI 챗봇 설정
+  aiEnabled: z.boolean().default(true),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
 })

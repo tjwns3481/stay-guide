@@ -1,6 +1,9 @@
+// @TASK T0.5 - 에러 바운더리 컴포넌트
+// @SPEC docs/planning/07-coding-convention.md#에러-처리
 'use client'
 
 import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { AlertCircle, RefreshCw, Home } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 
@@ -13,10 +16,17 @@ interface ErrorBoundaryProps {
   variant?: 'page' | 'inline'
 }
 
+const DEFAULT_ERROR_MESSAGE = '일시적인 오류가 발생했습니다.'
+
 export function ErrorFallback({ error, reset, variant = 'page' }: ErrorBoundaryProps) {
+  const router = useRouter()
+  const errorMessage = error?.message || DEFAULT_ERROR_MESSAGE
+
   useEffect(() => {
-    // 에러 로깅
-    console.error('Error:', error)
+    // 에러 로깅 (프로덕션에서는 Sentry로 전송)
+    if (process.env.NODE_ENV === 'development') {
+      console.error('ErrorBoundary caught:', error)
+    }
 
     // Sentry 설치 후 주석 해제
     // Sentry.captureException(error, {
@@ -25,7 +35,7 @@ export function ErrorFallback({ error, reset, variant = 'page' }: ErrorBoundaryP
     //     variant,
     //   },
     //   extra: {
-    //     digest: error.digest,
+    //     digest: error?.digest,
     //   },
     // })
   }, [error, variant])
@@ -38,7 +48,7 @@ export function ErrorFallback({ error, reset, variant = 'page' }: ErrorBoundaryP
           문제가 발생했습니다
         </h3>
         <p className="text-sm text-red-600 mb-4">
-          {error.message || '일시적인 오류가 발생했습니다.'}
+          {errorMessage}
         </p>
         <Button onClick={reset} variant="secondary" size="sm">
           <RefreshCw className="w-4 h-4 mr-2" />
@@ -79,7 +89,7 @@ export function ErrorFallback({ error, reset, variant = 'page' }: ErrorBoundaryP
             <RefreshCw className="w-4 h-4 mr-2" />
             다시 시도
           </Button>
-          <Button onClick={() => window.location.href = '/'} variant="secondary">
+          <Button onClick={() => router.push('/')} variant="secondary">
             <Home className="w-4 h-4 mr-2" />
             홈으로 이동
           </Button>

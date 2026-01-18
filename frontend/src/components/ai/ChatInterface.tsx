@@ -1,3 +1,5 @@
+// @TASK T6 - AI 컨시어지 채팅 인터페이스
+// @SPEC docs/planning/02-trd.md#AI-챗봇
 'use client'
 
 import { useEffect, useRef, useCallback } from 'react'
@@ -22,7 +24,13 @@ export function ChatInterface({
   const { messages, isStreaming, sendMessage, clearMessages, stopStreaming } =
     useAiChat({
       guideId,
-      onError: (error) => console.error('Chat error:', error),
+      onError: (error) => {
+        // 개발 환경에서만 콘솔 로깅
+        if (process.env.NODE_ENV === 'development') {
+          console.error('Chat error:', error)
+        }
+        // TODO: 프로덕션에서는 Sentry로 전송
+      },
     })
 
   const messagesEndRef = useRef<HTMLDivElement>(null)

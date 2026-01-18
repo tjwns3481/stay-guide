@@ -19,11 +19,19 @@ export async function generateStaticParams(): Promise<{ slug: string }[]> {
 }
 
 function getApiBaseUrl(): string {
+  // Vercel 배포 환경에서는 VERCEL_URL 사용
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}/api`
+  }
+  // 프로덕션 도메인 명시
+  if (process.env.NEXT_PUBLIC_SITE_URL) {
+    return `${process.env.NEXT_PUBLIC_SITE_URL}/api`
+  }
+  // 환경변수 우선
   const envUrl = process.env.NEXT_PUBLIC_API_URL
-  if (!envUrl) return 'http://localhost:3000/api'
-  if (envUrl.startsWith('http')) return envUrl
-  // 상대 경로인 경우 절대 경로로 변환 (SSR 대응)
-  return `http://localhost:3000${envUrl}`
+  if (envUrl && envUrl.startsWith('http')) return envUrl
+  // 개발 환경 기본값
+  return 'http://localhost:3000/api'
 }
 const API_BASE = getApiBaseUrl()
 

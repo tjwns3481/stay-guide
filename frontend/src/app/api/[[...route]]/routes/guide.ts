@@ -70,6 +70,7 @@ function formatGuideResponse(guide: {
   isPublished: boolean
   themeId: string | null
   themeSettings: unknown
+  aiEnabled?: boolean
   createdAt: Date
   updatedAt: Date
   blocks?: Array<{
@@ -79,7 +80,16 @@ function formatGuideResponse(guide: {
     content: unknown
     isVisible: boolean
   }>
+  user?: {
+    licenses?: Array<{
+      status: string
+      features: unknown
+    }>
+  }
 }) {
+  // 소유자의 활성 라이선스 features 추출
+  const ownerLicense = guide.user?.licenses?.find((l) => l.status === 'active')
+
   return {
     id: guide.id,
     userId: guide.userId,
@@ -89,6 +99,7 @@ function formatGuideResponse(guide: {
     isPublished: guide.isPublished,
     themeId: guide.themeId,
     themeSettings: guide.themeSettings,
+    aiEnabled: guide.aiEnabled ?? true,
     createdAt: guide.createdAt.toISOString(),
     updatedAt: guide.updatedAt.toISOString(),
     ...(guide.blocks && {
@@ -99,6 +110,11 @@ function formatGuideResponse(guide: {
         content: block.content,
         isVisible: block.isVisible,
       })),
+    }),
+    ...(ownerLicense && {
+      ownerLicense: {
+        features: ownerLicense.features,
+      },
     }),
   }
 }
@@ -343,6 +359,19 @@ guideRoutes.get('/slug/:slug', async (c) => {
       blocks: {
         where: { isVisible: true },
         orderBy: { order: 'asc' },
+      },
+      // 소유자의 라이선스 정보 (워터마크 등 기능 확인용)
+      user: {
+        select: {
+          licenses: {
+            where: { status: 'active' },
+            select: {
+              status: true,
+              features: true,
+            },
+            take: 1,
+          },
+        },
       },
     },
   })

@@ -1,3 +1,5 @@
+// @TASK T4 - 게스트 안내서 렌더러
+// @SPEC docs/planning/03-user-flow.md#게스트-뷰
 'use client'
 
 import { useState, useMemo } from 'react'
@@ -67,9 +69,10 @@ export function GuideRenderer({ guide, showWatermark = true }: GuideRendererProp
     .sort((a, b) => a.order - b.order)
 
   // Hero 블록과 QuickInfo 블록 분리 (특별 레이아웃 처리)
+  // NOTE: BlockType은 'quick_info' (snake_case)를 사용함
   const heroBlock = visibleBlocks.find((b) => b.type === 'hero')
-  const quickInfoBlock = visibleBlocks.find((b) => b.type === 'quickInfo')
-  const otherBlocks = visibleBlocks.filter((b) => b.type !== 'hero' && b.type !== 'quickInfo')
+  const quickInfoBlock = visibleBlocks.find((b) => b.type === 'quick_info')
+  const otherBlocks = visibleBlocks.filter((b) => b.type !== 'hero' && b.type !== 'quick_info')
 
   // Hero 블록에서 이미지와 타이틀 추출
   const heroData = useMemo(() => {
@@ -142,16 +145,20 @@ export function GuideRenderer({ guide, showWatermark = true }: GuideRendererProp
           <p className="text-xs text-gray-400">Powered by Roomy</p>
         </div>
 
-        {/* AI 플로팅 버튼 */}
-        <AiFloatingButton onClick={() => setIsChatOpen(true)} />
+        {/* AI 플로팅 버튼 - aiEnabled가 true일 때만 표시 */}
+        {guide.aiEnabled !== false && (
+          <>
+            <AiFloatingButton onClick={() => setIsChatOpen(true)} />
 
-        {/* AI 채팅 인터페이스 */}
-        <ChatInterface
-          guideId={guide.id}
-          accommodationName={guide.accommodationName}
-          isOpen={isChatOpen}
-          onClose={() => setIsChatOpen(false)}
-        />
+            {/* AI 채팅 인터페이스 */}
+            <ChatInterface
+              guideId={guide.id}
+              accommodationName={guide.accommodationName}
+              isOpen={isChatOpen}
+              onClose={() => setIsChatOpen(false)}
+            />
+          </>
+        )}
 
         {/* 워터마크 */}
         <Watermark show={showWatermark} />
